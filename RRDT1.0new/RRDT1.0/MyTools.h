@@ -32,18 +32,18 @@
 
 #pragma mark 用户接口
 //#define URL_All @"http://192.168.1.224:8080/renrenapihttp/services"
-//#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
-#define URL_All @"http://apinew.renrenditui.cn/20151105/services/"
+#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
+//#define URL_All @"http://apinew.renrenditui.cn/20151105/services/"
 /*
  *上传图片
  */
-//#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
-#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
+#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
+//#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
 /*
  *得到图片
  */
-//#define URL_GetImg @"http://192.168.1.222:8189"
-#define URL_GetImg @"http://img.renrenditui.cn"
+#define URL_GetImg @"http://192.168.1.222:8189"
+//#define URL_GetImg @"http://img.renrenditui.cn"
 
 
 /*

@@ -7,7 +7,7 @@
 //
 
 #import "HttpHelper.h"
-
+#import "ETSUUID.h"
 //#import "Security.h"
 
 @implementation HttpHelper
@@ -19,6 +19,15 @@
     manager.responseSerializer=[AFJSONResponseSerializer serializer];
 //    [manager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/plain", @"text/html", nil];
+    
+    NSString * ssid = [ETSUUID getUniqueDeviceIDFromKeychain];
+    [manager.requestSerializer setValue:ssid forHTTPHeaderField:@"ssid"];
+    
+    NSString *currentVersion=[[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [manager.requestSerializer setValue:currentVersion forHTTPHeaderField:@"version"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"platform"];
+    [manager.requestSerializer setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"sysversion"];
+
     
     return manager;
 }

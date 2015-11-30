@@ -106,6 +106,8 @@
 		24F9F6EA1BDF199F007DC68C /* NotPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F9F6E91BDF199F007DC68C /* NotPassView.m */; };
 		24F9F6F01BDF1A1D007DC68C /* NotPassTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F9F6EF1BDF1A1D007DC68C /* NotPassTableViewCell.m */; };
 		24FADDBD1BDDF362003A1C00 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24FADDBC1BDDF362003A1C00 /* CustomIOSAlertView.m */; };
+		270843711C0566FD0034B082 /* ETSUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 270843701C0566FD0034B082 /* ETSUUID.m */; };
+		270843741C06A28C0034B082 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 270843731C06A28C0034B082 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		78EAF120F7DB88778B933B4B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BEE95E9BD757E221A3AE441 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -323,6 +325,10 @@
 		24F9F6EF1BDF1A1D007DC68C /* NotPassTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotPassTableViewCell.m; sourceTree = "<group>"; };
 		24FADDBB1BDDF362003A1C00 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
 		24FADDBC1BDDF362003A1C00 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
+		2708436F1C0566FD0034B082 /* ETSUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETSUUID.h; sourceTree = "<group>"; };
+		270843701C0566FD0034B082 /* ETSUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETSUUID.m; sourceTree = "<group>"; };
+		270843721C06A28C0034B082 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		270843731C06A28C0034B082 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		7BEE95E9BD757E221A3AE441 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4A8A94437A6696A8FB278FA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FDFAC4BE4819ECBFA0C1F0BC /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -650,6 +656,10 @@
 		24E4A4381BAF9D1B00EC14AF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				270843721C06A28C0034B082 /* SFHFKeychainUtils.h */,
+				270843731C06A28C0034B082 /* SFHFKeychainUtils.m */,
+				2708436F1C0566FD0034B082 /* ETSUUID.h */,
+				270843701C0566FD0034B082 /* ETSUUID.m */,
 				246802B61BE07AD600C983A0 /* KLSwitch.h */,
 				246802B71BE07AD600C983A0 /* KLSwitch.m */,
 				24DD331E1BDE16B000F93630 /* DZNSegmentedControl.h */,
@@ -1062,6 +1072,7 @@
 				24D7F9341BB3A634007184D7 /* BackBaseViewController.m in Sources */,
 				24CFCAF91BDF3FF100E17B93 /* NewTaskContentViewController.m in Sources */,
 				24DD33231BDE16B000F93630 /* UIScrollView+DZNSegmentedControl.m in Sources */,
+				270843741C06A28C0034B082 /* SFHFKeychainUtils.m in Sources */,
 				24E5E7111BAD3D3A0066D3A5 /* CoreCountBtn.m in Sources */,
 				24E4A4551BAFF3A700EC14AF /* NSDate+OST_DATE.m in Sources */,
 				2442E55B1BE0DA9500263C96 /* MyTaskTableViewCell.m in Sources */,
@@ -1096,6 +1107,7 @@
 				24EFA29B1BCE51F4005706F3 /* UIImage+GIF.m in Sources */,
 				24EA27A41BCB561C00529707 /* UIColor+Hex.m in Sources */,
 				24E38AF01BC8C1FD00C17380 /* ContractImageTableViewCell.m in Sources */,
+				270843711C0566FD0034B082 /* ETSUUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
