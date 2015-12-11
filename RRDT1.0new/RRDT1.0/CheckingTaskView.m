@@ -7,21 +7,18 @@
 //
 
 #import "CheckingTaskView.h"
-
+#import "ReceivedTableViewCell.h"
 #import "CheckingTaskTableViewCell.h"
-
-//#import "CustomIOSAlertView.h"
 
 @implementation CheckingTaskView
 
 - (instancetype)init
 {
-    self = [super initWithFrame:CGRectMake(WIDTH * 1, 0, WIDTH, HEIGHT - 64 - 40) style:UITableViewStyleGrouped];
+    self = [super initWithFrame:CGRectMake(WIDTH*1, 0, WIDTH, HEIGHT - 64 - 40) style:UITableViewStyleGrouped];
     if (self) {
         
         self.backgroundColor = [UIColor grayColor];
         _modeArr = [NSMutableArray array];
-//        self = [[UITableView alloc] initWithFrame:CGRectMake(WIDTH * 1, 0, WIDTH, HEIGHT - 64 - 40) style:UITableViewStylePlain];
         self.dataSource = self;
         self.delegate = self;
         self.emptyDataSetSource = self;
@@ -30,11 +27,8 @@
         self.showsVerticalScrollIndicator = NO;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-//        [self addSubview:_mytable];
-        
         
         self.backgroundColor = UIColorFromRGB(0xe8e8e8);
-        self.tableFooterView = [UIView new];
         
         
         self.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -48,9 +42,10 @@
             [self post];
         }];
         
-//        [MBProgressHUD showHUDAddedTo:self animated:YES];
-//        
-//        [self post];
+        
+        //        [MBProgressHUD showHUDAddedTo:self animated:YES];
+        //
+        //        [self post];
     }
     return self;
 }
@@ -72,25 +67,30 @@
     return 5;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *idenifier = @"cell";
-    CheckingTaskTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
     
-    if (!cell) {
-        cell = [[CheckingTaskTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    Task *task = [_modeArr objectAtIndex:indexPath.section];
+    if (task.taskType==taskType_write) {
         
-    }
-    if (_modeArr.count > 0){
-        Task *task = [_modeArr objectAtIndex:indexPath.section];
+        static NSString *idenifier = @"ReceivedTableViewCell";
+        ReceivedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
+        if (!cell) {
+            cell = [[ReceivedTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
-        cell.infoLabel.text = task.taskGeneralInfo;
-        cell.topLab.text = [NSString stringWithFormat:@"提交时间 %@",[task.finishTime substringToIndex:16]];
-        //    cell.topLab.text = [NSString stringWithFormat:@"提交时间 %@",task.finishTime];
+        
+        cell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
+        
+        [cell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
+        [cell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
+        
+        [cell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,cell.infoLabel.text.length - 4)];
         
         
-        
-        cell.buttomLab.text = [NSString stringWithFormat:@"审核 2-3天"];
-        
+        cell.waitLab.text = [NSString stringWithFormat:@"审核中(%d)",task.auditWaitNum];
+        cell.passLab.text = [NSString stringWithFormat:@"已通过(%d)",task.auditPassNum];
+        cell.refuseLab.text = [NSString stringWithFormat:@"未通过(%d)",task.auditRefuseNum];
         
         //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
         cell.moneyLab.textColor = [UIColor clearColor];
@@ -107,174 +107,142 @@
         [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",task.logo]] placeholderImage:[UIImage imageNamed:@"icon_morentu"] options:1 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             
         }];
+        __block CheckingTaskView *blockSelf=self;
+        cell.waitBlock=^{
+            [blockSelf  gotoTaskDetail:task Index:0];
+        };
+        cell.passBlock=^{
+            [blockSelf  gotoTaskDetail:task Index:1];
+            
+        };
+        cell.refuseBlock=^{
+            [blockSelf  gotoTaskDetail:task Index:2];
+            
+        };
+        return cell;
         
         
-        [cell.receiveBtn addTarget:self action:@selector(againReceived:) forControlEvents:UIControlEventTouchUpInside];
-        cell.receiveBtn.tag = indexPath.section;
-        if ([task.isAgainPickUp integerValue] != 1) {
-            cell.receiveBtn.hidden = YES;
-        }else{
-            cell.receiveBtn.hidden = NO;
-        }
-    }
-    
-    return cell;
-}
-- (void)againReceived:(CoreStatusBtn *)btn{
-    NSLog(@">>>>>>%zi",btn.tag);
-//    btn.status = CoreStatusBtnStatusProgress;
-    
-    Task *task = [_modeArr objectAtIndex:btn.tag];
-    if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]){
-        [self makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
     }else{
-
-            btn.status = CoreStatusBtnStatusProgress;
-            AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        User *user = [[User alloc] init];
-            NSDictionary *parameters = @{@"userId":user.userId,
-                                         @"taskId":task.taskId};
-            [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-                NSLog(@">>>>>reservetask ----%@",responseObject);
-                NSNumber *code = [responseObject objectForKey:@"code"];
-                int code_int = [code intValue];
-                if (code_int == 200) {
-                    
-                    
-                    btn.status = CoreStatusBtnStatusSuccess;
-                    
-                    NSString *timeStr = [NSString stringWithFormat:@"请在%@小时内完成任务。\n 提示:完成之后不要忘记提交审核哦",task.taskCycle];
-                    
-                    CustomIOSAlertView *alert = [self successAlert:@"icon_success" andtitle:@"领取成功" andmsg:timeStr andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"当前任务", nil]];
-                    [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-                        NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
-                        
-                        [alertView close];
-                        task.orderId = [responseObject objectForKey:@"data"];
-                        if (buttonIndex == 0) {
-                            [[NSNotificationCenter defaultCenter]postNotificationName:@"select" object:task userInfo:@{@"type":@"2"}];
-                        }else{
-                            [[NSNotificationCenter defaultCenter]postNotificationName:@"receiveCurrentNote" object:nil userInfo:nil];
-                        }
-                        
-//                        _nextId = 0;
-//                        [self post];
-                        
-                        
-
-                    }];
-                    [alert show];
-                    
-                }else{
-                    btn.status = CoreStatusBtnStatusFalse;
-                    [[[self superview] superview] makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
-                }
-                
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-            }];
+        static NSString *checkIdenifier = @"CheckingTaskTableViewCell";
+        CheckingTaskTableViewCell *checkCell = [tableView dequeueReusableCellWithIdentifier:checkIdenifier];
+        if (!checkCell) {
+            checkCell = [[CheckingTaskTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:checkIdenifier];
+            checkCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+        checkCell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
         
+        checkCell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
+        
+        [checkCell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
+        [checkCell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
+        
+        [checkCell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,checkCell.infoLabel.text.length - 4)];
+        checkCell.waitLab.text = [NSString stringWithFormat:@"成功分享 %d次",task.complateNum];
+        
+        //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
+        checkCell.moneyLab.textColor = [UIColor clearColor];
+        checkCell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
+        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,checkCell.moneyLab.text.length - 3)];
+        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
+        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,checkCell.moneyLab.text.length - 2)];
+        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
+        //    [cell.moneyLab updateLabelStyle];
+        
+        
+        
+        [checkCell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",task.logo]] placeholderImage:[UIImage imageNamed:@"icon_morentu"] options:1 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+        }];
+        
+        __block CheckingTaskView *blockSelf=self;
+        checkCell.recBTNClick=^{
+            
+            [blockSelf doShare:task];
+        };
+        return checkCell;
+    }
+}
+-(void)doShare:(Task *)task{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedView_doShare object:task.taskId];
+}
+
+-(void)gotoTaskDetail:(Task *)task Index:(NSInteger)index{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedView_toTaskDetail object:@{@"task":task,@"index":@(index)}];
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     Task *task = [_modeArr objectAtIndex:indexPath.section];
-     [[NSNotificationCenter defaultCenter]postNotificationName:@"select" object:task userInfo:@{@"type":@"3"}];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"select" object:task userInfo:@{@"type":@"3"}];
 }
 #pragma mark 请求数据
 - (void)post{
-//    [MBProgressHUD showHUDAddedTo:self animated:YES];
+    //    [MBProgressHUD showHUDAddedTo:self animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self animated:YES];
     }else{
         
+        [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         
-                User *user = [[User alloc] init];
+        User *user = [[User alloc] init];
         
-        NSDictionary *parmeters = @{@"userId"       :user.userId,
-                                    @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
-                                    @"itemsCount"   :@"10",
-                                    @"orderType"    :@"4"
-                                    };
-        NSLog(@">>>>>>%@",parmeters);
+        [self.header endRefreshing];
+        [self.footer endRefreshing];
+        
+        NSDictionary *parmeters = @{@"userId":user.userId,
+                                    @"itemsCount":@"10",
+                                    @"nextId":[NSString stringWithFormat:@"%zi",_nextId]
+                                    ,@"taskStatus":@(3)};
+        
+        
+        
         if (_nextId == 0) {
             [_modeArr removeAllObjects];
         }
-        [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            
-            
-            NSLog(@"jsoncheck%@",responseObject);
+        [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetreceiveTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
+            
+            NSLog(@"json2%@",responseObject);
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {
                 
-                
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"changeSelcct" object:self userInfo:@{
-                @"receivedCount":[[responseObject objectForKey:@"data"] objectForKey:@"receivedCount"],
-                @"passCount":[[responseObject objectForKey:@"data"] objectForKey:@"passCount"],
-                @"noPassCount":[[responseObject objectForKey:@"data"] objectForKey:@"noPassCount"]}];
+                                                                                                                 @"passTotal":[[responseObject objectForKey:@"data"] objectForKey:@"passTotal"],
+                                                                                                                 @"refuseTotal":[[responseObject objectForKey:@"data"] objectForKey:@"refuseTotal"]
+                                                                                                                 }];
                 
-                
-                if ([[[responseObject objectForKey:@"data"] objectForKey:@"total"] intValue] == 0 ) {
-//                    [self makeToast:@"没有更多了" duration:1.0 position:CSToastPositionCenter];
-                    //                    [_mytable reloadData];
-//                    NSLog(@"zoule");
-//                    [self.footer endRefreshingWithNoMoreData];
+                if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
+                    
                 }else{
                     _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
-                    
                     for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
                         Task *task  = [[Task alloc] init];
-                        task.amount             = [[dic objectForKey:@"amount"] floatValue];
-                        task.auditTime          = [dic objectForKey:@"auditTime"];
-                        task.availableCount     = [dic objectForKey:@"availableCount"];
-                        task.beginTime          = [dic objectForKey:@"beginTime"];
-                        task.endTime            = [dic objectForKey:@"endTime"];
-                        task.finishTime         = [dic objectForKey:@"finishTime"];
-                        task.logo               = [dic objectForKey:@"logo"];
-                        task.orderId            = [dic objectForKey:@"orderId"];
-                        task.receivedTime       = [dic objectForKey:@"receivedTime"];
-                        task.status             = [dic objectForKey:@"status"];
-                        task.taskCycle          = [dic objectForKey:@"taskCycle"];
-                        task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
-                        task.taskId             = [dic objectForKey:@"taskId"];
-                        task.taskName           = [dic objectForKey:@"taskName"];
-                        task.isAgainPickUp      = [dic objectForKey:@"isAgainPickUp"];
-                        [_modeArr addObject:task];
                         
+                        [task setValuesForKeysWithDictionary:dic];
+                        
+                        [_modeArr addObject:task];
                     }
                     
                 }
                 [self reloadData];
             }else{
-                NSLog(@">>>>>>%@",[responseObject objectForKey:@"msg"]);
                 [self makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
-                
             }
-            [self.header endRefreshing];
-            [self.footer endRefreshing];
         } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-            
-            [self.header endRefreshing];
-            [self.footer endRefreshing];
-            NSLog(@"____%@",operation.responseString);
-            
+            NSLog(@"error:::%@",error);
             [self makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
-            
-            
             [MBProgressHUD hideHUDForView:self animated:YES];
         }];
-        
     }
-    
 }
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {
-    NSString *text = @"还没有审核中的任务";
+    NSString *text = @"还没有进行中的任务";
     
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
                                  NSForegroundColorAttributeName: [UIColor darkGrayColor]};
@@ -304,65 +272,31 @@
     [self post];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 130;
+    return 120;
 }
-
-- (CustomIOSAlertView *)successAlert:(NSString *)imgStr andtitle:(NSString *)title andmsg:(NSString *)msg andButtonItem:(NSMutableArray *)item{
-    // Here we need to pass a full frame
-    CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
+- (NSString *)timeFinsh:(NSString *)timeStr andCycle:(NSString *)cycle{
     
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH - 40, HEIGHT/4)];
-    UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgStr]];
-    UILabel *lab_titile = [[UILabel alloc] init];
-    lab_titile.font = [UIFont systemFontOfSize:16];
-    lab_titile.textColor = UIColorFromRGB(0x666666);
-    lab_titile.textAlignment = NSTextAlignmentCenter;
-    UILabel*lab_msg = [[UILabel alloc] init];
-    lab_msg.font = [UIFont systemFontOfSize:14];
-    lab_msg.textColor = UIColorFromRGB(0x888888);
-    lab_msg.numberOfLines = 0;
-    lab_msg.textAlignment = NSTextAlignmentCenter;
-    [view addSubview:img];
-    [view addSubview:lab_titile];
-    [view addSubview:lab_msg];
-    lab_titile.text = title;
-    lab_msg.text = msg;
-    
-    [img mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(view).with.offset(10);
-        make.centerX.mas_equalTo(view.mas_centerX);
-        make.height.mas_equalTo(HEIGHT/15);
-        make.width.mas_equalTo(HEIGHT/15);
-    }];
-    [lab_titile mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(img.mas_bottom).offset(10);
-        make.centerX.mas_equalTo(view.mas_centerX);
-        make.left.equalTo(view).with.offset(20);
-        make.right.equalTo(view).with.offset(-20);
-    }];
-    [lab_msg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(lab_titile.mas_bottom);
-        make.centerX.mas_equalTo(view.mas_centerX);
-        make.left.equalTo(view).with.offset(20);
-        make.right.equalTo(view).with.offset(-20);
-    }];
-    
-    // Add some custom content to the alert view
-    [alertView setContainerView:view];
-    
-    // Modify the parameters
-    [alertView setButtonTitles:item];
-    
-    // You may use a Block, rather than a delegate.
-    
-    
-    [alertView setUseMotionEffects:true];
-    
-    // And launch the dialog
-    
-    
-    return alertView;
+    NSDateFormatter *dateformatter = [NSDateFormatter new];
+    [dateformatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *mydata = [dateformatter dateFromString:timeStr];
+    //返回给定时间距离现在经过的秒数
+    NSTimeInterval mytimenow =  [mydata timeIntervalSinceNow] + [cycle intValue] * 60 * 60;
+    NSString *returnStr ;
+    if (mytimenow < 60) {
+        if (mytimenow <= 0) {
+            returnStr = [NSString stringWithFormat:@"已结束"];
+        }else{
+            returnStr = [NSString stringWithFormat:@"%.f秒",mytimenow];
+        }
+    }else if (mytimenow < 60*60){
+        returnStr = [NSString stringWithFormat:@"%.f分",mytimenow/60];
+    }else if (mytimenow < 60*60*24){
+        returnStr = [NSString stringWithFormat:@"%.f小时",mytimenow/60/60];
+    }else{
+        returnStr = [NSString stringWithFormat:@"%.f天",mytimenow/60/60/24];
+    }
+    return returnStr;
 }
 
 @end

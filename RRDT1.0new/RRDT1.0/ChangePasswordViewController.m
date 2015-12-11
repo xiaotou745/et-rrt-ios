@@ -141,11 +141,6 @@
     _user.isLogin = NO;
     
     
-    
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-    
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangePasswordNototification" object:nil userInfo:nil];
-    
     AgainLoginViewController *againVC = [[AgainLoginViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:againVC];
     [nav.navigationBar setBarTintColor:UIColorFromRGB(0x1F2226)];
@@ -157,23 +152,7 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }];
 }
-//-(void)backTo{
-////    AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
-////    LoginViewController *login = [[LoginViewController alloc] init];
-////    appdelegate.window.rootViewController = login;
-//    
-//    
-//    NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
-//    [dd setObject:@"" forKey:@"myUser"];
-//    [dd synchronize];
-//    _user.isLogin = NO;
-//    
-//    
-//    
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-//    
-//    [[NSNotificationCenter defaultCenter]postNotificationName:@"ChangePasswordNototification" object:nil userInfo:nil];
-//}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
 }

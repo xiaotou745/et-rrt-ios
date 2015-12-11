@@ -17,15 +17,16 @@
         [self headLabel];
         [self moneyLab];
         [self infoLabel];
-        [self leftLab];
-        [self rightLab];
-        [self imag_left];
-        [self img_right];
-        [self line_label];
+//        [self taskType];
+//        [self leftLab];
+//        [self rightLab];
+//        [self imag_left];
+//        [self img_right];
+//        [self line_label];
         
         
-        self.img_left.image = [UIImage imageNamed:@"icon_cantask"];
-        self.img_right.image = [UIImage imageNamed:@"icon_time"];
+//        self.img_left.image = [UIImage imageNamed:@"icon_cantask"];
+//        self.img_right.image = [UIImage imageNamed:@"icon_time"];
         
         
         
@@ -62,35 +63,42 @@
             make.height.equalTo(@40);
         }];
         
-        [_leftLab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).with.offset(-15);
-            make.height.equalTo(@15);
-            make.left.mas_equalTo(_img_left.mas_right).offset(3);
-        }];
-        [_rightLab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).with.offset(-15);
-            make.height.equalTo(@15);
-            make.right.equalTo(self).offset(-30);
+        [_taskType mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_headImageView.mas_top);
+            make.right.equalTo(self).with.offset(-10);
+            make.width.mas_equalTo(60);
+            make.height.equalTo(@20);
         }];
         
-        [_img_left mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).with.offset(-15);
-            make.height.equalTo(@15);
-            make.left.equalTo(self).with.offset(12);
-            make.width.equalTo(@15);
-        }];
-        [_img_right mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self).with.offset(-15);
-            make.height.equalTo(@15);
-            make.right.mas_equalTo(_rightLab.mas_left).offset(-3);
-            make.width.equalTo(@15);
-        }];
-        [_line_label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self).with.offset(12);
-            make.right.equalTo(self).with.offset(-12);
-            make.top.mas_equalTo(_headImageView.mas_bottom).offset(10);
-            make.height.equalTo(@1);
-        }];
+//        [_leftLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self).with.offset(-15);
+//            make.height.equalTo(@15);
+//            make.left.mas_equalTo(_img_left.mas_right).offset(3);
+//        }];
+//        [_rightLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self).with.offset(-15);
+//            make.height.equalTo(@15);
+//            make.right.equalTo(self).offset(-30);
+//        }];
+//        
+//        [_img_left mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self).with.offset(-15);
+//            make.height.equalTo(@15);
+//            make.left.equalTo(self).with.offset(12);
+//            make.width.equalTo(@15);
+//        }];
+//        [_img_right mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.equalTo(self).with.offset(-15);
+//            make.height.equalTo(@15);
+//            make.right.mas_equalTo(_rightLab.mas_left).offset(-3);
+//            make.width.equalTo(@15);
+//        }];
+//        [_line_label mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self).with.offset(12);
+//            make.right.equalTo(self).with.offset(-12);
+//            make.top.mas_equalTo(_headImageView.mas_bottom).offset(10);
+//            make.height.equalTo(@1);
+//        }];
     }
     return self;
 }
@@ -111,9 +119,9 @@
     }
     return _headLabel;
 }
-- (UILabel *)infoLabel{
+- (CoreLabel *)infoLabel{
     if (!_infoLabel) {
-        _infoLabel = [[UILabel alloc] init];
+        _infoLabel = [[CoreLabel alloc] init];
         _infoLabel.font = [UIFont systemFontOfSize:12];
         _infoLabel.textColor = UIColorFromRGB(0xbbc0c7);
         _infoLabel.numberOfLines = 2;
@@ -121,23 +129,36 @@
     }
     return _infoLabel;
 }
-
-- (UILabel *)leftLab{
-    if (!_leftLab) {
-        _leftLab = [[UILabel alloc] init];
-        _leftLab.font = [UIFont systemFontOfSize:12];
-        [self addSubview:_leftLab];
+- (UILabel *)taskType{
+    if (!_taskType) {
+        _taskType = [[UILabel alloc] init];
+        _taskType.font = [UIFont systemFontOfSize:12];
+        _taskType.textAlignment=NSTextAlignmentCenter;
+        _taskType.textColor = [UIColor whiteColor];
+        _taskType.backgroundColor=UIColorFromRGB(0x32bcf6);
+        _taskType.layer.cornerRadius=3;
+        _taskType.layer.masksToBounds=YES;
+        _taskType.numberOfLines = 1;
+        [self addSubview:_taskType];
     }
-    return _leftLab;
+    return _taskType;
 }
-- (UILabel *)rightLab{
-    if (!_rightLab) {
-        _rightLab = [[UILabel alloc] init];
-        _rightLab.font = [UIFont systemFontOfSize:12];
-        [self addSubview:_rightLab];
-    }
-    return _rightLab;
-}
+//- (UILabel *)leftLab{
+//    if (!_leftLab) {
+//        _leftLab = [[UILabel alloc] init];
+//        _leftLab.font = [UIFont systemFontOfSize:12];
+//        [self addSubview:_leftLab];
+//    }
+//    return _leftLab;
+//}
+//- (UILabel *)rightLab{
+//    if (!_rightLab) {
+//        _rightLab = [[UILabel alloc] init];
+//        _rightLab.font = [UIFont systemFontOfSize:12];
+//        [self addSubview:_rightLab];
+//    }
+//    return _rightLab;
+//}
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {
         _moneyLab = [[CoreLabel alloc] init];
@@ -146,28 +167,28 @@
     }
     return _moneyLab;
 }
-- (UIImageView *)imag_left{
-    if (!_img_left) {
-        _img_left = [[UIImageView alloc] init];
-        [self addSubview:_img_left];
-    }
-    return _img_left;
-}
-- (UIImageView *)img_right{
-    if (!_img_right) {
-        _img_right = [[UIImageView alloc] init];
-        [self addSubview:_img_right];
-    }
-    return _img_right;
-}
-- (UILabel *)line_label{
-    if (!_line_label) {
-        _line_label = [[UILabel alloc] init];
-        _line_label.backgroundColor = UIColorFromRGB(0xe5e5e5);
-        [self addSubview:_line_label];
-    }
-    return _line_label;
-}
+//- (UIImageView *)imag_left{
+//    if (!_img_left) {
+//        _img_left = [[UIImageView alloc] init];
+//        [self addSubview:_img_left];
+//    }
+//    return _img_left;
+//}
+//- (UIImageView *)img_right{
+//    if (!_img_right) {
+//        _img_right = [[UIImageView alloc] init];
+//        [self addSubview:_img_right];
+//    }
+//    return _img_right;
+//}
+//- (UILabel *)line_label{
+//    if (!_line_label) {
+//        _line_label = [[UILabel alloc] init];
+//        _line_label.backgroundColor = UIColorFromRGB(0xe5e5e5);
+//        [self addSubview:_line_label];
+//    }
+//    return _line_label;
+//}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

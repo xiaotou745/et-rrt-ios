@@ -12,9 +12,13 @@
 
 #include "ContractTextTableViewCell.h"
 
+#import "EditInfoImgCell.h"
+
 #import "CoreLabel.h"
 
 #import "ControlInfo.h"
+
+#import "ControlTemplate.h"
 
 #import "CoreStatusBtn.h"
 
@@ -22,11 +26,16 @@
 
 #import "TPKeyboardAvoidingTableView.h"
 
+
 @interface PostContractViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 {
-    NSMutableArray *arr_image;
     NSMutableArray *arr_text;
+    NSMutableArray *arr_image;
+    NSMutableArray *arr_images;
     NSMutableArray *arr_all;
+    
+    NSMutableArray *sectionTempplate;
+    NSArray *item;
     
     NSMutableDictionary *value;
     
@@ -34,14 +43,12 @@
     NSString *img_str;
     NSInteger img_tag;
     
-//    NSMutableDictionary *image_Dic;
     NSMutableArray *image_Dic;
     
     
     NSMutableArray *value_arr;
     
 
-    NSMutableArray *arr_imageValue;
     NSMutableArray *arr_textValue;
     
     UIView *topView;
@@ -74,18 +81,36 @@
 
 @property (nonatomic,strong) UIToolbar          *myTololBar;
 
+@property (nonatomic,strong) NSArray          *templateGroup;
+
+
 @end
 
 @implementation PostContractViewController
 
+-(void)backBarButtonPressed{
+
+    if (_tag ==111) {
+        CustomIOSAlertView *alert = [self successAlert:@"icon_success" andtitle:@"" andmsg:@"您还未提交资料，确定退出吗？" andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"取消", nil]];
+        [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
+            NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
+            
+            [alertView close];
+            if(buttonIndex==0) [self.navigationController popViewControllerAnimated:YES];
+        }];
+        [alert show];
+    }else [self.navigationController popViewControllerAnimated:YES];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.title = @"提交审核";
-    
+    self.title = @"资料录入";
+    item = @[@"text",@"image",@"images"];
+
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -93,13 +118,14 @@
 }
 - (void)viewCreat{
     
+    sectionTempplate=[NSMutableArray array];
     arr_image   = [NSMutableArray array];
+    arr_images   = [NSMutableArray array];
     arr_text    = [NSMutableArray array];
     arr_all     = [NSMutableArray array];
     value       = [NSMutableDictionary dictionary];
     value_arr   = [NSMutableArray array];
     
-    arr_imageValue = [NSMutableArray array];
     arr_textValue  = [NSMutableArray array];
     
     image_Dic = [NSMutableArray array];
@@ -174,10 +200,10 @@
     [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLabel.text.length - 2,2)];
     
     _headLabel.text = _task.taskTitle;
-    _infoLabel.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
+    _infoLabel.text = [NSString stringWithFormat:@"审核 %@天",[_task.auditCycle description]];
 
     
-    if (_tag != 333) {
+    if (_tag != 222) {
         _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - HEIGHT/15 - 20) style:UITableViewStylePlain];
     }else{
         _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStylePlain];
@@ -194,7 +220,7 @@
     
     
 
-    if (_tag!= 333) {
+    if (_tag!= 222) {
         UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, HEIGHT - 64 - (HEIGHT/15 + 20), WIDTH, HEIGHT/15 + 20)];
         footView.backgroundColor = UIColorFromRGB(0xe8e8e8);
         _postBtn = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(10, 10, WIDTH - 20, HEIGHT/15)];
@@ -235,9 +261,9 @@
     User *user = [[User alloc] init];
     NSLog(@">>>>>%@",user.userId);
     NSDictionary *dataDic = @{@"userId"         :user.userId,
-                              @"orderId"        :_task.orderId,
+                              @"ctId"        :_task.ctId,
                               @"valueInfo"      :value_arr,
-                              @"templateId"     :_task.templateId};
+                              @"taskId"     :_task.taskId};
     
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
@@ -299,24 +325,37 @@
 //}
 - (void)classify{
     NSArray *type = @[@"Text",@"FileUpload"];
-    for (NSDictionary *dic in _task.controlInfo) {
+    for (NSDictionary *dic in _templateGroup) {
         
-        ControlInfo *controInfo = [[ControlInfo alloc] init];
-        [controInfo setValuesForKeysWithDictionary:dic];
+        ControlTemplate *temp=[[ControlTemplate alloc]init];
+        [temp setValuesForKeysWithDictionary:dic];
+        [sectionTempplate addObject:temp];
         
-        int item = (int)[type indexOfObject:controInfo.controlType];
-        switch (item) {
-            case 0:
-                //文本
-                [arr_text addObject:controInfo];
-                break;
-            case 1:
-                //图片上传
-                [arr_image addObject:controInfo];
-                [image_Dic addObject:UIImageJPEGRepresentation([UIImage imageNamed:@"icon_imgadd"], 1)];
-                break;
-            default:
-                break;
+        for (NSDictionary *info in temp.controlList) {
+            ControlInfo *controInfo = [[ControlInfo alloc] init];
+            [controInfo setValuesForKeysWithDictionary:info];
+            
+            int item =temp.groupType;
+            switch (item) {
+                case groupTypeText:
+                    //文本
+                    [arr_text addObject:controInfo];
+                    break;
+                case groupTypeImage:
+                    //图片上传
+                    [arr_image addObject:controInfo];
+                    [image_Dic addObject:UIImageJPEGRepresentation([UIImage imageNamed:@"icon_imgadd"], 1)];
+                    break;
+                case groupTypeImages:
+                    //图片上传
+                    [arr_images addObject:controInfo];
+                    [image_Dic addObject:UIImageJPEGRepresentation([UIImage imageNamed:@"icon_imgadd"], 1)];
+                    break;
+
+                default:
+                    break;
+                }
+
         }
     }
     
@@ -330,50 +369,57 @@
                              @"count":[NSNumber numberWithInteger:arr_image.count],
                              @"type":@"image"}];
     }
-    
+    if (arr_images.count!=0) {
+        [arr_all addObject:@{@"data":arr_images,
+                             @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
+                             @"type":@"images"}];
+    }
+
     NSLog(@">>>>>%@",arr_all);
     [_mytable reloadData];
 }
 - (void)valueClassify{
     NSArray *type = @[@"Text",@"FileUpload"];
-    for (NSDictionary *dic in _task.controlInfo) {
+    for (NSDictionary *dic in _templateGroup) {
         
-        
+        ControlTemplate *temp=[[ControlTemplate alloc]init];
+        [temp setValuesForKeysWithDictionary:dic];
+        [sectionTempplate addObject:temp];
+
+        for (NSDictionary *info in temp.controlList) {
         
         ControlInfo *controInfo = [[ControlInfo alloc] init];
-        [controInfo setValuesForKeysWithDictionary:dic];
+        [controInfo setValuesForKeysWithDictionary:info];
         
         if (_tag == 222) {
-            [value setValue:controInfo.controlValue forKey:controInfo.name];
+            [value setValue:controInfo.controlValue forKey:controInfo.controlKey];
         }
         
-        int item = (int)[type indexOfObject:controInfo.controlType];
+            int item = temp.groupType;
         switch (item) {
-            case 0:
+            case groupTypeText:
                 //文本
                 [arr_text addObject:controInfo];
-                if (controInfo.hadValue.length!=0) {
-                    [arr_textValue addObject:controInfo.hadValue];
-                }else{
-                    [arr_textValue addObject:@""];
-                }
+                [arr_textValue addObject:controInfo.controlValue];
+
                 break;
-            case 1:
+            case groupTypeImage:
                 //图片上传
                 [arr_image addObject:controInfo];
-                if (controInfo.hadValue.length!=0) {
-                   [arr_imageValue addObject:controInfo.controlValue];
-                   [image_Dic addObject:controInfo.hadValue];
-                }else{
-                    [arr_imageValue addObject:@""];
-                    [image_Dic addObject:@""];
-                }
+                    [image_Dic addObject:controInfo.controlValue];
+
                 break;
+            case groupTypeImages:
+                //图片上传
+                [arr_images addObject:controInfo];
+                [image_Dic addObject:controInfo.controlValue];
+                break;
+
             default:
                 break;
         }
     }
-    
+    }
     if (arr_text.count!=0) {
         [arr_all addObject:@{@"data":arr_text,
                              @"count":[NSNumber numberWithInteger:arr_text.count],
@@ -384,7 +430,11 @@
                              @"count":[NSNumber numberWithInteger:arr_image.count],
                              @"type":@"image"}];
     }
-
+    if (arr_images.count!=0) {
+        [arr_all addObject:@{@"data":arr_images,
+                             @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
+                             @"type":@"images"}];
+    }
     NSLog(@">>>>>%@",arr_all);
     [_mytable reloadData];
 }
@@ -415,27 +465,14 @@
     headerLabel.highlightedTextColor = [UIColor whiteColor];
     headerLabel.font = [UIFont systemFontOfSize:14];
     headerLabel.frame = CGRectMake(12, 0.0, WIDTH - 12, 30);
-
-    
-    
-    NSArray *item = @[@"text",@"image"];
-    
-    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
-    
-    int typeValue = (int)[item indexOfObject:type];
-    
-    switch (typeValue) {
-        case 0:
-            headerLabel.text = @"开始填写";
-            break;
-        case 1:
-            headerLabel.text = @"上传图片";
-            break;
-        default:
-            break;
-    }
-    
-    
+//
+//    
+//    
+//    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
+//    
+//    int typeValue = (int)[item indexOfObject:type];
+    ControlTemplate *templ=sectionTempplate[section];
+    headerLabel.text=templ.title;
     [customView addSubview:headerLabel];
     
     return customView;
@@ -443,45 +480,43 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    NSArray *item = @[@"text",@"image"];
-    
-    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
-    
-    int typeValue = (int)[item indexOfObject:type];
-    
-    NSString *titile;
-    switch (typeValue) {
-        case 0:
-            titile = @"开始填写";
-            break;
-        case 1:
-            titile = @"上传图片";
-            break;
-        default:
-            break;
-    }
-    return titile;
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//    
+//    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
+//    
+//    int typeValue = (int)[item indexOfObject:type];
+//    
+//    NSString *titile;
+//    switch (typeValue) {
+//        case 0:
+//            titile = @"开始填写";
+//            break;
+//        case 1:
+//            titile = @"上传图片";
+//            break;
+//        case 2:
+//            titile = @"图片组";
+//            break;
+//        default:
+//            break;
+//    }
+//    return titile;
+//}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    static NSString *Cell_imagestr  = @"Cell_image";
     static NSString *Cell_textstr   = @"Cell_text";
-    
-    ContractImageTableViewCell  *Cell_image     = (ContractImageTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    static NSString *Cell_imagestr  = @"Cell_image";
+
     ContractTextTableViewCell   *Cell_text      = (ContractTextTableViewCell *)[tableView dequeueReusableCellWithIdentifier:Cell_textstr];
-    
-    NSArray *item = @[@"text",@"image"];
+    ContractImageTableViewCell  *Cell_image     = (ContractImageTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     NSString *type = [[arr_all objectAtIndex:indexPath.section] objectForKey:@"type"];
     
     int typeValue = (int)[item indexOfObject:type];
     
-    
     if (indexPath.section == 0) {
         
     }
-    
     
     switch (typeValue) {
         case 0:
@@ -498,16 +533,16 @@
             }else{
                 ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
                 Cell_text.myTxt.tag = [controlInfo.orderNum integerValue];
-                Cell_text.myName = controlInfo.name;
+                Cell_text.myName = controlInfo.controlKey;
                 if (_tag == 222) {
                     Cell_text.myTxt.text = [arr_textValue objectAtIndex:indexPath.row];
+                    [Cell_text.myTxt setEnabled:NO];
                 }else{
-                    if ([[value objectForKey:controlInfo.name] length] == 0) {
-                        Cell_text.myTxt.placeholder = controlInfo.title;
+                    if ([[value objectForKey:controlInfo.controlValue] length] == 0) {
+                        Cell_text.myTxt.placeholder = controlInfo.controlTitle;
                     }else{
-                        Cell_text.myTxt.text = [value objectForKey:controlInfo.name];
+                        Cell_text.myTxt.text = [value objectForKey:controlInfo.controlValue];
                     }
-                    
                 }
                 
                 
@@ -522,9 +557,9 @@
                 Cell_image = [[ContractImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Cell_imagestr];
                 ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
 //                NSLog(@"celllll>>>>%@",arr_all);
-                Cell_image.textLabel.text = controlInfo.title;
+                Cell_image.textLabel.text = controlInfo.controlTitle;
                 Cell_image.myImg_btn.tag = indexPath.row;
-                Cell_image.myName = controlInfo.name;
+                Cell_image.myName = controlInfo.controlKey;
 
 //                NSLog(@">>>>>>qqqqwqqq%zi",_tag);
                 if (_tag == 111) {
@@ -534,6 +569,8 @@
                 }else{
                     NSLog(@">>>aaabbbaaa>>>%@",[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:indexPath.row]]);
                     [Cell_image.myImg_btn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:indexPath.row]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    Cell_image.myImg_btn.enabled = NO;
+
                     if (_tag == 333) {
                         Cell_image.myImg_btn.enabled = NO;
                     }else{
@@ -543,6 +580,90 @@
             }
             return Cell_image;
             break;
+        case 2:
+        {
+            //images
+            EditInfoImgCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"EditInfoImgCell" owner:self options:nil]firstObject];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+
+//            ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
+        
+            //多图组 的行数
+            NSInteger rows=([[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"]count ]+4)/5;
+            //最后一行的个数
+            NSInteger lastRowCounts=[[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] count]%5;
+            
+            if(indexPath.row==rows-1)   [cell  layoutViewsss:lastRowCounts];
+            
+            if (_tag == 111) {
+              
+                if (lastRowCounts) {
+                    if (lastRowCounts>0)    cell.img0.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]];
+                    if (lastRowCounts>1) cell.img1.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]];
+                    if (lastRowCounts>2) cell.img2.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]];
+                    if (lastRowCounts>3) cell.img3.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]];
+                    if (lastRowCounts>4)  cell.img4.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]];
+                }else{
+                
+                    cell.img0.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]];
+                    cell.img1.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]];
+                    cell.img2.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]];
+                    cell.img3.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]];
+                    cell.img4.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]];
+                }
+                
+                
+            }else if(_tag==222){
+                
+                cell.img0.userInteractionEnabled = NO;
+                cell.img1.userInteractionEnabled = NO;
+                cell.img2.userInteractionEnabled = NO;
+                cell.img3.userInteractionEnabled = NO;
+                cell.img4.userInteractionEnabled = NO;
+
+                
+                if (lastRowCounts) {
+                    if (lastRowCounts>0) [cell.img0 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    if (lastRowCounts>1)  [cell.img1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    if (lastRowCounts>2)  [cell.img2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    if (lastRowCounts>3)  [cell.img3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    if (lastRowCounts>4)   [cell.img4 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                }else{
+                    
+                     [cell.img0 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                      [cell.img1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                     [cell.img2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                      [cell.img3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                     [cell.img4 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                }
+                
+                
+            }else if (_tag==333){
+                
+                cell.img0.userInteractionEnabled = NO;
+                cell.img1.userInteractionEnabled = NO;
+                cell.img2.userInteractionEnabled = NO;
+                cell.img3.userInteractionEnabled = NO;
+                cell.img4.userInteractionEnabled = NO;
+            }
+            
+
+            cell.editInfoBlock=^(NSInteger index){
+                
+                /*
+                 *index 这一行的第几个
+                 */
+                [self pushCamera:index Section:indexPath.section Row:indexPath.row];
+            };
+            
+            return cell;
+            break;
+        }
+
+
         default:
             return nil;
             break;
@@ -551,7 +672,6 @@
 
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *item = @[@"text",@"image"];
     
     NSString *type = [[arr_all objectAtIndex:indexPath.section] objectForKey:@"type"];
     
@@ -566,6 +686,10 @@
         case 1:
             //image
             height = 100;
+            break;
+        case 2:
+            //images
+            height =WIDTH/4;
             break;
         default:
             height = 0;
@@ -597,6 +721,23 @@
     cell.isChange = 999;
     [value setValue:textField.text forKey:cell.myName];
 }
+-(void)pushCamera:(NSInteger)index Section:(NSInteger)section Row:(NSInteger)row{
+
+    [self resignKeyBoardInView:_mytable];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:nil
+                                                            delegate:self
+                                                   cancelButtonTitle:@"取消"
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:@"拍照",@"相册", nil];
+    
+
+    ControlInfo *controlInfo = [[[arr_all objectAtIndex:section] objectForKey:@"data"] objectAtIndex:row*5+index];
+    img_str = controlInfo.controlKey;
+    img_tag=arr_image.count+row*5+index;
+    [actionSheet showInView:self.view];
+}
+
 - (void)changeImage:(UIButton *)btn{
     
 //    [self hideKeyBoard];
@@ -685,17 +826,16 @@
     
     
     User *user = [[User alloc] init];
-    NSLog(@">>>>#%@",_task.taskId);
+    NSLog(@">>>>#%@",_taskId);
     NSDictionary *parmeters = @{@"userId"       :user.userId,
-                                @"taskId"       :_task.taskId,
-                                @"orderId"      :_task.orderId
-                                };
-    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_TaskContent] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+                                @"taskId"       :_taskId,
+                                @"taskDatumId":_taskDatumId};
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gettaskdatumdetail] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"---->>>>>%@",responseObject);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSInteger code = [[responseObject objectForKey:@"code"] intValue];
         if (code == 200) {
-            [self viewCreat];
+//            [self viewCreat];
             
             [self successView:[responseObject objectForKey:@"data"]];
             
@@ -714,38 +854,15 @@
     }];
     
 }
-- (void)successView:(NSDictionary*)dic{
+- (void)successView:(NSDictionary*)data{
     
+    NSDictionary *task=data[@"task"];
+    _task=[[Task alloc]init];
+    [_task setValuesForKeysWithDictionary:task];
 
-    
-    _task.taskId            = [dic objectForKeyedSubscript:@"id"];
-    _task.taskTitle         = [dic objectForKey:@"taskTitle"];
-    _task.taskNotice        = [dic objectForKey:@"taskNotice"];
-    _task.amount            = [[dic objectForKey:@"amount"] floatValue];
-    _task.endTime           = [dic objectForKey:@"endTime"];
-    _task.availableCount    = [dic objectForKey:@"availableCount"];
-    _task.paymentMethod     = [dic objectForKey:@"paymentMethod"];
-    _task.taskGeneralInfo   = [dic objectForKey:@"taskGeneralInfo"];
-    _task.taskNote          = [dic objectForKey:@"taskNote"];
-    _task.businessId        = [dic objectForKey:@"businessId"];
-    _task.templateId        = [dic objectForKey:@"templateId"];
-    _task.pusher            = [dic objectForKey:@"pusher"];
-    _task.templateName      = [dic objectForKey:@"templateName"];
-    _task.isHad             = [dic objectForKey:@"isHad"];
-    _task.orderId           = [dic objectForKey:@"orderId"];
-    _task.logo              = [dic objectForKey:@"logo"];
-    _task.companySummary    = [dic objectForKey:@"companySummary"];
-    _task.auditCycle        = [dic objectForKey:@"auditCycle"];
-    _task.controlInfo       = [dic objectForKey:@"controlInfo"];
-    _task.isAgainPickUp     = [dic objectForKey:@"isAgainPickUp"];
-    
-    
-
-    
+    _templateGroup=[NSArray arrayWithArray:data[@"templateGroup"]];
     
     [self viewCreat];
-    
-
     
 }
 

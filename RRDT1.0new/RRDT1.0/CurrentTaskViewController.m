@@ -16,11 +16,14 @@
 
 #import "CheckingTaskView.h"
 
-#import "NotPassView.h"
+//#import "NotPassView.h"
 
 #import "NewTaskContentViewController.h"
 
 #import "PostContractViewController.h"
+
+#import "RRDTBarViewController.h"
+#import "TaskDetailViewController.h"
 
 #define kBakgroundColor     [UIColor colorWithRed:0/255.0 green:87/255.0 blue:173/255.0 alpha:1.0]
 #define kTintColor          [UIColor colorWithRed:20/255.0 green:200/255.0 blue:255/255.0 alpha:1.0]
@@ -33,7 +36,7 @@
     
     CheckingTaskView *checkingView;
     
-    NotPassView *notpassView;
+//    NotPassView *notpassView;
     
     
 }
@@ -54,7 +57,9 @@
 }
 - (void)viewCreat{
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(todoShare:) name:ReceivedView_doShare object:nil];//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toTaskDetail:) name:ReceivedView_toTaskDetail object:nil];//
+
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receive:) name:@"select" object:nil];//点击列表通知
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changeSelcct" object:nil];//数量改变通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(againpost:) name:@"againPost" object:nil];//未通过再次提交通知
@@ -75,13 +80,13 @@
     _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40)];
     _myScroll.delegate = self;
     _myScroll.pagingEnabled = YES;
-    _myScroll.contentSize = CGSizeMake(WIDTH*3, 0);
+    _myScroll.contentSize = CGSizeMake(WIDTH*2, 0);
     _myScroll.backgroundColor = UIColorFromRGB(0xf9f9f9);
     _myScroll.showsHorizontalScrollIndicator = NO;
     _myScroll.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_myScroll];
     
-    _mySegment = [[DZNSegmentedControl alloc] initWithItems:@[@"已领取(0)",@"审核中(0)",@"未通过(0)"]];
+    _mySegment = [[DZNSegmentedControl alloc] initWithItems:@[@"进行中(0)",@"已过期(0)"]];
     _mySegment.showsCount = NO;
     _mySegment.selectedSegmentIndex = 0;
     _mySegment.bouncySelectionIndicator = NO;
@@ -97,8 +102,8 @@
     checkingView = [[CheckingTaskView alloc] init];
     [_myScroll addSubview:checkingView];
     
-    notpassView = [[NotPassView alloc] init];
-    [_myScroll addSubview:notpassView];
+//    notpassView = [[NotPassView alloc] init];
+//    [_myScroll addSubview:notpassView];
 }
 # pragma mark 滑动点击监听
 - (void)didChangeSegment:(DZNSegmentedControl *)control
@@ -133,7 +138,9 @@
     
     NewTaskContentViewController *newVC =[[NewTaskContentViewController alloc] init];
     newVC.task = note.object;
-    newVC.type = [[note.userInfo objectForKey:@"type"] integerValue];
+//    newVC.type = [[note.userInfo objectForKey:@"type"] integerValue];
+    newVC.type = 2;
+
     [self.navigationController pushViewController:newVC animated:YES];
     
     NSLog(@"%@",note.object);
@@ -142,12 +149,9 @@
     NSLog(@"改变通知");
     NSLog(@">?>>>>%@",note.userInfo);
     [self.mySegment setItems:
-  @[[NSString stringWithFormat:@"已领取(%@)",[note.userInfo objectForKey:@"receivedCount"]],
-    [NSString stringWithFormat:@"审核中(%@)",[note.userInfo objectForKey:@"passCount"]],
-    [NSString stringWithFormat:@"未通过(%@)",[note.userInfo objectForKey:@"noPassCount"]]]];
-//    [self.mySegment setit:@([[note.userInfo objectForKey:@"receivedCount"] integerValue]) forSegmentAtIndex:0];
-//    [self.mySegment setCount:@([[note.userInfo objectForKey:@"passCount"] integerValue]) forSegmentAtIndex:1];
-//    [self.mySegment setCount:@([[note.userInfo objectForKey:@"noPassCount"] integerValue]) forSegmentAtIndex:2];
+  @[[NSString stringWithFormat:@"进行中(%@)",[note.userInfo objectForKey:@"passTotal"]],
+    [NSString stringWithFormat:@"已过期(%@)",[note.userInfo objectForKey:@"refuseTotal"]]]];
+
 }
 - (void)againpost:(NSNotification *)note{
     NSLog(@"改变通知");
@@ -167,8 +171,20 @@
     NSLog(@"要跳了");
     NewTaskContentViewController *newVC =[[NewTaskContentViewController alloc] init];
     newVC.task = note.object;
-    newVC.type = 1;
+    newVC.type = 2;
     [self.navigationController pushViewController:newVC animated:YES];
+}
+-(void)todoShare:(NSNotification *)not{
+
+    RRDTBarViewController *barVC=[[RRDTBarViewController alloc]initWithNibName:@"RRDTBarViewController" bundle:nil];
+    barVC.urlString=[not.object description];
+    [self.navigationController pushViewController:barVC animated:YES];
+}
+-(void)toTaskDetail:(NSNotification *)not{
+    TaskDetailViewController *vc=[[TaskDetailViewController alloc]init];
+    vc.task=not.object[@"task"];
+    vc.contentOfSet_index=[not.object[@"index"] integerValue];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"select" object:nil];
@@ -193,9 +209,9 @@
     [MBProgressHUD showHUDAddedTo:checkingView animated:YES];
     checkingView.nextId = 0;
     [checkingView post];
-    [MBProgressHUD showHUDAddedTo:notpassView animated:YES];
-    notpassView.nextId = 0;
-    [notpassView post];
+//    [MBProgressHUD showHUDAddedTo:notpassView animated:YES];
+//    notpassView.nextId = 0;
+//    [notpassView post];
 }
 /*
 #pragma mark - Navigation

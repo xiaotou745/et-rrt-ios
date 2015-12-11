@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+///** 类型 签约 分享 下载   */
+typedef enum : NSUInteger {
+    taskType_write=1,
+    taskType_share,
+    taskType_download,
+} taskType_ENUM;
+
+
+
 @interface Task : NSObject
 
 /** 任务ID */
@@ -38,7 +47,14 @@
 @property (nonatomic,strong) NSString *logo;
 /** 任务状态 -1未领取 0已领取 1已提交 */
 @property (nonatomic,strong) NSString *status;
+/** 任务类型（字符串文本） */
+@property (nonatomic,assign) int    taskType;
+@property (nonatomic,strong) NSString *taskTypeName;
 
+@property (nonatomic,assign) int    auditPassNum;
+@property (nonatomic,assign) int    auditRefuseNum;
+@property (nonatomic,assign) int    auditWaitNum;
+@property (nonatomic,assign) int    complateNum;
 
 
 //已经领取额外添加
@@ -51,6 +67,11 @@
 @property (nonatomic,strong) NSString *receivedTime;
 /** 任务审核时间 */
 @property (nonatomic,strong) NSString *auditTime;
+
+/** 咨询电话 */
+@property (nonatomic,strong) NSString *hotLine;
+/** ishad =1 时才有 否则为0地推任务关系ID */
+@property (nonatomic,strong) NSString *ctId;
 
 
 //已经提交额外添加

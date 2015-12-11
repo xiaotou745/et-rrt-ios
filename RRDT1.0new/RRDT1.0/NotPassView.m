@@ -80,11 +80,11 @@
         Task *task = [_modeArr objectAtIndex:indexPath.section];
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
         cell.infoLabel.text = task.taskGeneralInfo;
-        cell.topLab.text = [NSString stringWithFormat:@"审核时间 %@",[task.auditTime substringToIndex:16]];
-        
-        
-        cell.buttomLab.text = [NSString stringWithFormat:@"提交时间 %@",[task.receivedTime substringToIndex:16]];
-        
+//        cell.topLab.text = [NSString stringWithFormat:@"审核时间 %@",[task.auditTime substringToIndex:16]];
+//        
+//        
+//        cell.buttomLab.text = [NSString stringWithFormat:@"提交时间 %@",[task.receivedTime substringToIndex:16]];
+//        
         cell.lab_last.text = [NSString stringWithFormat:@"失败原因"];
         
         //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
@@ -220,20 +220,22 @@
                     _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
                 for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
                     Task *task  = [[Task alloc] init];
-                    task.amount             = [[dic objectForKey:@"amount"] floatValue];
-                    task.auditTime          = [dic objectForKey:@"auditTime"];
-                    task.availableCount     = [dic objectForKey:@"availableCount"];
-                    task.beginTime          = [dic objectForKey:@"beginTime"];
-                    task.endTime            = [dic objectForKey:@"endTime"];
-                    task.finishTime         = [dic objectForKey:@"finishTime"];
-                    task.logo               = [dic objectForKey:@"logo"];
-                    task.orderId            = [dic objectForKey:@"orderId"];
-                    task.receivedTime       = [dic objectForKey:@"receivedTime"];
-                    task.status             = [dic objectForKey:@"status"];
-                    task.taskCycle          = [dic objectForKey:@"taskCycle"];
-                    task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
-                    task.taskId             = [dic objectForKey:@"taskId"];
-                    task.taskName           = [dic objectForKey:@"taskName"];
+//                    task.amount             = [[dic objectForKey:@"amount"] floatValue];
+//                    task.auditTime          = [dic objectForKey:@"auditTime"];
+//                    task.availableCount     = [dic objectForKey:@"availableCount"];
+//                    task.beginTime          = [dic objectForKey:@"beginTime"];
+//                    task.endTime            = [dic objectForKey:@"endTime"];
+//                    task.finishTime         = [dic objectForKey:@"finishTime"];
+//                    task.logo               = [dic objectForKey:@"logo"];
+//                    task.orderId            = [dic objectForKey:@"orderId"];
+//                    task.receivedTime       = [dic objectForKey:@"receivedTime"];
+//                    task.status             = [dic objectForKey:@"status"];
+//                    task.taskCycle          = [dic objectForKey:@"taskCycle"];
+//                    task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
+//                    task.taskId             = [dic objectForKey:@"taskId"];
+//                    task.taskName           = [dic objectForKey:@"taskName"];
+                    [task setValuesForKeysWithDictionary:dic];
+
                     [_modeArr addObject:task];
                 }
                 

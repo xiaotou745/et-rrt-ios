@@ -9,8 +9,40 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
+#define gotoCheckProgressVC @"gotoCheckProgressVC"
+
 
 #import "MyTools.h"
+
+
+#define addressCityVersion @"addressCityVersion"
+
+#pragma mark -
+#pragma mark - NSUserDefaults
+
+/**
+ *	永久存储对象
+ *
+ *	@param	object    需存储的对象
+ *	@param	key    对应的key
+ */
+#define DEF_PERSISTENT_SET_OBJECT(object, key)                                                                                                 \
+({                                                                                                                                             \
+NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];                                                                         \
+[defaults setObject:object forKey:key];                                                                                                    \
+[defaults synchronize];                                                                                                                    \
+})
+
+/**
+ *	取出永久存储的对象
+ *
+ *	@param	key    所需对象对应的key
+ *	@return	key所对应的对象
+ */
+#define DEF_PERSISTENT_GET_OBJECT(key) [[NSUserDefaults standardUserDefaults] objectForKey:key]
+
+
+
 
 #define MAS_SHORTHAND
 #endif /* PrefixHeader_pch */

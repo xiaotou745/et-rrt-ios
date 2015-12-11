@@ -110,7 +110,25 @@
  *提交任务
  */
 #define URL_PostTask @"/task/submittask"
+/*
+ *1.2.3 资料审核详情列表V1.0.2
+ */
+#define URL_Getmytaskdatumlist @"/taskdatum/getmytaskdatumlist"
 
+/*
+ *1.3.0 C获取资料详情(或资料模板)(java必须大小写符合)V1.0.2
+ */
+#define URL_Gettaskdatumdetail @"/taskdatum/gettaskdatumdetail"
+
+/*
+ *1.3.1 获取消息列表V1.0.2
+ */
+#define URL_Getmymsglist @"/msg/getmymsglist"
+
+/*
+ *1.3.3 获取城市列表信息V1.0.2
+ */
+#define URL_Gethotregionandall @"/region/gethotregionandall"
 
 
 /*
@@ -134,5 +152,17 @@
 #define GRARYColor  0x767676
 
 @interface MyTools : NSObject
++ (void)call:(NSString *)phoneNumber atView:(UIView *)aView;
 
++(NSString *)getTasktype:(int)type;
++(UIColor *)getTasktypeBGColor:(int)type;
+
+
+@end
+@interface MyTools (CityAddressManager)
+
+//存储CityAddress.plist
++(void)writeToFile:(NSArray *)CityAddress;
+//读取CityAddress.plist
++(NSArray *)readCityAddress;
 @end

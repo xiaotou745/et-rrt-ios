@@ -19,6 +19,7 @@
 #import "CurrentTaskViewController.h"
 
 #import "NewTaskContentViewController.h"
+#import "CitysViewController.h"
 
 @interface WaitTaskViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
@@ -38,28 +39,19 @@
 
 @property (nonatomic,assign) NSInteger          nextId;
 
+@property(nonatomic,strong)NSDictionary *currentCityInfo;
+@property(nonatomic,strong)NSString *StateName;//定位到的 城市名
+
+@property (nonatomic,strong) NSMutableArray     *citysArr;
+
 @end
 
 @implementation WaitTaskViewController
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
-    
-//    NSData *data = [dd objectForKey:@"myUser"];
-//    
-//    User *user = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
-    NSString *cityname = [dd objectForKey:@"cityname"];
-    
-    if (cityname.length == 0) {
-        _cityLabel.text = @"北京市";
-    }else{
-        _cityLabel.text = cityname;
-    }
+
     User *user = [[User alloc] init];
-    
-    
     
     if (user.isLogin == NO) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
@@ -72,47 +64,60 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_center"] style:UIBarButtonItemStylePlain target:self action:@selector(mycenter)];
         [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
     }
-    
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _nextId = 0;
-    [self post];
-    
-    
 }
-- (void)receive{
-    NSLog(@">>>>>通知");
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
-    [self.navigationController pushViewController:loginVC animated:YES];
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
+    _modeArr = [NSMutableArray array];
+    self.citysArr=[NSMutableArray array];
     
-    [self getLocation];
-    
+    _nextId = 0;
+    //默认为北京
+    _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
+    _cityLabel.text = _currentCityInfo[cityName];
+
     [self viewCreat];
-    
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeCurrentCity:) name:kChooseCityNotif object:nil];
+
+    [self getLocation];
+    [self getCitysRegion];
+}
+
+-(void)changeCurrentCity:(NSNotification *)notif{
+    _currentCityInfo=notif.object;
+    [self requestNewCityDatas];
+}
+
+-(void)requestNewCityDatas{
+    _cityLabel.text = _currentCityInfo[cityName];
+    _nextId = 0;
+    [self post];
+
 }
 - (void)current{
     [self mytask];
 }
 - (void)viewCreat{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receive) name:@"ChangePasswordNototification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(current) name:@"CurrentNotification" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(passAgain:) name:@"passAgain" object:nil];
-    
-    _modeArr = [NSMutableArray array];
-    _nextId = 0;
+
     UIImageView *address_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_address"]];
     address_img.frame = CGRectMake(10, 10, 20, 20);
     [self.view addSubview:address_img];
+    UITapGestureRecognizer *tap1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
+    address_img.userInteractionEnabled =YES;
+    [address_img addGestureRecognizer:tap1];
     
     _cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, WIDTH - 40, 40)];
     _cityLabel.backgroundColor = [UIColor whiteColor];
     _cityLabel.textColor = UIColorFromRGB(0x333333);
     _cityLabel.font = [UIFont systemFontOfSize:12];
     [self.view addSubview:_cityLabel];
+    UITapGestureRecognizer *tap2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
+    _cityLabel.userInteractionEnabled =YES;
+    [_cityLabel addGestureRecognizer:tap2];
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
@@ -145,6 +150,11 @@
     
     
 }
+-(void)address_imgHandle{
+       CitysViewController *citysVC=[[CitysViewController alloc]initWithNibName:@"CitysViewController" bundle:nil];
+    citysVC.modeArr=[NSMutableArray arrayWithArray:_citysArr];
+    [self.navigationController pushViewController:citysVC animated:YES];
+}
 - (void)mycenter{
     MyCenterViewController *mycenter = [[MyCenterViewController alloc] init];
     
@@ -167,16 +177,6 @@
 
 - (void)getLocation{
     _manager = [[CLLocationManager alloc] init];
-    
-//    if (![CLLocationManager locationServicesEnabled]) {
-//        NSLog(@"定位不可用");
-//    }
-//    
-//    if([_manager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-//        [_manager requestAlwaysAuthorization]; // 永久授权
-//        [_manager requestWhenInUseAuthorization]; //使用中授权
-//    }
-    
     _manager.delegate = self;
     _manager.desiredAccuracy=kCLLocationAccuracyBest;
     _manager.distanceFilter=10.0;
@@ -200,13 +200,10 @@
             
             NSLog(@"请在设置-隐私-定位服务中开启定位功能！");
             [self alertshowWithStr:@"请在设置-隐私-定位服务中开启定位功能！"];
-//             [_manager requestWhenInUseAuthorization];
             break;
             
         case kCLAuthorizationStatusRestricted:
             
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"定位失败" message:@"定位服务无法使用！" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-//            [alert show];
             NSLog(@"定位服务无法使用！");
             [self alertshowWithStr:@"定位服务无法使用！"];
             
@@ -224,11 +221,14 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     //定位失败
     NSLog(@"----定位失败");
-    _cityLabel.text = @"北京市";
+    [_manager stopUpdatingLocation];
+
+    [self requestNewCityDatas];
+
 }
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
-    
-    
+    [_manager stopUpdatingLocation];
+
     CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
     
     [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -236,17 +236,38 @@
         for (CLPlacemark * placemark in placemarks) {
             
             NSDictionary *test = [placemark addressDictionary];
-            
+            _StateName=[test objectForKey:@"State"];
             //  Country(国家)  State(城市)  SubLocality(区)
             
-            NSLog(@"》》》》》》》》》%@", [test objectForKey:@"State"]);
-            _cityLabel.text = [NSString stringWithFormat:@"%@",[test objectForKey:@"State"]];
-            NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
-            [dd setValue:[test objectForKey:@"State"] forKey:@"cityname"];
-            [dd synchronize];
+            NSLog(@" State(城市)》》》》》》》》》%@", _StateName);
+            
+            [self checkCityCode];
         }
         
     }];
+}
+-(void)checkCityCode{
+
+    //    cityInfo=_modeArr[indexPath.section][KCitys_regions][indexPath.row];
+    //    _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
+
+    if (_StateName!=nil) {
+        for (NSDictionary *sectionInfo in self.citysArr) {
+            
+            for (NSDictionary *cityInfo in sectionInfo[KCitys_regions]) {
+                
+                if ([_StateName isEqualToString:cityInfo[cityName]]) {
+                    
+                    NSInteger code=[cityInfo[cityCode]intValue];
+                    _currentCityInfo=@{cityName:_StateName,cityCode:@(code)};
+                    [self requestNewCityDatas];
+                    return;
+                }
+            }
+        }
+        //未匹配到 cityCode  默认为北京
+        [self requestNewCityDatas];
+    }
 }
 
 #pragma mark table代理
@@ -270,17 +291,18 @@
     if (_modeArr.count > 0) {
         Task *task = [_modeArr objectAtIndex:indexPath.section];
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
-        cell.infoLabel.text = task.taskGeneralInfo;
-        cell.leftLab.text = [NSString stringWithFormat:@"可领 %@",task.availableCount];
+        cell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
+
+       
+        [cell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
+         [cell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
+        
+        [cell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,cell.infoLabel.text.length - 4)];
         
         
-        NSLog(@">>>>>%@",[task.endTime substringWithRange:NSMakeRange(0, 18)]);
-        cell.rightLab.text = [NSString stringWithFormat:@"%@",[self timeHelper:[task.endTime substringWithRange:NSMakeRange(0, 18)]]];
-        
-        
-        //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
         cell.moneyLab.textColor = [UIColor clearColor];
         cell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
+        
         [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
         [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,cell.moneyLab.text.length - 3)];
         [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
@@ -298,34 +320,32 @@
     
     return cell;
 }
+
 #pragma mark 请求数据
 - (void)post{
-//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }else{
-        
-        
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         
         User *user = [[User alloc] init];
         
         NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
-                                    @"longitude"    :[NSString stringWithFormat:@"%f",_Longitude],
-                                    @"latitude"     :[NSString stringWithFormat:@"%f",_Latitude],
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
                                     @"itemsCount"   :@"10"
-                                    };
+                                    ,@"cityCode":_currentCityInfo[cityCode]};
         
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             
-            NSLog(@"wait%@ and %@",responseObject,operation);
+//            NSLog(@"wait%@ and %@",responseObject,operation);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {
-                if ([[[responseObject objectForKey:@"data"] objectForKey:@"total"] intValue] == 0 ) {
+                if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
 //                    [self.view makeToast:@"没有更多了" duration:1.0 position:CSToastPositionCenter];
 //                    [_mytable reloadData];
                 }else{
@@ -334,21 +354,10 @@
                     }
                     _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
                     
-                    
-                    
                     for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
                         Task *task  = [[Task alloc] init];
-                        task.taskId             = [dic objectForKey:@"taskId"];
-                        task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
-                        task.logo               = [dic objectForKey:@"logo"];
-                        task.taskName           = [dic objectForKey:@"taskName"];
-                        task.availableCount     = [dic objectForKey:@"availableCount"];
-                        task.amount             = [[dic objectForKey:@"amount"] floatValue];
-                        task.orderId            = [dic objectForKey:@"orderId"];
-                        task.endTime            = [dic objectForKey:@"endTime"];
+                        [task setValuesForKeysWithDictionary:dic];
                         [_modeArr addObject:task];
-                        
-                        
                     }
                     
                 }
@@ -376,7 +385,7 @@
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 120;
+    return 85;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
@@ -449,9 +458,63 @@
     
     return myStr;
 }
+
+#pragma mark 请求数据
+- (void)getCitysRegion{
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
+    NSDictionary *parmeters = @{@"version":@"20151127"};
+    
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gethotregionandall] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        
+//        NSLog(@"wait%@ and %@",responseObject,operation);
+        NSInteger code = [[responseObject objectForKey:@"code"] intValue];
+        if (code == 200) {
+            
+            NSDictionary *citysData=[responseObject objectForKey:@"data"];
+            if (citysData) {
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [self configCitys:citysData];
+                    [self checkCityCode];
+                    
+                });
+            }
+        }else{
+            NSLog(@">>>>>>%@",[responseObject objectForKey:@"msg"]);
+            [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
+        }
+        
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+        
+        [self.view makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
+        
+    }];
+}
+
+
+-(void)configCitys:(NSDictionary *)citysData{
+    
+//    NSLog(@"citysArr==%@",self.citysArr);
+
+    if ([citysData[@"hotRegionModel"] isKindOfClass:[NSArray class]]) {
+        if ([citysData[@"hotRegionModel"] count]) {
+            [self.citysArr addObject:@{KCitys_sectionTitle:@"热门城市",KCitys_regions:citysData[@"hotRegionModel"]}];
+        }
+    }
+    
+    if ([citysData[@"firstLetterRegionModel"] isKindOfClass:[NSArray class]]) {
+        
+        for (NSDictionary *cityModel in citysData[@"firstLetterRegionModel"]) {
+            [self.citysArr addObject:@{KCitys_sectionTitle:cityModel[@"firstLetter"],KCitys_regions:cityModel[@"regionModel"]}];
+        }
+    }
+//    NSLog(@"citysArr==%@",self.citysArr);
+//    [MyTools writeToFile:self.citysArr];
+//    NSArray *ssssss=[MyTools readCityAddress];
+}
 - (void)dealloc{
-     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ChangePasswordNototification" object:nil];
+    
      [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CurrentNotification" object:nil];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"passAgain" object:nil];
 }

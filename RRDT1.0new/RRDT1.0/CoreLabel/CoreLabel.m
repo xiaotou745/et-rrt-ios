@@ -248,6 +248,9 @@
         case CoreLabelAttrFont: //字体
             [self setFont:value range:range];
             break;
+        case CoreLabelAttBackgroundColor: //字体背景色
+            [self setBackgroundColor:value range:range];
+            break;
             
         case CoreLabelAttrObliqueness: //粗体
             [self setObliqueness:value range:range];
@@ -332,6 +335,11 @@
     [self addAttrWithName:NSFontAttributeName value:font range:range];
 }
 
+/** 字体背景色 */
+-(void)setBackgroundColor:(UIFont *)font range:(NSRange)range{
+    
+    [self addAttrWithName:NSBackgroundColorAttributeName value:font range:range];
+}
 
 
 -(void)addAttrWithName:(NSString *)name value:(id)value range:(NSRange)range{

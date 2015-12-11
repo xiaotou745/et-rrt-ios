@@ -18,16 +18,25 @@
         [self headLabel];
         [self moneyLab];
         [self infoLabel];
-        [self topLab];
-        [self buttomLab];
-        [self img_top];
-        [self img_buttom];
+        
+        [self img_wait];
+        [self waitLab];
+        [self waitView];
+        
+        [self img_pass];
+        [self passLab];
+        [self  passView];
+        
+        [self img_refuse];
+        [self refuseLab];
+        [self refuseView];
+
         [self line_label];
         
-        
-        self.img_top.image      = [UIImage imageNamed:@"icon_time"];
-        self.img_buttom.image   = [UIImage imageNamed:@"icon_time"];
-        
+        self.img_wait.image   = [UIImage imageNamed:@"TaskDetail_shenhe"];
+        self.img_pass.image   = [UIImage imageNamed:@"TaskDetail_pass"];
+        self.img_refuse.image   = [UIImage imageNamed:@"TaskDetail_refuse"];
+
         
         [_headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).with.offset(15);
@@ -70,28 +79,66 @@
             make.height.equalTo(@1);
         }];
         
-        [_topLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_img_wait mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
-            make.left.mas_equalTo(_img_top.mas_right).offset(5);
+            make.height.equalTo(@15);
+            make.left.equalTo(self).with.offset(12);
+            make.width.equalTo(@15);
+        }];
+        
+        [_waitLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+            make.left.mas_equalTo(_img_wait.mas_right).offset(5);
             make.height.equalTo(@15);
         }];
-        [_buttomLab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(_topLab.mas_bottom).offset(10);
-            make.left.mas_equalTo(_img_buttom.mas_right).offset(5);
+    
+        [_waitView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(0);
+            make.left.equalTo(_img_wait.mas_left).with.offset(0);
+            make.right.equalTo(_waitLab.mas_right).with.offset(0);
+            make.height.equalTo(@30);
+        }];
+
+        
+        
+        [_img_pass mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+            make.height.equalTo(@15);
+            make.right.equalTo(_passLab.mas_left).with.offset(-5);
+            make.width.equalTo(@15);
+        }];
+        
+        [_passLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+            make.centerX.mas_equalTo(self).offset(0);
             make.height.equalTo(@15);
         }];
         
-        [_img_top mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_passView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(0);
+            make.left.equalTo(_img_pass.mas_left).with.offset(0);
+            make.right.equalTo(_passLab.mas_right).with.offset(0);
+            make.height.equalTo(_waitView.mas_height);
+        }];
+        
+        [_img_refuse mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
             make.height.equalTo(@15);
-            make.left.equalTo(self).with.offset(12);
+            make.right.equalTo(_refuseLab.mas_left).with.offset(-5);
             make.width.equalTo(@15);
         }];
-        [_img_buttom mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(_topLab.mas_bottom).offset(10);
-            make.left.equalTo(self).with.offset(12);
+        
+        [_refuseLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+            make.right.mas_equalTo(self).offset(-15);
             make.height.equalTo(@15);
-            make.width.equalTo(@15);
+        }];
+        
+        [_refuseView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(_line_label.mas_bottom).offset(0);
+            make.left.equalTo(_img_refuse.mas_left).with.offset(0);
+            make.right.equalTo(_refuseLab.mas_right).with.offset(0);
+            make.height.equalTo(_waitView.mas_height);
         }];
 
     }
@@ -114,9 +161,9 @@
     }
     return _headLabel;
 }
-- (UILabel *)infoLabel{
+- (CoreLabel *)infoLabel{
     if (!_infoLabel) {
-        _infoLabel = [[UILabel alloc] init];
+        _infoLabel = [[CoreLabel alloc] init];
         _infoLabel.font = [UIFont systemFontOfSize:12];
         _infoLabel.textColor = UIColorFromRGB(0xbbc0c7);
         _infoLabel.numberOfLines = 2;
@@ -125,24 +172,6 @@
     return _infoLabel;
 }
 
-- (UILabel *)topLab{
-    if (!_topLab) {
-        _topLab = [[UILabel alloc] init];
-        _topLab.font = [UIFont systemFontOfSize:12];
-        _topLab.textColor = UIColorFromRGB(0x333333);
-        [self addSubview:_topLab];
-    }
-    return _topLab;
-}
-- (UILabel *)buttomLab{
-    if (!_buttomLab) {
-        _buttomLab = [[UILabel alloc] init];
-        _buttomLab.font = [UIFont systemFontOfSize:12];
-        _buttomLab.textColor = UIColorFromRGB(0x333333);
-        [self addSubview:_buttomLab];
-    }
-    return _buttomLab;
-}
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {
         _moneyLab = [[CoreLabel alloc] init];
@@ -151,20 +180,97 @@
     }
     return _moneyLab;
 }
-- (UIImageView *)img_top{
-    if (!_img_top) {
-        _img_top = [[UIImageView alloc] init];
-        [self addSubview:_img_top];
+-(UIView *)waitView{
+
+    if (!_waitView) {
+        _waitView = [[UIView alloc] init];
+        [self addSubview:_waitView];
+//        _waitView.backgroundColor=[UIColor redColor];
+        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(waitClick)];
+        [_waitView addGestureRecognizer:tap];
     }
-    return _img_top;
+    return _waitView;
 }
-- (UIImageView *)img_buttom{
-    if (!_img_buttom) {
-        _img_buttom = [[UIImageView alloc] init];
-        [self addSubview:_img_buttom];
+
+-(void)waitClick{
+    _waitBlock();
+}
+-(UIView *)passView{
+    
+    if (!_passView) {
+        _passView = [[UIView alloc] init];
+        [self addSubview:_passView];
+//        _passView.backgroundColor=[UIColor orangeColor];
+        UITapGestureRecognizer *tapp=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(passClick)];
+        [_passView addGestureRecognizer:tapp];
     }
-    return _img_buttom;
+    return _passView;
 }
+-(void)passClick{
+    _passBlock();
+}
+-(UIView *)refuseView{
+    
+    if (!_refuseView) {
+        _refuseView = [[UIView alloc] init];
+        [self addSubview:_refuseView];
+//        _refuseView.backgroundColor=[UIColor yellowColor];
+        UITapGestureRecognizer *tapr=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(refuseClick)];
+        [_refuseView addGestureRecognizer:tapr];
+    }
+    return _refuseView;
+}
+-(void)refuseClick{
+    _refuseBlock();
+}
+- (UIImageView *)img_wait{
+    if (!_img_wait) {
+        _img_wait = [[UIImageView alloc] init];
+        [self addSubview:_img_wait];
+    }
+    return _img_wait;
+}
+- (UIImageView *)img_pass{
+    if (!_img_pass) {
+        _img_pass = [[UIImageView alloc] init];
+        [self addSubview:_img_pass];
+    }
+    return _img_pass;
+}
+- (UIImageView *)img_refuse{
+    if (!_img_refuse) {
+        _img_refuse = [[UIImageView alloc] init];
+        [self addSubview:_img_refuse];
+    }
+    return _img_refuse;
+}
+- (UILabel *)waitLab{
+    if (!_waitLab) {
+        _waitLab = [[UILabel alloc] init];
+        _waitLab.font = [UIFont systemFontOfSize:12];
+        _waitLab.textColor = UIColorFromRGB(0x333333);
+        [self addSubview:_waitLab];
+    }
+    return _waitLab;
+}- (UILabel *)passLab{
+    if (!_passLab) {
+        _passLab = [[UILabel alloc] init];
+        _passLab.font = [UIFont systemFontOfSize:12];
+        _passLab.textColor = UIColorFromRGB(0x333333);
+        [self addSubview:_passLab];
+    }
+    return _passLab;
+}
+- (UILabel *)refuseLab{
+    if (!_refuseLab) {
+        _refuseLab = [[UILabel alloc] init];
+        _refuseLab.font = [UIFont systemFontOfSize:12];
+        _refuseLab.textColor = UIColorFromRGB(0x333333);
+        [self addSubview:_refuseLab];
+    }
+    return _refuseLab;
+}
+
 - (UILabel *)line_label{
     if (!_line_label) {
         _line_label = [[UILabel alloc] init];

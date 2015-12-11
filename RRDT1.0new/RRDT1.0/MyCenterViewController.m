@@ -20,7 +20,7 @@
 #import "HelpCenterViewController.h"
 
 #import "MyTaskViewController.h"
-
+#import "SCMsgListVC.h"
 @interface MyCenterViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     User *_user;
@@ -64,8 +64,8 @@
     
     self.title = @"个人中心";
     
-    _imageArr = @[@"0",@"icon_tixian",@"icon_wancheng",@"icon_helpcenter",@"icon_kefu"];
-    _titleArr = @[@"0",@"提现",@"已完成任务",@"帮助中心",@"客服支持"];
+    _imageArr = @[@"0",@"icon_tixian",@"icon_wancheng",@"icon_wancheng",@"icon_helpcenter",@"icon_kefu"];
+    _titleArr = @[@"0",@"提现",@"消息中心",@"已完成任务",@"帮助中心",@"客服支持"];
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
@@ -109,7 +109,7 @@
     return 44;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 5;
+    return _titleArr.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
@@ -342,7 +342,7 @@
         cell.imageView.image = [UIImage imageNamed:[_imageArr objectAtIndex:indexPath.section]];
         img_right.frame = CGRectMake(0, 0, 10, 10);
         cell.accessoryView = img_right;
-        if (indexPath.section == 4) {
+        if (indexPath.section == 5) {
             cell.detailTextLabel.text = @"4006-380-177";
         }
     }
@@ -360,13 +360,16 @@
         WithDrawViewController *withDraw = [[WithDrawViewController alloc] init];
         [self.navigationController pushViewController:withDraw animated:YES];
     }else if (indexPath.section == 2){
-        MyTaskViewController *mytask = [[MyTaskViewController alloc] init];
+        SCMsgListVC *mytask = [[SCMsgListVC alloc] initWithNibName:@"SCMsgListVC" bundle:nil];
         [self.navigationController pushViewController:mytask animated:YES];
     }else if (indexPath.section == 3){
+        MyTaskViewController *mytask = [[MyTaskViewController alloc] init];
+        [self.navigationController pushViewController:mytask animated:YES];
+    }else if (indexPath.section == 4){
         HelpCenterViewController *help = [[HelpCenterViewController alloc] init];
         [self.navigationController pushViewController:help animated:YES];
 
-    }else if (indexPath.section == 4){
+    }else if (indexPath.section == 5){
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"4006-380-177" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拨打", nil];
 //        [alert show];
         [self callKe];

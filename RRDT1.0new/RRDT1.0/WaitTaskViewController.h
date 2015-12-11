@@ -6,6 +6,9 @@
 //  Copyright © 2015年 RRDT002. All rights reserved.
 //
 
+/**
+ *  首页 可抢列表
+ */
 #import <UIKit/UIKit.h>
 
 @interface WaitTaskViewController : UIViewController

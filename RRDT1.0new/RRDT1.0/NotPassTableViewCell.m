@@ -22,17 +22,17 @@
         _img_last.image      = [UIImage imageNamed:@"icon_cantask"];
         
         
-        [_img_last mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.img_buttom.mas_bottom).offset(10);
-            make.left.equalTo(self).with.offset(12);
-            make.height.equalTo(@15);
-            make.width.equalTo(@15);
-        }];
-        [_lab_last mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.img_buttom.mas_bottom).offset(10);
-            make.left.mas_equalTo(_img_last.mas_right).offset(5);
-            make.height.equalTo(@15);
-        }];
+//        [_img_last mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.img_buttom.mas_bottom).offset(10);
+//            make.left.equalTo(self).with.offset(12);
+//            make.height.equalTo(@15);
+//            make.width.equalTo(@15);
+//        }];
+//        [_lab_last mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.img_buttom.mas_bottom).offset(10);
+//            make.left.mas_equalTo(_img_last.mas_right).offset(5);
+//            make.height.equalTo(@15);
+//        }];
         
         [_btn_giveup mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).with.offset(-5);

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#include "ReceivedView.h"
+
 @interface CheckingTaskView : UITableView<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 //@property (nonatomic,strong) UITableView        *mytable;

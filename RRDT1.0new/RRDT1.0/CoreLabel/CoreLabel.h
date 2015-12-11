@@ -38,6 +38,8 @@ typedef enum{
     
     //字体
     CoreLabelAttrFont,
+    //字体背景色
+    CoreLabelAttBackgroundColor,
     
     //斜体
     CoreLabelAttrObliqueness,

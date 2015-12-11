@@ -161,22 +161,23 @@
                     _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
                 for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
                     Task *task  = [[Task alloc] init];
-                    task.amount             = [[dic objectForKey:@"amount"] floatValue];
-                    task.auditTime          = [dic objectForKey:@"auditTime"];
-                    task.availableCount     = [dic objectForKey:@"availableCount"];
-                    task.beginTime          = [dic objectForKey:@"beginTime"];
-                    task.endTime            = [dic objectForKey:@"endTime"];
-                    task.finishTime         = [dic objectForKey:@"finishTime"];
-                    task.logo               = [dic objectForKey:@"logo"];
-                    task.orderId            = [dic objectForKey:@"orderId"];
-                    task.receivedTime       = [dic objectForKey:@"receivedTime"];
-                    task.status             = [dic objectForKey:@"status"];
-                    task.taskCycle          = [dic objectForKey:@"taskCycle"];
-                    task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
-                    task.taskId             = [dic objectForKey:@"taskId"];
-                    task.taskName           = [dic objectForKey:@"taskName"];
-                    task.isAgainPickUp      = [dic objectForKey:@"isAgainPickUp"];
-                    
+//                    task.amount             = [[dic objectForKey:@"amount"] floatValue];
+//                    task.auditTime          = [dic objectForKey:@"auditTime"];
+//                    task.availableCount     = [dic objectForKey:@"availableCount"];
+//                    task.beginTime          = [dic objectForKey:@"beginTime"];
+//                    task.endTime            = [dic objectForKey:@"endTime"];
+//                    task.finishTime         = [dic objectForKey:@"finishTime"];
+//                    task.logo               = [dic objectForKey:@"logo"];
+//                    task.orderId            = [dic objectForKey:@"orderId"];
+//                    task.receivedTime       = [dic objectForKey:@"receivedTime"];
+//                    task.status             = [dic objectForKey:@"status"];
+//                    task.taskCycle          = [dic objectForKey:@"taskCycle"];
+//                    task.taskGeneralInfo    = [dic objectForKey:@"taskGeneralInfo"];
+//                    task.taskId             = [dic objectForKey:@"taskId"];
+//                    task.taskName           = [dic objectForKey:@"taskName"];
+//                    task.isAgainPickUp      = [dic objectForKey:@"isAgainPickUp"];
+                    [task setValuesForKeysWithDictionary:dic];
+
                     [_modeArr addObject:task];
                 }
                 

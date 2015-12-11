@@ -6,6 +6,9 @@
 //  Copyright © 2015年 RRDT002. All rights reserved.
 //
 
+/**
+ *  任务详情
+ */
 #import <UIKit/UIKit.h>
 
 @interface NewTaskContentViewController : UIViewController
@@ -16,4 +19,5 @@
 @property (nonatomic,assign) NSInteger type;
 
 @property (nonatomic,assign) NSInteger onlyType;
+
 @end

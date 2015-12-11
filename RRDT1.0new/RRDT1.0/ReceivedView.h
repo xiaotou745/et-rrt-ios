@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#define ReceivedView_doShare @"ReceivedView_doShare"
+#define ReceivedView_toTaskDetail @"ReceivedView_toTaskDetail"
 
 @interface ReceivedView : UITableView<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
