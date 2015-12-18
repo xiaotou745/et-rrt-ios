@@ -17,6 +17,7 @@
 #import "CoreStatusBtn.h"
 
 #import "KLSwitch.h"
+#import "ETSUUID.h"
 
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -198,10 +199,28 @@
         
             [_txtPsaaword resignFirstResponder];
             [_txtUsername resignFirstResponder];
-        
-        
+        /**
+         参数	描述	允许为空
+         phoneNo	账号	否
+         passWord	密码	否
+         sSID	SSID标识	否
+         operSystem	手机操作系统android,ios	否
+         operSystemModel	手机具体型号5.0	否
+         phoneType	手机类型,三星、苹果	否
+         appVersion	版本号	否
+
+         */
+            NSString *sSID=[ETSUUID getUniqueDeviceIDFromKeychain];
+            NSString *operSystemModel=[UIDevice currentDevice].systemVersion;
+            NSString *currentVersion=[[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+;
             NSDictionary *dataDic = @{@"phoneNo"    :_txtUsername.text,
-                                      @"passWord"   :[MyMD5 md5:_txtPsaaword.text]};
+                                      @"passWord"   :[MyMD5 md5:_txtPsaaword.text],
+                                      @"sSID":sSID,
+                                      @"operSystem":@"iOS",
+                                      @"operSystemModel":operSystemModel,
+                                      @"phoneType":@"iPhone",
+                                      @"appVersion":appVersion};
         
             AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
             [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserLogin] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
@@ -224,6 +243,8 @@
                 [dd setObject:userData forKey:@"myUser"];
                 [dd synchronize];
                 [self dissmissLogin];
+                [[NSNotificationCenter defaultCenter] postNotificationName:loginSuccess_refreshWaitVC object:nil];
+
             }else{
                 _loginBtn.status = CoreStatusBtnStatusFalse;
                 [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];

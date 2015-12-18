@@ -18,7 +18,8 @@
         [self.img_pass setHidden:YES];
         [self.refuseLab setHidden:YES];
         [self.img_refuse setHidden:YES];
-        
+        //关闭交互 不触发跳转到 审核详情
+        [self.waitView setUserInteractionEnabled:NO];
         [self receiveBtn];
         
         

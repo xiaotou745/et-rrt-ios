@@ -15,6 +15,10 @@
 
 @interface TaskDetailViewController : BackBaseViewController
 
+@property(assign)BOOL navBackToHomeVC;
+@property(nonatomic,assign)BOOL fromPCenterVC;
+@property(nonatomic,assign)BOOL overTime;//是否为过期任务
 @property (nonatomic,strong)Task *task;
 @property(assign)NSInteger contentOfSet_index;
+
 @end

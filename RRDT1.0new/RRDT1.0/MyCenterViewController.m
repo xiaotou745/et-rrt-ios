@@ -21,6 +21,8 @@
 
 #import "MyTaskViewController.h"
 #import "SCMsgListVC.h"
+#import "TaskDetailViewController.h"
+
 @interface MyCenterViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     User *_user;
@@ -65,7 +67,7 @@
     self.title = @"个人中心";
     
     _imageArr = @[@"0",@"icon_tixian",@"icon_wancheng",@"icon_wancheng",@"icon_helpcenter",@"icon_kefu"];
-    _titleArr = @[@"0",@"提现",@"消息中心",@"已完成任务",@"帮助中心",@"客服支持"];
+    _titleArr = @[@"0",@"提现",@"资料审核详情",@"消息中心",@"帮助中心",@"客服支持"];
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
@@ -177,6 +179,10 @@
         }];
         
         UIView *view1 = [[UIView alloc] init];
+        view1.userInteractionEnabled=YES;
+        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewTap)];
+        [view1 addGestureRecognizer:tap];
+        
 //        view1.layer.borderColor = UIColorFromRGB(0x888888).CGColor;
 //        view1.layer.borderWidth = 0.5;
         [cell.contentView addSubview:view1];
@@ -198,23 +204,22 @@
             make.bottom.mas_equalTo(cell.contentView);
             make.left.equalTo(cell.contentView).with.offset(0);
             make.height.equalTo(@40);
-            make.right.mas_equalTo(view2.mas_left);
-            make.width.equalTo(@[view2,view3]);
+            make.right.mas_equalTo(cell.contentView.mas_right);
         }];
-        [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(cell.contentView);
-            make.left.mas_equalTo(view1.mas_right);
-            make.height.equalTo(@40);
-            make.right.mas_equalTo(view3.mas_left);
-            make.width.equalTo(@[view1,view3]);
-        }];
-        [view3 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(cell.contentView);
-            make.left.mas_equalTo(view2.mas_right);
-            make.height.equalTo(@40);
-            make.right.equalTo(cell.contentView);
-            make.width.equalTo(@[view2,view1]);
-        }];
+//        [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.mas_equalTo(cell.contentView);
+//            make.left.mas_equalTo(view1.mas_right);
+//            make.height.equalTo(@40);
+//            make.right.mas_equalTo(view3.mas_left);
+//            make.width.equalTo(@[view1,view3]);
+//        }];
+//        [view3 mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.bottom.mas_equalTo(cell.contentView);
+//            make.left.mas_equalTo(view2.mas_right);
+//            make.height.equalTo(@40);
+//            make.right.equalTo(cell.contentView);
+//            make.width.equalTo(@[view2,view1]);
+//        }];
         
         
         UIView *lineViewTop = [[UIView alloc] init];
@@ -252,48 +257,48 @@
         
         UILabel *lab1 = [[UILabel alloc] init];
         lab1.text = @"我的余额";
-        lab1.textAlignment = NSTextAlignmentCenter;
+//        lab1.textAlignment = NSTextAlignmentCenter;
         lab1.textColor = UIColorFromRGB(0x333333);
-        lab1.font = [UIFont systemFontOfSize:14];
+        lab1.font = [UIFont systemFontOfSize:15];
         [view1 addSubview:lab1];
         
-        UILabel *lab2 = [[UILabel alloc] init];
-        lab2.text = @"可提现";
-        lab2.textAlignment = NSTextAlignmentCenter;
-        lab2.textColor = UIColorFromRGB(0x333333);
-        lab2.font = [UIFont systemFontOfSize:14];
-        [view2 addSubview:lab2];
-        
-        UILabel *lab3 = [[UILabel alloc] init];
-        lab3.text = @"提现中";
-        lab3.textAlignment = NSTextAlignmentCenter;
-        lab3.textColor = UIColorFromRGB(0x333333);
-        lab3.font = [UIFont systemFontOfSize:14];
-        [view3 addSubview:lab3];
+//        UILabel *lab2 = [[UILabel alloc] init];
+//        lab2.text = @"可提现";
+//        lab2.textAlignment = NSTextAlignmentCenter;
+//        lab2.textColor = UIColorFromRGB(0x333333);
+//        lab2.font = [UIFont systemFontOfSize:14];
+//        [view2 addSubview:lab2];
+//        
+//        UILabel *lab3 = [[UILabel alloc] init];
+//        lab3.text = @"提现中";
+//        lab3.textAlignment = NSTextAlignmentCenter;
+//        lab3.textColor = UIColorFromRGB(0x333333);
+//        lab3.font = [UIFont systemFontOfSize:14];
+//        [view3 addSubview:lab3];
         
         [lab1 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@20);
+            make.height.equalTo(view1);
             make.bottom.equalTo(view1);
-            make.left.equalTo(view1);
-            make.right.equalTo(view1);
+            make.left.equalTo(view1).offset(10);
+            make.width.equalTo(@70);
         }];
-        [lab2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@20);
-            make.bottom.equalTo(view2);
-            make.left.equalTo(view2);
-            make.right.equalTo(view2);
-        }];
-        [lab3 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@20);
-            make.bottom.equalTo(view3);
-            make.left.equalTo(view3);
-            make.right.equalTo(view3);
-        }];
+//        [lab2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@20);
+//            make.bottom.equalTo(view2);
+//            make.left.equalTo(view2);
+//            make.right.equalTo(view2);
+//        }];
+//        [lab3 mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@20);
+//            make.bottom.equalTo(view3);
+//            make.left.equalTo(view3);
+//            make.right.equalTo(view3);
+//        }];
         
         _lab_allmoney = [[UILabel alloc] init];
-        _lab_allmoney.textAlignment = NSTextAlignmentCenter;
+//        _lab_allmoney.textAlignment = NSTextAlignmentCenter;
         _lab_allmoney.textColor = UIColorFromRGB(0xf7585d);
-        _lab_allmoney.font = [UIFont systemFontOfSize:14];
+        _lab_allmoney.font = [UIFont systemFontOfSize:18];
         [view1 addSubview:_lab_allmoney];
         _lab_ketixian = [[UILabel alloc] init];
         _lab_ketixian.textAlignment = NSTextAlignmentCenter;
@@ -307,9 +312,9 @@
         [view3 addSubview:_lab_tixianzhong];
         
         [_lab_allmoney mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@20);
+            make.height.equalTo(view1);
             make.top.equalTo(view1);
-            make.left.equalTo(view1);
+            make.left.equalTo(lab1.mas_right);
             make.right.equalTo(view1);
         }];
         [_lab_ketixian mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -343,7 +348,7 @@
         img_right.frame = CGRectMake(0, 0, 10, 10);
         cell.accessoryView = img_right;
         if (indexPath.section == 5) {
-            cell.detailTextLabel.text = @"4006-380-177";
+            cell.detailTextLabel.text = @"010-57173598";
         }
     }
     
@@ -360,18 +365,20 @@
         WithDrawViewController *withDraw = [[WithDrawViewController alloc] init];
         [self.navigationController pushViewController:withDraw animated:YES];
     }else if (indexPath.section == 2){
+        TaskDetailViewController *TaskDetailV = [[TaskDetailViewController alloc] init];
+        TaskDetailV.fromPCenterVC=YES;
+        [self.navigationController pushViewController:TaskDetailV animated:YES];
+        
+    }else if (indexPath.section == 3){
         SCMsgListVC *mytask = [[SCMsgListVC alloc] initWithNibName:@"SCMsgListVC" bundle:nil];
         [self.navigationController pushViewController:mytask animated:YES];
-    }else if (indexPath.section == 3){
-        MyTaskViewController *mytask = [[MyTaskViewController alloc] init];
-        [self.navigationController pushViewController:mytask animated:YES];
+        
     }else if (indexPath.section == 4){
         HelpCenterViewController *help = [[HelpCenterViewController alloc] init];
         [self.navigationController pushViewController:help animated:YES];
 
     }else if (indexPath.section == 5){
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"4006-380-177" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"拨打", nil];
-//        [alert show];
+
         [self callKe];
     }
 }
@@ -405,8 +412,8 @@
             _lab_name.text = _user.userName;
             _lab_phone.text = _user.userPhoneNo;
             _lab_allmoney.text = [NSString stringWithFormat:@"¥%.2f",_user.balance];
-            _lab_ketixian.text = [NSString stringWithFormat:@"¥%.2f",_user.withdraw];
-            _lab_tixianzhong.text = [NSString stringWithFormat:@"¥%.2f",_user.withdrawing];
+//            _lab_ketixian.text = [NSString stringWithFormat:@"¥%.2f",_user.withdraw];
+//            _lab_tixianzhong.text = [NSString stringWithFormat:@"¥%.2f",_user.withdrawing];
 
             NSURL *myUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@",_user.fullHeadImage]];
             if (_user.fullHeadImage.length != 0) {
@@ -455,8 +462,13 @@
         [self callKe];
     }
 }
+
+-(void)viewTap{
+
+
+}
 - (void)callKe{
-    NSString *num = [[NSString alloc] initWithFormat:@"telprompt://4006380177"];
+    NSString *num = [[NSString alloc] initWithFormat:@"telprompt://010-57173598"];
     
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:num]]; //拨号
 }

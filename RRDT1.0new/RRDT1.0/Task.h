@@ -46,15 +46,33 @@ typedef enum : NSUInteger {
 /** logo图片地址 */
 @property (nonatomic,strong) NSString *logo;
 /** 任务状态 -1未领取 0已领取 1已提交 */
-@property (nonatomic,strong) NSString *status;
+//@property (nonatomic,strong) NSString *status;
 /** 任务类型（字符串文本） */
 @property (nonatomic,assign) int    taskType;
 @property (nonatomic,strong) NSString *taskTypeName;
 
+/**审核通过的资料数量(签约类任务才有效)*/
 @property (nonatomic,assign) int    auditPassNum;
+/**审核不通过的资料数量(签约类任务才有效)*/
 @property (nonatomic,assign) int    auditRefuseNum;
+/**待审核的资料数量(签约类任务才有效)*/
 @property (nonatomic,assign) int    auditWaitNum;
+/**完成数量(分享类和下载类任务才有效)*/
 @property (nonatomic,assign) int    complateNum;
+
+/**非签约任务 时 下载地址*/
+@property (nonatomic,strong) NSString *downUrl;
+/**非签约任务 时 扫码说明*/
+@property (nonatomic,strong) NSString *scanTip;
+/**非签约任务 时 温馨提示*/
+@property (nonatomic,strong) NSString *reminder;
+
+
+/**任务状态,1是审核通过，3是过期，4是终止*/
+@property (nonatomic,assign) int status;
+
+
+
 
 
 //已经领取额外添加

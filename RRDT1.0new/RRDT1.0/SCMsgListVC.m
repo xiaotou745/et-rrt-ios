@@ -17,6 +17,7 @@
 
 }
 @property (weak, nonatomic) IBOutlet UITableView *scmlTableView;
+@property (weak, nonatomic) IBOutlet UILabel *noMsgLab;
 
 @property(assign ,nonatomic)NSUInteger readMeg_index;
 @property (strong, nonatomic)NSMutableDictionary *readDic;//读取的 信息字典
@@ -32,7 +33,7 @@
     [self configNavBar];
     [self setupRefresh];
     [self downPullRefreshAction];
-    
+
 }
 - (void)setupRefresh
 {
@@ -69,7 +70,6 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    __weak typeof(self) weakSelf = self;
 
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     _user = [[User alloc] init];
@@ -107,6 +107,8 @@
                     [_dataArray addObject:task];
                 }
                 
+                
+                
             }
             [self.scmlTableView reloadData];
         }else{
@@ -115,12 +117,15 @@
             }];
         }
      
+        [self showNoMsgView];
      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
          NSLog(@"Error: %@", error);
          [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"未知错误" offsetY:-100 failClickBlock:^{
              NSLog(@"?>?>>>>>??>?>");
          }];
          [MBProgressHUD hideHUDForView:self.view animated:YES];
+         [self showNoMsgView];
+
      }];
     
 }
@@ -135,7 +140,15 @@
     self.scmlTableView.backgroundColor=[UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1];
     _dataArray=[NSMutableArray array];
 }
+-(void)showNoMsgView{
 
+    if (_dataArray.count==0) {
+        [_noMsgLab setHidden:NO];
+    }else{
+        [_noMsgLab setHidden:YES];
+
+    }
+}
 #pragma mark tableView  delegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -146,7 +159,11 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+//    return 60;
+    MsgModel *task  = [[MsgModel alloc] init];
+    task=self.dataArray[indexPath.row];
+    CGSize size = [task.msg boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} context:nil].size;
+    return size.height + 40;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -154,7 +171,7 @@
     static NSString *reuserID=@"SCMsgListCellID";
     SCMsgListCell *cell=[tableView dequeueReusableCellWithIdentifier:reuserID];
     if (nil == cell) {
-        cell=[[[NSBundle mainBundle]loadNibNamed:@"SCMsgListCell" owner:nil options:nil]firstObject];
+        cell=[[[NSBundle mainBundle]loadNibNamed:@"SCMsgListCell" owner:self options:nil]firstObject];
     }
     
     cell.model=self.dataArray[indexPath.row];
@@ -163,6 +180,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MsgModel *task  = [[MsgModel alloc] init];
+    task=self.dataArray[indexPath.row];
+    task.hasRead=1;
+    [_scmlTableView reloadData];
+
 }
 
 - (void)didReceiveMemoryWarning {

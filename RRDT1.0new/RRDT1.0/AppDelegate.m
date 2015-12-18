@@ -17,7 +17,7 @@
 #import "WaitTaskViewController.h"
 
 #import "MyVersion.h"
-
+#import "ETSUUID.h"
 @interface AppDelegate ()<CoreStatusProtocol,UIAlertViewDelegate>
 {
     MyVersion *myVersion;
@@ -65,7 +65,8 @@
 //    }
     
     
-    
+    [ETSUUID storeUniqueDeviceIDToKeychain];
+
     NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
     
     NSData *data = [dd objectForKey:@"myUser"];

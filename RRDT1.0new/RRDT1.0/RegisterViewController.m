@@ -103,7 +103,7 @@
     [footview addSubview:lab1];
     
     UILabel *lab2 = [[UILabel alloc] init];
-    lab2.text = @"《人人地推用户协议》";
+    lab2.text = @"《人人推用户协议》";
     lab2.font = [UIFont systemFontOfSize:14];
     lab2.textAlignment = NSTextAlignmentLeft;
     lab2.userInteractionEnabled = YES;

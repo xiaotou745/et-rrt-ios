@@ -14,5 +14,6 @@
 
 @property(strong,nonatomic)TaskDetailModel *model;
 
-//-(CGFloat)height_groupType:(GroupType)type;
+
+-(void)hideBottomViews;
 @end

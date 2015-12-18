@@ -20,18 +20,12 @@
     self.title=@"链接详情";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    [self createView];
 }
 
 -(void)createView{
-    if (self.urlString) {
+    
         [_rrdtWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]]];
-        
-    }
-    else
-    {
-        [_rrdtWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://renrentui.me"]]];
-        
-    }
     
     _rrdtWebView.scalesPageToFit=YES;
     [self.view addSubview:_rrdtWebView];

@@ -28,22 +28,18 @@
 #define HEIGHT     [[UIScreen mainScreen] bounds].size.height //获取屏幕的高度
 #define WIDTH      [[UIScreen mainScreen] bounds].size.width  //获取屏幕的宽度
 
-#define appVersion @"101"
+#define appVersion @"110"
 
 #pragma mark 用户接口
-//#define URL_All @"http://192.168.1.224:8080/renrenapihttp/services"
-#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
-//#define URL_All @"http://apinew.renrenditui.cn/20151105/services/"
+
+//#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
+#define URL_All @"http://apinew.renrenditui.cn/20151217/services/"
 /*
  *上传图片
  */
-#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
-//#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
-/*
- *得到图片
- */
-#define URL_GetImg @"http://192.168.1.222:8189"
-//#define URL_GetImg @"http://img.renrenditui.cn"
+//#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
+#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
+
 
 
 /*
@@ -159,6 +155,17 @@
 
 
 @end
+
+@interface MyTools (times)
+/**
+ 去掉秒
+ 2015-12-16 10:49:08
+ 2015-12-16 10:49
+ */
++(NSString *)timeString:(NSString *)string;
+
+@end
+
 @interface MyTools (CityAddressManager)
 
 //存储CityAddress.plist

@@ -137,7 +137,11 @@
             [checkCell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
             
             [checkCell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,checkCell.infoLabel.text.length - 4)];
-            checkCell.waitLab.text = [NSString stringWithFormat:@"成功分享 %d次",task.complateNum];
+            NSString *msg=[NSString stringWithFormat:@"成功分享 %d次",task.complateNum];
+            if (task.complateNum==0) {
+                msg=@"任务进行中";
+            }
+            checkCell.waitLab.text =  msg;
             
             //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
             checkCell.moneyLab.textColor = [UIColor clearColor];
@@ -165,7 +169,7 @@
 }
 -(void)doShare:(Task *)task{
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedView_doShare object:task.taskId];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedView_doShare object:task];
 }
 
 -(void)gotoTaskDetail:(Task *)task Index:(NSInteger)index{
@@ -201,12 +205,12 @@
         
         
         
-        if (_nextId == 0) {
-            [_modeArr removeAllObjects];
-        }
+      
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetreceiveTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
-            
+            if (_nextId == 0) {
+                [_modeArr removeAllObjects];
+            }
             NSLog(@"json2%@",responseObject);
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {

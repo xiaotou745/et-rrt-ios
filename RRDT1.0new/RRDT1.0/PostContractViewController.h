@@ -14,6 +14,8 @@
 
 #import "BackBaseViewController.h"
 
+#define  againEnterPostVC @"againEnterPostVC"
+
 @protocol ContractContentDele <NSObject>
 
 -(void)backPostContract;

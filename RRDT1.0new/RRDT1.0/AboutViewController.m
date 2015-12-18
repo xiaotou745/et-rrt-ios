@@ -34,7 +34,7 @@
 {
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.title = @"人人地推用户协议";
+    self.title = @"人人推用户协议";
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];

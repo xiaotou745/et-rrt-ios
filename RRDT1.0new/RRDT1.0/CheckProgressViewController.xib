@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CheckProgressViewController">
@@ -29,7 +29,6 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="任务资料提交" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zG2-Un-mpu">
                             <rect key="frame" x="50" y="5" width="476" height="25"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="8Sq-QD-R05"/>
                             </constraints>
@@ -39,28 +38,24 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PeN-07-vhY" userLabel="submitTime">
                             <rect key="frame" x="50" y="30" width="476" height="25"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXZ-oi-dFH">
                             <rect key="frame" x="50" y="65" width="476" height="25"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PoO-h4-SQy">
                             <rect key="frame" x="50" y="90" width="476" height="25"/>
-                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="TaskDetail_pass" translatesAutoresizingMaskIntoConstraints="NO" id="I29-hA-sM5">
                             <rect key="frame" x="22" y="6" width="18" height="18"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="EGd-SX-Nu9"/>
                                 <constraint firstAttribute="width" constant="18" id="daU-Kd-YEy"/>
@@ -68,17 +63,14 @@
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TaskDetail_wait" translatesAutoresizingMaskIntoConstraints="NO" id="z22-Vd-ZCp">
                             <rect key="frame" x="22" y="68" width="18" height="18"/>
-                            <animations/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oGo-MQ-XPN">
                             <rect key="frame" x="30" y="27.5" width="1" height="39.5"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="8W7-YX-cje"/>
                             </constraints>
                         </imageView>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="oGo-MQ-XPN" firstAttribute="centerX" secondItem="I29-hA-sM5" secondAttribute="centerX" id="3Qd-dP-hsr"/>
@@ -116,7 +108,6 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5kA-Fb-7Pc">
                     <rect key="frame" x="20" y="147" width="267.5" height="40"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Doo-Dc-Zu0"/>
                     </constraints>
@@ -127,14 +118,12 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jzk-uW-aei">
                     <rect key="frame" x="312.5" y="147" width="267.5" height="40"/>
-                    <animations/>
-                    <state key="normal" title="再次参与"/>
+                    <state key="normal" title="再次提交"/>
                     <connections>
                         <action selector="editBTN:" destination="-1" eventType="touchUpInside" id="JoE-9W-wOi"/>
                     </connections>
                 </button>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="5kA-Fb-7Pc" firstAttribute="top" secondItem="G2O-zC-d8R" secondAttribute="bottom" constant="15" id="3U9-D8-7Tg"/>

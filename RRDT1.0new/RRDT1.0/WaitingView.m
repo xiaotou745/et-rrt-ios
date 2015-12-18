@@ -77,8 +77,12 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     }
-        TaskDetailModel *task = [_modeArr objectAtIndex:indexPath.section];
+    TaskDetailModel *task = [_modeArr objectAtIndex:indexPath.section];
     cell.model=task;
+    //个人中心的_taskId＝0 默认为所有
+    if (![[_taskId description] isEqualToString:@"0"]) {
+        [cell hideBottomViews];
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -108,12 +112,15 @@
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
                                     @"taskId":_taskId
                                     };
-        if (_nextId == 0) {
-            [_modeArr removeAllObjects];
-        }
+
+//        NSString *jsonsss=[parmeters JSONString];
+        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Getmytaskdatumlist] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
             
+            if (_nextId == 0) {
+                [_modeArr removeAllObjects];
+            }
             NSLog(@"pass%@",responseObject);
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {
@@ -179,9 +186,16 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TaskDetailModel *task = [_modeArr objectAtIndex:indexPath.section];
+    
+    CGFloat bottomHeight=0.0f;
+    //个人中心的_taskId＝0 默认为所有
+    if (![[_taskId description] isEqualToString:@"0"]) {
+        bottomHeight=30.0f;
+    }
+    
     if (GroupTypeText==task.groupType) {
-        return 110;
-    }else return 150;
+        return 110-bottomHeight;
+    }else return 150-bottomHeight;
 }
 - (void)againReceived:(CoreStatusBtn *)btn{
     NSLog(@">>>>>>%zi",btn.tag);

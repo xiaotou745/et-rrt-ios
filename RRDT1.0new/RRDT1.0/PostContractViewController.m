@@ -55,16 +55,46 @@
     
 //    UIView *top_footView;
 }
-/** 主照片 */
-@property (nonatomic,strong) UIImageView        *headImageView;
-/** 标题 */
-@property (nonatomic,strong) UILabel            *headLabel;
-/** 公告 */
-@property (nonatomic,strong) UILabel            *infoLabel;
-/** 公告img */
-@property (nonatomic,strong) UIImageView        *img_info;
-/** 金额 */
-@property (nonatomic,strong) CoreLabel          *moneyLabel;
+/**
+ 主照片
+ */
+@property (nonatomic,strong) UIImageView    *headImageView;
+/**
+ 标题
+ */
+@property (nonatomic,strong) UILabel        *headLabel;
+/**
+ 状态
+ */
+@property (nonatomic,strong) CoreLabel        *statusLabel;
+
+
+/**
+ 时间
+ */
+@property (nonatomic,strong) CoreLabel        *timeLabel;
+/**
+ 金额
+ */
+@property (nonatomic,strong) CoreLabel      *moneyLabel;
+/**
+ lineLAB
+ */
+@property (nonatomic,strong) UILabel        *line_label;
+
+
+
+@property (nonatomic,strong) UILabel    *lab1;//1-1
+
+@property (nonatomic,strong) UILabel    *lab2;//1-2
+
+@property (nonatomic,strong) CoreLabel    *lab3;//2-1
+
+@property (nonatomic,strong) UIImageView    *img1;//1-1
+
+@property (nonatomic,strong) UIImageView    *img2;//1-2
+
+@property (nonatomic,strong) UIImageView    *img3;//2-1
 
 
 
@@ -83,6 +113,7 @@
 
 @property (nonatomic,strong) NSArray          *templateGroup;
 
+@property(nonatomic,strong)NSIndexPath *indexPath;
 
 @end
 
@@ -91,14 +122,13 @@
 -(void)backBarButtonPressed{
 
     if (_tag ==111) {
-        CustomIOSAlertView *alert = [self successAlert:@"icon_success" andtitle:@"" andmsg:@"您还未提交资料，确定退出吗？" andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"取消", nil]];
-        [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-            NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
-            
-            [alertView close];
-            if(buttonIndex==0) [self.navigationController popViewControllerAnimated:YES];
+        [UIAlertView showAlertViewWithTitle:@"您还未提交资料，确定退出吗" message:nil cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] onDismiss:^(NSInteger index){
+            if(index==0) [self.navigationController popViewControllerAnimated:YES];
+
+        } onCancel:^(){
+        
         }];
-        [alert show];
+ 
     }else [self.navigationController popViewControllerAnimated:YES];
     
 }
@@ -130,19 +160,24 @@
     
     image_Dic = [NSMutableArray array];
     
-    topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 100)];
+    topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 150)];
     topView.backgroundColor = [UIColor whiteColor];
-    
     
 
     
-    
     [topView addSubview:[self headImageView]];
     [topView addSubview:[self headLabel]];
+    [topView addSubview:[self statusLabel]];
     [topView addSubview:[self moneyLabel]];
-    [topView addSubview:[self infoLabel]];
-    [topView addSubview:[self img_info]];
+    [topView addSubview:[self line_label]];
     
+    [topView addSubview:[self lab1]];
+    [topView addSubview:[self lab2]];
+    [topView addSubview:[self lab3]];
+    
+    [topView addSubview:[self img1]];
+    [topView addSubview:[self img2]];
+    [topView addSubview:[self img3]];
     
     
     [_headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,42 +189,78 @@
     
     [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(topView).with.offset(15);
-        make.left.mas_equalTo(_headImageView.mas_right).offset(15);
-        make.right.equalTo(topView).with.offset(-10);
-        make.height.equalTo(@30);
+        make.left.mas_equalTo(_headImageView.mas_right).offset(12);
+        make.right.equalTo(topView).with.offset(-12);
+        make.height.mas_equalTo(20);
+    }];
+    [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_headLabel.mas_bottom);
+        make.left.mas_equalTo(_headImageView.mas_right).offset(12);
+        make.right.equalTo(_moneyLabel.mas_left).with.offset(0);
+        make.height.mas_equalTo(40);
     }];
     
-    [_infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_headLabel.mas_bottom).offset(0);
-        make.left.mas_equalTo(_img_info.mas_right).offset(5);
-        make.right.equalTo(topView).with.offset(-10);
-        make.height.equalTo(@30);
-        
-    }];
     
-    [_img_info mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_headLabel.mas_bottom).offset(7.5);
-        make.left.mas_equalTo(_headImageView.mas_right).offset(15);
-        make.height.equalTo(@15);
-        make.width.equalTo(@15);
-    }];
     [_moneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_headLabel.mas_bottom).offset(0);
+        make.top.mas_equalTo(_headLabel.mas_bottom);
         make.right.equalTo(topView).with.offset(-10);
-        make.left.mas_equalTo(_infoLabel.mas_right).offset(5);
-        make.height.equalTo(@30);
-        make.width.equalTo(@100);
+        make.width.mas_equalTo(100);
+        make.height.equalTo(@20);
+    }];
+    [_line_label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(topView).with.offset(12);
+        make.right.equalTo(topView).with.offset(-12);
+        make.top.mas_equalTo(_headImageView.mas_bottom).offset(10);
+        make.height.equalTo(@1);
     }];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90, WIDTH, 10)];
+    
+    [_lab1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+        make.left.mas_equalTo(_img1.mas_right).offset(5);
+        make.height.equalTo(@15);
+    }];
+    [_lab2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+        make.left.mas_equalTo(_img2.mas_right).offset(5);
+        make.height.equalTo(@15);
+    }];
+    
+    [_lab3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_lab1.mas_bottom).offset(5);
+        make.left.mas_equalTo(_img3.mas_right).offset(5);
+        make.height.equalTo(@15);
+    }];
+    
+    [_img1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+        make.left.equalTo(topView).with.offset(10);
+        make.width.equalTo(@15);
+        make.height.equalTo(@15);
+    }];
+    [_img2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_line_label.mas_bottom).offset(10);
+        make.left.mas_equalTo(_lab1.mas_right).offset(40);
+        make.width.equalTo(@15);
+        make.height.equalTo(@15);
+    }];
+    [_img3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_img1.mas_bottom).offset(5);
+        make.left.equalTo(topView).with.offset(10);
+        make.width.equalTo(@15);
+        make.height.equalTo(@15);
+    }];
+
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 140, WIDTH, 10)];
     lineView.backgroundColor = UIColorFromRGB(0xe8e8e8);
     [topView addSubview:lineView];
     
-    _headImageView = [[UIImageView alloc]init];
+    
     [_headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_task.logo]] placeholderImage:[UIImage imageNamed:@"icon_morentu"] options:1 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
-
+    _headLabel.text = _task.taskTitle;
     
     _moneyLabel.textColor = [UIColor clearColor];
     _moneyLabel.text = [NSString stringWithFormat:@"￥%.2f/次",_task.amount];
@@ -198,10 +269,22 @@
     [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLabel.text.length - 2,2)];
     [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLabel.text.length - 2)];
     [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLabel.text.length - 2,2)];
-    
-    _headLabel.text = _task.taskTitle;
-    _infoLabel.text = [NSString stringWithFormat:@"审核 %@天",[_task.auditCycle description]];
 
+    _statusLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:_task.taskType],_task.taskGeneralInfo];
+    
+    
+    [_statusLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
+    [_statusLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:_task.taskType] range:NSMakeRange(0,4)];
+    
+    [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
+    _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
+
+    _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
+    _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
+    _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
+
+    [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
+    
     
     if (_tag != 222) {
         _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - HEIGHT/15 - 20) style:UITableViewStylePlain];
@@ -252,10 +335,26 @@
     
     [self getInfoDic];
     
+    BOOL Value = NO;
+    
+                    
+    for (NSDictionary *controlDic in value_arr) {
+        
+        NSString *controlValue=controlDic[@"controlValue"];
+      controlValue= [controlValue stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if (![controlValue isEqualToString:@""]) {
+            //前端至少一项必填
+            Value=YES;
+            break;
+        }
+    }
+    //前端 一项都没填
+    if (!Value){
+        [self.view makeToast:@"请填写资料后再提交" duration:1.0 position:CSToastPositionTop];
+        return;
+    }
+    
     NSLog(@"????%@>>>>>>%@and>>value%@",value_arr,_task.controlInfo,value);
-    if (value_arr.count < _task.controlInfo.count) {
-        [self.view makeToast:@"还有未填写的资料" duration:1.0 position:CSToastPositionTop];
-    }else{
     
     NSLog(@"value%@",value_arr);
     User *user = [[User alloc] init];
@@ -283,33 +382,14 @@
 //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提交成功" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
 //            [alert show];
             NSString *msg = [NSString stringWithFormat:@"审核时间 %@天，请耐心等待",_task.auditCycle];
-            CustomIOSAlertView *alert = [self successAlert:@"icon_success" andtitle:@"提交成功" andmsg:msg andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"再次领取", nil]];
-            [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-                NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
+            [UIAlertView showAlertViewWithTitle:@"提交成功" message:msg cancelButtonTitle:@"确定" otherButtonTitles:@[@"再次提交"] onDismiss:^(NSInteger buttonIndex){
                 
-                [alertView close];
-                
-                
-                if (_onlyType == 999) {
-                    if (buttonIndex == 0) {
-                        [self.navigationController popToRootViewControllerAnimated:YES];
-                    }else if (buttonIndex == 1){
-                        [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter]postNotificationName:@"ListPostBackNotification" object:_task userInfo:nil];
-                    }
-                }else{
-                    if (buttonIndex == 0) {
-                        [self.navigationController popToRootViewControllerAnimated:YES];
-                    }else if (buttonIndex == 1){
-                        [self.navigationController popViewControllerAnimated:YES];
-                        [self.delegate backPostContract];
-                    }
-                }
-                
-                
-                
+                [self postGetMyTask];
+
+            } onCancel:^(){
+                [self.navigationController popViewControllerAnimated:YES];
             }];
-            [alert show];
+            
         }else{
             _postBtn.status = CoreStatusBtnStatusFalse;
             [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
@@ -318,7 +398,6 @@
         _postBtn.status = CoreStatusBtnStatusFalse;
         [self.view makeToast:@"系统异常" duration:1.0 position:CSToastPositionTop];
     }];
-    }
 }
 //- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
 //    [self.navigationController popToRootViewControllerAnimated:YES];
@@ -331,111 +410,120 @@
         [temp setValuesForKeysWithDictionary:dic];
         [sectionTempplate addObject:temp];
         
+        [arr_text  removeAllObjects];
+        [arr_image  removeAllObjects];
+        [arr_images  removeAllObjects];
+
+        
         for (NSDictionary *info in temp.controlList) {
             ControlInfo *controInfo = [[ControlInfo alloc] init];
             [controInfo setValuesForKeysWithDictionary:info];
-            
+            [value setValue:@"" forKey:controInfo.controlKey];
+
             int item =temp.groupType;
             switch (item) {
                 case groupTypeText:
                     //文本
+
                     [arr_text addObject:controInfo];
                     break;
                 case groupTypeImage:
                     //图片上传
                     [arr_image addObject:controInfo];
-                    [image_Dic addObject:UIImageJPEGRepresentation([UIImage imageNamed:@"icon_imgadd"], 1)];
                     break;
                 case groupTypeImages:
                     //图片上传
                     [arr_images addObject:controInfo];
-                    [image_Dic addObject:UIImageJPEGRepresentation([UIImage imageNamed:@"icon_imgadd"], 1)];
                     break;
 
                 default:
                     break;
                 }
-
         }
+        
+        if (arr_text.count!=0) {
+            [arr_all addObject:@{@"data":[arr_text mutableCopy],
+                                 @"count":[NSNumber numberWithInteger:arr_text.count],
+                                 @"type":@"text"}];
+        }
+        if (arr_image.count!=0) {
+            [arr_all addObject:@{@"data":[arr_image mutableCopy],
+                                 @"count":[NSNumber numberWithInteger:arr_image.count],
+                                 @"type":@"image"}];
+        }
+        if (arr_images.count!=0) {
+            [arr_all addObject:@{@"data":[arr_images mutableCopy],
+                                 @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
+                                 @"type":@"images"}];
+        }
+
     }
     
-    if (arr_text.count!=0) {
-        [arr_all addObject:@{@"data":arr_text,
-                             @"count":[NSNumber numberWithInteger:arr_text.count],
-                             @"type":@"text"}];
-    }
-    if (arr_image.count!=0) {
-        [arr_all addObject:@{@"data":arr_image,
-                             @"count":[NSNumber numberWithInteger:arr_image.count],
-                             @"type":@"image"}];
-    }
-    if (arr_images.count!=0) {
-        [arr_all addObject:@{@"data":arr_images,
-                             @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
-                             @"type":@"images"}];
-    }
 
-    NSLog(@">>>>>%@",arr_all);
+    NSLog(@"classify>>>>>%@",arr_all);
     [_mytable reloadData];
 }
 - (void)valueClassify{
-    NSArray *type = @[@"Text",@"FileUpload"];
-    for (NSDictionary *dic in _templateGroup) {
+        NSArray *type = @[@"Text",@"FileUpload"];
+        for (NSDictionary *dic in _templateGroup) {
         
-        ControlTemplate *temp=[[ControlTemplate alloc]init];
-        [temp setValuesForKeysWithDictionary:dic];
-        [sectionTempplate addObject:temp];
+            ControlTemplate *temp=[[ControlTemplate alloc]init];
+            [temp setValuesForKeysWithDictionary:dic];
+            [sectionTempplate addObject:temp];
 
-        for (NSDictionary *info in temp.controlList) {
+            [arr_text  removeAllObjects];
+            [arr_image  removeAllObjects];
+            [arr_images  removeAllObjects];
+
+            for (NSDictionary *info in temp.controlList) {
         
-        ControlInfo *controInfo = [[ControlInfo alloc] init];
-        [controInfo setValuesForKeysWithDictionary:info];
+                ControlInfo *controInfo = [[ControlInfo alloc] init];
+                [controInfo setValuesForKeysWithDictionary:info];
+                
+                if (_tag == 222) {
+                    [value setValue:controInfo.controlValue forKey:controInfo.controlKey];
+                }
         
-        if (_tag == 222) {
-            [value setValue:controInfo.controlValue forKey:controInfo.controlKey];
+                int item = temp.groupType;
+                switch (item) {
+                    case groupTypeText:
+                        //文本
+                        [arr_text addObject:controInfo];
+                        
+                        break;
+                    case groupTypeImage:
+                        //图片上传
+                        [arr_image addObject:controInfo];
+                        
+                        break;
+                    case groupTypeImages:
+                        //图片上传
+                        [arr_images addObject:controInfo];
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            if (arr_text.count!=0) {
+                [arr_all addObject:@{@"data":[arr_text mutableCopy],
+                                     @"count":[NSNumber numberWithInteger:arr_text.count],
+                                     @"type":@"text"}];
+            }
+            if (arr_image.count!=0) {
+                [arr_all addObject:@{@"data":[arr_image mutableCopy],
+                                     @"count":[NSNumber numberWithInteger:arr_image.count],
+                                     @"type":@"image"}];
+            }
+            if (arr_images.count!=0) {
+                [arr_all addObject:@{@"data":[arr_images mutableCopy],
+                                     @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
+                                     @"type":@"images"}];
+            }
+
         }
-        
-            int item = temp.groupType;
-        switch (item) {
-            case groupTypeText:
-                //文本
-                [arr_text addObject:controInfo];
-                [arr_textValue addObject:controInfo.controlValue];
 
-                break;
-            case groupTypeImage:
-                //图片上传
-                [arr_image addObject:controInfo];
-                    [image_Dic addObject:controInfo.controlValue];
-
-                break;
-            case groupTypeImages:
-                //图片上传
-                [arr_images addObject:controInfo];
-                [image_Dic addObject:controInfo.controlValue];
-                break;
-
-            default:
-                break;
-        }
-    }
-    }
-    if (arr_text.count!=0) {
-        [arr_all addObject:@{@"data":arr_text,
-                             @"count":[NSNumber numberWithInteger:arr_text.count],
-                             @"type":@"text"}];
-    }
-    if (arr_image.count!=0) {
-        [arr_all addObject:@{@"data":arr_image,
-                             @"count":[NSNumber numberWithInteger:arr_image.count],
-                             @"type":@"image"}];
-    }
-    if (arr_images.count!=0) {
-        [arr_all addObject:@{@"data":arr_images,
-                             @"count":[NSNumber numberWithInteger:(arr_images.count+4)/5],
-                             @"type":@"images"}];
-    }
-    NSLog(@">>>>>%@",arr_all);
+    NSLog(@"valueClassify>>>>>%@",arr_all);
     [_mytable reloadData];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -465,12 +553,7 @@
     headerLabel.highlightedTextColor = [UIColor whiteColor];
     headerLabel.font = [UIFont systemFontOfSize:14];
     headerLabel.frame = CGRectMake(12, 0.0, WIDTH - 12, 30);
-//
-//    
-//    
-//    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
-//    
-//    int typeValue = (int)[item indexOfObject:type];
+
     ControlTemplate *templ=sectionTempplate[section];
     headerLabel.text=templ.title;
     [customView addSubview:headerLabel];
@@ -480,28 +563,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    
-//    NSString *type = [[arr_all objectAtIndex:section] objectForKey:@"type"];
-//    
-//    int typeValue = (int)[item indexOfObject:type];
-//    
-//    NSString *titile;
-//    switch (typeValue) {
-//        case 0:
-//            titile = @"开始填写";
-//            break;
-//        case 1:
-//            titile = @"上传图片";
-//            break;
-//        case 2:
-//            titile = @"图片组";
-//            break;
-//        default:
-//            break;
-//    }
-//    return titile;
-//}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *Cell_textstr   = @"Cell_text";
@@ -512,11 +574,9 @@
     
     NSString *type = [[arr_all objectAtIndex:indexPath.section] objectForKey:@"type"];
     
+    ControlInfo *controInfo = [[ControlInfo alloc] init];
+    controInfo=[arr_all objectAtIndex:indexPath.section][@"data"][indexPath.row];
     int typeValue = (int)[item indexOfObject:type];
-    
-    if (indexPath.section == 0) {
-        
-    }
     
     switch (typeValue) {
         case 0:
@@ -528,20 +588,24 @@
             NSLog(@"走了 走了 走了 ");
             if (_tag==333) {
                 NSLog(@">>>arrr%@",arr_textValue);
-                Cell_text.myTxt.text = [arr_textValue objectAtIndex:indexPath.row];
+                Cell_text.myTxt.text = controInfo.controlValue;
                 Cell_text.myTxt.enabled = NO;
+                
             }else{
-                ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
-                Cell_text.myTxt.tag = [controlInfo.orderNum integerValue];
-                Cell_text.myName = controlInfo.controlKey;
+                Cell_text.myTxt.tag = [controInfo.orderNum integerValue];
+                Cell_text.myName = controInfo.controlKey;
+//                if ([[value objectForKey:controInfo.controlValue] length] == 0) {
+//                    Cell_text.myTxt.placeholder = controInfo.controlTitle;
+//                }
                 if (_tag == 222) {
-                    Cell_text.myTxt.text = [arr_textValue objectAtIndex:indexPath.row];
                     [Cell_text.myTxt setEnabled:NO];
+                    Cell_text.myTxt.text = controInfo.controlValue;
+                    if (controInfo.controlValue.length == 0)Cell_text.myTxt.placeholder = controInfo.controlTitle;
                 }else{
-                    if ([[value objectForKey:controlInfo.controlValue] length] == 0) {
-                        Cell_text.myTxt.placeholder = controlInfo.controlTitle;
+                    if ([[value objectForKey:controInfo.controlKey] length] == 0) {
+                        Cell_text.myTxt.placeholder = controInfo.controlTitle;
                     }else{
-                        Cell_text.myTxt.text = [value objectForKey:controlInfo.controlValue];
+                        Cell_text.myTxt.text = [value objectForKey:controInfo.controlKey];
                     }
                 }
                 
@@ -555,24 +619,21 @@
             //image
             if (!Cell_image) {
                 Cell_image = [[ContractImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Cell_imagestr];
-                ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
 //                NSLog(@"celllll>>>>%@",arr_all);
-                Cell_image.textLabel.text = controlInfo.controlTitle;
-                Cell_image.myImg_btn.tag = indexPath.row;
-                Cell_image.myName = controlInfo.controlKey;
+                Cell_image.textLabel.text = controInfo.controlTitle;
+                Cell_image.myImg_btn.tag =10000*indexPath.section+indexPath.row;
+                Cell_image.myName = controInfo.controlKey;
 
-//                NSLog(@">>>>>>qqqqwqqq%zi",_tag);
                 if (_tag == 111) {
                     [Cell_image.myImg_btn addTarget:self action:@selector(changeImage:) forControlEvents:UIControlEventTouchUpInside];
-//                    NSLog(@">>>>>%@",image_Dic);
-                    [Cell_image.myImg_btn setBackgroundImage:[UIImage imageWithData:[image_Dic objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
+                    [Cell_image.myImg_btn sd_setBackgroundImageWithURL:[NSURL URLWithString:controInfo.controlValue] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+
                 }else{
-                    NSLog(@">>>aaabbbaaa>>>%@",[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:indexPath.row]]);
-                    [Cell_image.myImg_btn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:indexPath.row]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    Cell_image.myImg_btn.enabled = NO;
+                    [Cell_image.myImg_btn sd_setBackgroundImageWithURL:[NSURL URLWithString:controInfo.controlValue] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    Cell_image.myImg_btn.userInteractionEnabled = NO;
 
                     if (_tag == 333) {
-                        Cell_image.myImg_btn.enabled = NO;
+                        Cell_image.myImg_btn.userInteractionEnabled = NO;
                     }else{
                         [Cell_image.myImg_btn addTarget:self action:@selector(changeImage:) forControlEvents:UIControlEventTouchUpInside];
                     }
@@ -589,59 +650,46 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
 
-//            ControlInfo *controlInfo = [[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] objectAtIndex:indexPath.row];
+            NSArray *controlLists = [[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"];
         
             //多图组 的行数
-            NSInteger rows=([[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"]count ]+4)/5;
+            NSInteger rows=(controlLists.count+4)/5;
             //最后一行的个数
-            NSInteger lastRowCounts=[[[arr_all objectAtIndex:indexPath.section] objectForKey:@"data"] count]%5;
+            NSInteger lastRowCounts=controlLists.count%5;
+            //为0  说明最后一行是满的
+            if (lastRowCounts==0) {
+                lastRowCounts=5;
+            }
             
             if(indexPath.row==rows-1)   [cell  layoutViewsss:lastRowCounts];
             
-            if (_tag == 111) {
-              
-                if (lastRowCounts) {
-                    if (lastRowCounts>0)    cell.img0.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]];
-                    if (lastRowCounts>1) cell.img1.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]];
-                    if (lastRowCounts>2) cell.img2.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]];
-                    if (lastRowCounts>3) cell.img3.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]];
-                    if (lastRowCounts>4)  cell.img4.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]];
-                }else{
-                
-                    cell.img0.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]];
-                    cell.img1.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]];
-                    cell.img2.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]];
-                    cell.img3.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]];
-                    cell.img4.image=[UIImage imageWithData:[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]];
+            
+            /*最后一行需要防止数组越界  非最后一行则不用*/
+                if (lastRowCounts>0||indexPath.row+1<rows){
+                    ControlInfo *conInfo=(ControlInfo *)controlLists[indexPath.row*5];
+                    [cell.img0 sd_setImageWithURL:[NSURL URLWithString:conInfo.controlValue]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
                 }
-                
-                
-            }else if(_tag==222){
-                
-                cell.img0.userInteractionEnabled = NO;
-                cell.img1.userInteractionEnabled = NO;
-                cell.img2.userInteractionEnabled = NO;
-                cell.img3.userInteractionEnabled = NO;
-                cell.img4.userInteractionEnabled = NO;
-
-                
-                if (lastRowCounts) {
-                    if (lastRowCounts>0) [cell.img0 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    if (lastRowCounts>1)  [cell.img1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    if (lastRowCounts>2)  [cell.img2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    if (lastRowCounts>3)  [cell.img3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    if (lastRowCounts>4)   [cell.img4 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                }else{
+                if (lastRowCounts>1||indexPath.row+1<rows){
+                    ControlInfo *conInfo=(ControlInfo *)controlLists[indexPath.row*5+1];
+                    [cell.img1 sd_setImageWithURL:[NSURL URLWithString:conInfo.controlValue]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                }
+                if (lastRowCounts>2||indexPath.row+1<rows){
+                    ControlInfo *conInfo=(ControlInfo *)controlLists[indexPath.row*5+2];
+                    [cell.img2 sd_setImageWithURL:[NSURL URLWithString:conInfo.controlValue]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
                     
-                     [cell.img0 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                      [cell.img1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+1]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                     [cell.img2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+2]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                      [cell.img3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+3]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                     [cell.img4 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[image_Dic objectAtIndex:arr_image.count+indexPath.row*5+4]]]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
                 }
-                
-                
-            }else if (_tag==333){
+                if (lastRowCounts>3||indexPath.row+1<rows){
+                    ControlInfo *conInfo=(ControlInfo *)controlLists[indexPath.row*5+3];
+                    [cell.img3 sd_setImageWithURL:[NSURL URLWithString:conInfo.controlValue]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    
+                }
+                if (lastRowCounts>4||indexPath.row+1<rows){
+                    ControlInfo *conInfo=(ControlInfo *)controlLists[indexPath.row*5+4];
+                    [cell.img4 sd_setImageWithURL:[NSURL URLWithString:conInfo.controlValue]  placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
+                    
+                }
+            
+            if(_tag==222||_tag==333){
                 
                 cell.img0.userInteractionEnabled = NO;
                 cell.img1.userInteractionEnabled = NO;
@@ -735,10 +783,15 @@
     ControlInfo *controlInfo = [[[arr_all objectAtIndex:section] objectForKey:@"data"] objectAtIndex:row*5+index];
     img_str = controlInfo.controlKey;
     img_tag=arr_image.count+row*5+index;
+    _indexPath=[NSIndexPath indexPathForRow:row*5+index inSection:section];
     [actionSheet showInView:self.view];
 }
 
 - (void)changeImage:(UIButton *)btn{
+    
+    NSInteger section=btn.tag/10000;
+    NSInteger row=btn.tag%10000;
+   _indexPath= [NSIndexPath indexPathForRow:row inSection:section];
     
 //    [self hideKeyBoard];
     [self resignKeyBoardInView:_mytable];
@@ -882,14 +935,11 @@
         if ([[responseObject objectForKey:@"Status"] intValue] == 1) {
             [value setValue:[[responseObject objectForKey:@"Result"] objectForKey:@"RelativePath"] forKey:img_str];
             NSLog(@"》》》》%@",value);
+
+            NSString *FileUrl=[[responseObject objectForKey:@"Result"] objectForKey:@"FileUrl"];
+            [self replaceControlInfo:FileUrl];
             
-            if (_tag == 111) {
-                [image_Dic replaceObjectAtIndex:img_tag withObject:img_data];
-            }else{
-                [image_Dic replaceObjectAtIndex:img_tag withObject:[[responseObject objectForKey:@"Result"] objectForKey:@"FileUrl"]];
-            }
             
-            NSLog(@"image_Dic>>>>>>%@tag%zi",image_Dic,img_tag);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_mytable reloadData];
             });
@@ -907,7 +957,44 @@
         NSLog(@"===+++++%@",error);
     }];
 }
+-(void)replaceControlInfo:(NSString *)fileUrl{
+/**
+ [arr_all addObject:
+    @{
+    @"data":[arr_text mutableCopy],
+    @"count":[NSNumber numberWithInteger:arr_text.count],
+    @"type":@"text"}
+    ];
+ */
+    ControlInfo *newInfo=arr_all[_indexPath.section][@"data"][_indexPath.row];
+    newInfo.controlValue=fileUrl;
+    
+    NSMutableArray *results=[NSMutableArray array];
+    for (int section=0; section<arr_all.count; section++) {
+      
+        NSDictionary *dic=arr_all[section];
+        
+        if (section== _indexPath.section) {
+            
+            NSMutableArray *conInfoLists=[NSMutableArray arrayWithArray:dic[@"data"]];
 
+           [conInfoLists replaceObjectAtIndex:_indexPath.row withObject:newInfo];
+                
+
+            [results addObject:@{
+                                 @"data":[conInfoLists mutableCopy],
+                                 @"count":dic[@"count"],
+                                 @"type":dic[@"type"]}];
+        }else  [results addObject:dic];
+       
+    }
+    
+    arr_all=[results copy];
+}
+-(void)callHotLine{
+    
+    [MyTools call:_task.hotLine atView:self.view];
+}
 #pragma mark 懒加载
 
 - (UIImageView *)headImageView{
@@ -925,27 +1012,125 @@
     }
     return _headLabel;
 }
-- (UILabel *)infoLabel{
-    if (!_infoLabel) {
-        _infoLabel = [[UILabel alloc] init];
-        _infoLabel.font = [UIFont systemFontOfSize:12];
-        _infoLabel.textColor = UIColorFromRGB(0x333333);
-        _infoLabel.numberOfLines = 2;
-    }
-    return _infoLabel;
-}
-- (UIImageView *)img_info{
-    if (!_img_info) {
-        _img_info = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_time"]];
-    }
-    return _img_info;
-}
+
 - (CoreLabel *)moneyLabel{
     if (!_moneyLabel) {
         _moneyLabel = [[CoreLabel alloc] init];
         _moneyLabel.textAlignment = NSTextAlignmentRight;
     }
     return _moneyLabel;
+}
+
+- (CoreLabel *)statusLabel{
+    if (!_statusLabel) {
+        _statusLabel = [[CoreLabel alloc] init];
+        _statusLabel.font = [UIFont systemFontOfSize:12];
+    }
+    return _statusLabel;
+}
+
+- (CoreLabel *)timeLabel{
+    if (!_timeLabel) {
+        _timeLabel =[[CoreLabel alloc] init];
+        _timeLabel.font = [UIFont systemFontOfSize:12];
+    }
+    return _timeLabel;
+}
+
+- (UILabel *)line_label{
+    if (!_line_label) {
+        _line_label = [[UILabel alloc] init];
+        _line_label.backgroundColor = UIColorFromRGB(0xe5e5e5);
+    }
+    return _line_label;
+}
+- (UILabel *)lab1{
+    if (!_lab1) {
+        _lab1 = [[UILabel alloc] init];
+        _lab1.font = [UIFont systemFontOfSize:12];
+        _lab1.textColor = UIColorFromRGB(0x333333);
+    }
+    return _lab1;
+}
+- (UILabel *)lab2{
+    if (!_lab2) {
+        _lab2 = [[UILabel alloc] init];
+        _lab2.font = [UIFont systemFontOfSize:12];
+        _lab2.textColor = UIColorFromRGB(0x333333);
+    }
+    return _lab2;
+}
+- (CoreLabel *)lab3{
+    if (!_lab3) {
+        _lab3 = [[CoreLabel alloc] init];
+        _lab3.font = [UIFont systemFontOfSize:12];
+        _lab3.textColor = UIColorFromRGB(0x333333);
+        _lab3.userInteractionEnabled=YES;
+        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callHotLine)];
+        [_lab3 addGestureRecognizer:tap];
+    }
+    return _lab3;
+}
+
+- (UILabel *)iconLabel{
+    
+    UILabel *iconLab = [[UILabel alloc] init];
+    iconLab.font = [UIFont systemFontOfSize:15];
+    iconLab.numberOfLines = 1;
+    iconLab.textColor=[UIColor whiteColor];
+    iconLab.textAlignment=NSTextAlignmentCenter;
+    iconLab.backgroundColor=UIColorFromRGB(0x00bcd5);
+    return iconLab;
+}
+- (UILabel *)contentLab{
+    
+    UILabel *contentLab = [[UILabel alloc] init];
+    contentLab.font = [UIFont systemFontOfSize:14];
+    contentLab.numberOfLines = 2;
+    //    contentLab.backgroundColor=[UIColor blueColor];
+    return contentLab;
+}
+- (UILabel *)vvvLab{
+    
+    UILabel *vvvLab = [[UILabel alloc] init];
+    vvvLab.font = [UIFont systemFontOfSize:15];
+    vvvLab.backgroundColor=UIColorFromRGB(0x00bcd5);
+    return vvvLab;
+}
+
+- (UILabel *)pointLabel{
+    
+    UILabel *pointLabel = [[UILabel alloc] init];
+    pointLabel.font = [UIFont systemFontOfSize:15];
+    pointLabel.numberOfLines = 1;
+    pointLabel.backgroundColor=[UIColor lightGrayColor];
+    return pointLabel;
+}
+- (UILabel *)contentttLab{
+    
+    UILabel *contentttLab = [[UILabel alloc] init];
+    contentttLab.font = [UIFont systemFontOfSize:15];
+    contentttLab.numberOfLines = 2;
+    contentttLab.textColor=[UIColor lightGrayColor];
+    return contentttLab;
+}
+- (UIImageView *)img1{
+    if (!_img1) {
+        _img1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cantask"]];
+    }
+    return _img1;
+}
+- (UIImageView *)img2{
+    if (!_img2) {
+        _img2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_time"]];
+    }
+    return _img2;
+}
+- (UIImageView *)img3{
+    if (!_img3) {
+        _img3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TaskDetail_phone"]];
+    }
+    return _img3;
 }
 
 - (CustomIOSAlertView *)successAlert:(NSString *)imgStr andtitle:(NSString *)title andmsg:(NSString *)msg andButtonItem:(NSMutableArray *)item{
@@ -957,11 +1142,15 @@
     UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgStr]];
     UILabel *lab_titile = [[UILabel alloc] init];
     lab_titile.font = [UIFont systemFontOfSize:16];
-    lab_titile.textColor = UIColorFromRGB(0x666666);
+//    lab_titile.textColor = UIColorFromRGB(0x666666);
+    lab_titile.textColor = [UIColor blackColor];
+
     lab_titile.textAlignment = NSTextAlignmentCenter;
     UILabel*lab_msg = [[UILabel alloc] init];
     lab_msg.font = [UIFont systemFontOfSize:14];
-    lab_msg.textColor = UIColorFromRGB(0x888888);
+//    lab_msg.textColor = UIColorFromRGB(0x888888);
+    lab_msg.textColor = [UIColor  darkGrayColor];
+
     lab_msg.numberOfLines = 0;
     lab_msg.textAlignment = NSTextAlignmentCenter;
     [view addSubview:img];

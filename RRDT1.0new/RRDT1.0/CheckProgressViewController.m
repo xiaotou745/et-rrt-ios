@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1];
-    self.title=_model.taskName;
+    self.title=@"审核详情";
     [self configDatas];
 }
 
@@ -48,11 +48,19 @@
     
     _editBTN.layer.cornerRadius=5;
     _editBTN.layer.masksToBounds=YES;
-    _editBTN.layer.borderColor=UIColorFromRGB(0x00bcd5).CGColor;
     _editBTN.layer.borderWidth=1;
-    _editBTN.backgroundColor=UIColorFromRGB(0x00bcd5);
-    [_editBTN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
+    if ([_model.taskStatus isEqualToString:@"已过期"]) {
+        _editBTN.enabled=NO;
+        _editBTN.layer.borderColor=[UIColor lightGrayColor].CGColor;
+        _editBTN.backgroundColor=[UIColor lightGrayColor];
+        [_editBTN setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    }else{
+        _editBTN.layer.borderColor=UIColorFromRGB(0x00bcd5).CGColor;
+        _editBTN.backgroundColor=UIColorFromRGB(0x00bcd5);
+        [_editBTN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+    }
+   
     _lineIcon.backgroundColor=UIColorFromRGB(0x00bcd5);
     
     
@@ -76,7 +84,8 @@
         _checkTime.text=_model.auditTime;
 
     }
-
+    
+   
 }
 - (IBAction)lookDetailBTN:(id)sender {
 
@@ -94,7 +103,7 @@
 
     PostContractViewController *post = [[PostContractViewController alloc] init];
     post.taskId = _model.taskId;
-    post.taskDatumId=_model.taskDatumId;
+    post.taskDatumId=@"";
     post.tag = 111;
     post.onlyType = 999;
     [post postGetMyTask];

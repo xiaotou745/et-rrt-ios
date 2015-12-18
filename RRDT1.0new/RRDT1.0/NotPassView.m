@@ -196,12 +196,12 @@
                                     @"orderType"    :@"5",
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId]
                                     };
-        if (_nextId == 0) {
-            [_modeArr removeAllObjects];
-        }
+        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
-            
+            if (_nextId == 0) {
+                [_modeArr removeAllObjects];
+            }
             NSLog(@"json2%@",responseObject);
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {

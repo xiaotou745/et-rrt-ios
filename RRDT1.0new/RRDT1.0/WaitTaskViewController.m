@@ -1,3 +1,4 @@
+
 //
 //  WaitTaskViewController.m
 //  RRDT1.0
@@ -64,6 +65,7 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_center"] style:UIBarButtonItemStylePlain target:self action:@selector(mycenter)];
         [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
     }
+
 }
 
 - (void)viewDidLoad {
@@ -81,6 +83,8 @@
     [self viewCreat];
 
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeCurrentCity:) name:kChooseCityNotif object:nil];
+    //领取任务后刷新当前城市的数据
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess) name:loginSuccess_refreshWaitVC object:nil];
 
     [self getLocation];
     [self getCitysRegion];
@@ -91,6 +95,10 @@
     [self requestNewCityDatas];
 }
 
+-(void)loginSuccess{
+    [self getLocation];
+
+}
 -(void)requestNewCityDatas{
     _cityLabel.text = _currentCityInfo[cityName];
     _nextId = 0;
@@ -103,12 +111,17 @@
 - (void)viewCreat{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(current) name:@"CurrentNotification" object:nil];
 
+    UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    bgView.backgroundColor=[UIColor whiteColor];
+    UITapGestureRecognizer *tap1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
+    bgView.userInteractionEnabled =YES;
+    [bgView addGestureRecognizer:tap1];
+    [self.view addSubview:bgView];
+    
     UIImageView *address_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_address"]];
     address_img.frame = CGRectMake(10, 10, 20, 20);
-    [self.view addSubview:address_img];
-    UITapGestureRecognizer *tap1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
-    address_img.userInteractionEnabled =YES;
-    [address_img addGestureRecognizer:tap1];
+    [bgView addSubview:address_img];
+    
     
     _cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, WIDTH - 40, 40)];
     _cityLabel.backgroundColor = [UIColor whiteColor];
@@ -132,13 +145,13 @@
     _mytable.tableFooterView = [UIView new];
     _mytable.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _nextId = 0;
-        [_mytable.header beginRefreshing];
+//        [_mytable.header beginRefreshing];
         [self post];
 //        [_mytable.header endRefreshing];
     }];
     _mytable.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
-        [_mytable.footer beginRefreshing];
+//        [_mytable.footer beginRefreshing];
         [self post];
 //        [_mytable.footer endRefreshing];
     }];
@@ -153,6 +166,8 @@
 -(void)address_imgHandle{
        CitysViewController *citysVC=[[CitysViewController alloc]initWithNibName:@"CitysViewController" bundle:nil];
     citysVC.modeArr=[NSMutableArray arrayWithArray:_citysArr];
+    citysVC.title= [NSString stringWithFormat:@"当前城市－%@",_currentCityInfo[cityName]];
+
     [self.navigationController pushViewController:citysVC animated:YES];
 }
 - (void)mycenter{
@@ -222,12 +237,14 @@
     //定位失败
     NSLog(@"----定位失败");
     [_manager stopUpdatingLocation];
+    _manager.delegate=nil;
 
     [self requestNewCityDatas];
 
 }
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
     [_manager stopUpdatingLocation];
+    _manager.delegate=nil;
 
     CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
     
@@ -266,7 +283,7 @@
             }
         }
         //未匹配到 cityCode  默认为北京
-        [self requestNewCityDatas];
+        if (self.citysArr.count)  [self requestNewCityDatas];
     }
 }
 
@@ -430,7 +447,6 @@
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     _nextId = 0;
     [self post];
 }

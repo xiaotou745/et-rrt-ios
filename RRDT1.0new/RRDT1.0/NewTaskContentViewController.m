@@ -14,17 +14,14 @@
 
 #import "LoginViewController.h"
 
-#import "PostContractViewController.h"
-
 #import "CurrentTaskViewController.h"
 #import "TaskStep.h"
 
 #import "RRDTWebViewController.h"
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
-#import "CheckProgressViewController.h"
-
-@interface NewTaskContentViewController ()<UITableViewDataSource,UITableViewDelegate,ContractContentDele>
+//#import "CheckProgressViewController.h"
+@interface NewTaskContentViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     User *user;
     
@@ -109,29 +106,30 @@
 //    [self judegMent];
 //    [self getTaskContent:_task.orderId];
 //}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-    _webViews=0;
-    _heightSection1=0;
-    
-    [self viewCreat];
-    user = [[User alloc] init];
-    
-    self.title = @"任务详情";
-    
-    
+-(void)viewWillAppear:(BOOL)animated{
+
+    [self judegMent];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
             [self getTaskContent:_task.orderId];
         }];
     }else{
-//        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        //        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self getTaskContent:_task.orderId];
         
-
+        
     }
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    [self viewCreat];
+    user = [[User alloc] init];
+
+    self.title = @"任务详情";
+
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -146,7 +144,9 @@
     _task_steps = [NSMutableArray array];
     _task_contents= [NSMutableArray array];
     _task_links = [NSMutableArray array];
-
+    _webViews=0;
+    _heightSection1=0;
+    
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
@@ -253,7 +253,7 @@
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         NSInteger code = [[responseObject objectForKey:@"code"] intValue];
         if (code == 200) {
-//            [self viewCreat];
+            [self viewCreat];
             
             
             [self successView:[responseObject objectForKey:@"data"]];
@@ -284,6 +284,9 @@
     return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    // 是否包含任务流程 兼容老数据
+//    if(_task_steps.count)
+//    else return 1+_webViews;
     return 2+_webViews;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -328,7 +331,7 @@
                 make.top.mas_equalTo(_headLabel.mas_bottom);
                 make.left.mas_equalTo(_headImageView.mas_right).offset(12);
                 make.right.equalTo(_moneyLab.mas_left).with.offset(0);
-//                make.height.mas_equalTo(20);
+                make.height.mas_equalTo(40);
             }];
             
             
@@ -445,9 +448,12 @@
                 contentLab.text=step.content;
             }
         
+            
             UILabel *baseline=[[UILabel alloc]initWithFrame:CGRectMake(20, _task_steps.count*40+10, WIDTH-20, 1)];
             baseline.backgroundColor=[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
             [cell.contentView addSubview:baseline];
+            // 有补充 才显示分割线
+            if (!_task_contents.count) [baseline setHidden:YES];
             
             for (int j=0; j<_task_contents.count; j++) {
                 TaskStep *step=[[TaskStep alloc]init];
@@ -461,7 +467,7 @@
                 
                 [pointLabel mas_makeConstraints:^(MASConstraintMaker *make){
                     
-                    make.top.mas_equalTo(baseline.mas_top).offset(18+40*j);
+                    make.top.mas_equalTo(baseline.mas_top).offset(18+35*j);
                     make.left.mas_equalTo(cell.contentView).offset(15);
                     make.width.equalTo(@3);
                     make.height.equalTo(@3);
@@ -472,7 +478,7 @@
                 
                 [contentttLab mas_makeConstraints:^(MASConstraintMaker *make){
                     
-                    make.top.mas_equalTo(baseline.mas_top).offset(10);
+                    make.top.mas_equalTo(baseline.mas_top).offset(10+35*j);
                     make.right.mas_equalTo(cell.contentView).offset(-10);
                     make.left.mas_equalTo(pointLabel.mas_right).offset(10);
                     //                    make.height.equalTo(@39);
@@ -481,10 +487,7 @@
                 
                 contentttLab.text=step.content;
             }
-            
-            
-            
-        
+
         }else{
             
             UIImageView *iconImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_linkIcon"]];
@@ -581,6 +584,14 @@
             _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
             _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
             _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
+        if(_task.hotLine.length==0||_task.hotLine==nil){
+        
+            [_lab3 setHidden:YES];
+            [_img3 setHidden:YES];
+        }else{
+            [_lab3 setHidden:NO];
+            [_img3 setHidden:NO];
+        }
         //_task.hotLine==nil?@"无":_task.hotLine
 //        [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_lab3.text.length - 2)];
         [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
@@ -672,9 +683,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.section==2) {
+    if (indexPath.section>=2) {
         TaskStep *step=[[TaskStep alloc]init];
-        step =_task_links[indexPath.row];
+        step =_task_links[indexPath.section-2];
         
         RRDTWebViewController *web=[[RRDTWebViewController  alloc]initWithNibName:@"RRDTWebViewController" bundle:nil];
         web.urlString=step.content;
@@ -687,7 +698,8 @@
 #pragma mark 成功获取任务详情之后 任务赋值
 - (void)successView:(NSDictionary*)dic{
     
-    _task=[[Task alloc]init];
+    if(!_task)    _task=[[Task alloc]init];
+
     [_task setValuesForKeysWithDictionary:dic[@"task"]];
     
     NSArray *taskSetps=dic[@"taskSetps"];
@@ -701,7 +713,7 @@
             _heightSection1+=40;
         }else if ([step.setpType intValue]==setpType_content) {
             [_task_contents addObject:step];
-            _heightSection1+=20;
+            _heightSection1+=35;
 
         }else if ([step.setpType intValue]==setpType_urlLink) {
             [_task_links addObject:step];
@@ -736,7 +748,7 @@
     
     if(_task.taskType==taskType_download||_task.taskType==taskType_share){
         
-//        [_btn_receive setTitle:@"分享二维码" forState:UIControlStateNormal];
+        [_btn_receive setTitle:@"分享二维码" forState:UIControlStateNormal];
     }
     
     [self judegMent];
@@ -901,7 +913,7 @@
         _btn_receive.shutOffZoomAnim = YES;
         _btn_receive.status = CoreStatusBtnStatusNormal;
         _btn_receive.msg = @"";
-        [_btn_receive setTitle:@"领取任务" forState:UIControlStateNormal];
+        [_btn_receive setTitle:@"立即领取" forState:UIControlStateNormal];
         [_btn_receive setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _btn_receive.hidden = YES;
         [_btn_receive addTarget:self action:@selector(receivedTask:) forControlEvents:UIControlEventTouchUpInside];
@@ -999,50 +1011,8 @@
                 int code_int = [code intValue];
                 if (code_int == 200) {
                     
-                    _type = 2;
-                    [self getTaskContent:[responseObject objectForKey:@"data"]];
-                    [self judegMent];
-                    
-                    
-//                    _orderID = [[responseObject objectForKey:@"data"] objectForKey:@"orderId"];
-                    
-                    btn.status = CoreStatusBtnStatusSuccess;
-                    
-                    NSString *timeStr = [NSString stringWithFormat:@"请在%@小时内完成任务。\n 提示:完成之后不要忘记提交审核哦",_task.taskCycle];
-                    
-                    CustomIOSAlertView *alert = [self successAlert:@"icon_success" andtitle:@"领取成功" andmsg:timeStr andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"当前任务", nil]];
-                    [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-                        NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
-                    
-                        
-                        
-                        [alertView close];
-                        
-                        
-                        
-                        
-                        
-                        if (buttonIndex==1) {
-                            if (_onlyType == 999) {
-//                                UIViewController *target = nil;
-//                                for (UIViewController * controller in self.navigationController.viewControllers) { //遍历
-//                                    if ([controller isKindOfClass:[CurrentTaskViewController class]]) { //这里判断是否为你想要跳转的页面
-//                                        target = controller;
-//                                    }
-//                                }
-//                                if (target) {
-//                                    [self.navigationController popToViewController:target animated:YES]; //跳转
-//                                }
-                                [self.navigationController popToRootViewControllerAnimated:YES];
-                                [[NSNotificationCenter defaultCenter]postNotificationName:@"CurrentNotification" object:nil userInfo:nil];
-                            }else{
-                                [self.navigationController popViewControllerAnimated:YES];
-                            }
-                            
-                            
-                        }
-                    }];
-                    [alert show];
+                    [self postcont:btn navBackToHomeVC:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:getTaskSuccess_refreshWaitVC object:nil];
                     
                 }else{
                     btn.status = CoreStatusBtnStatusFalse;
@@ -1164,21 +1134,33 @@
     
     
 }
-- (void)postcont:(UIButton *)btn{
+-(void)postcont:(UIButton *)btn{
+    [self postcont:btn navBackToHomeVC:NO];
+}
+- (void)postcont:(UIButton *)btn navBackToHomeVC:(BOOL)yesOrNo{
     
     if(_task.taskType==taskType_download||_task.taskType==taskType_share){
     
         RRDTBarViewController *barVC=[[RRDTBarViewController alloc]initWithNibName:@"RRDTBarViewController" bundle:nil];
-        barVC.urlString=[_task.taskId description];
+        barVC.downUrl=_task.downUrl;
+        barVC.scanTip=_task.scanTip;
+        barVC.reminder=_task.reminder;
+        barVC.navBackToHomeVC=yesOrNo;
+
         [self.navigationController pushViewController:barVC animated:YES];
     
     }else{
         TaskDetailViewController *postVC = [[TaskDetailViewController alloc] init];
         postVC.task = _task;
+        postVC.title=postVC.task.taskTitle;
+        postVC.navBackToHomeVC=yesOrNo;
+        if (_task.status==3||_task.status==4)  postVC.overTime=YES;
+        
         [self.navigationController pushViewController:postVC animated:YES];
     }
 
 }
+
 #pragma mark 时间处理
 - (NSString *)timeHelper:(NSString *)timeStr{
     NSLog(@"time   str ing  》》》》%@",timeStr);

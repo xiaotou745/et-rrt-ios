@@ -34,7 +34,12 @@
      */
     self.titleLabel.text=model.title;
     self.contentLabel.text=model.msg;
-    self.timeLab.text=[model.createDate description];
+    self.timeLab.text= [MyTools timeString:model.createDate];
+    if (model.hasRead) {
+        self.titleLabel.textColor=[UIColor grayColor];
+        self.timeLab.textColor=[UIColor grayColor];
+        self.contentLabel.textColor=[UIColor lightGrayColor];
+    }
     
 }
 @end

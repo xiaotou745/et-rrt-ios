@@ -342,6 +342,7 @@
 		270846601C118A090034B082 /* TaskDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708465F1C118A090034B082 /* TaskDetailModel.m */; };
 		270846641C12D3FA0034B082 /* CheckProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270846621C12D3FA0034B082 /* CheckProgressViewController.m */; };
 		270846651C12D3FA0034B082 /* CheckProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270846631C12D3FA0034B082 /* CheckProgressViewController.xib */; };
+		2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 2745185D1C219C150052196A /* UIAlertView+Blocks.m */; };
 		27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */; };
 		27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */; };
 		27FE67E81C16B1E600A1CAB1 /* ControlTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E71C16B1E600A1CAB1 /* ControlTemplate.m */; };
@@ -1054,6 +1055,8 @@
 		270846611C12D3FA0034B082 /* CheckProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckProgressViewController.h; sourceTree = "<group>"; };
 		270846621C12D3FA0034B082 /* CheckProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckProgressViewController.m; sourceTree = "<group>"; };
 		270846631C12D3FA0034B082 /* CheckProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckProgressViewController.xib; sourceTree = "<group>"; };
+		2745185C1C219C150052196A /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		2745185D1C219C150052196A /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoImgCell.h; sourceTree = "<group>"; };
 		27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditInfoImgCell.m; sourceTree = "<group>"; };
 		27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditInfoImgCell.xib; sourceTree = "<group>"; };
@@ -1424,6 +1427,8 @@
 		24E4A4381BAF9D1B00EC14AF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				2745185C1C219C150052196A /* UIAlertView+Blocks.h */,
+				2745185D1C219C150052196A /* UIAlertView+Blocks.m */,
 				270843721C06A28C0034B082 /* SFHFKeychainUtils.h */,
 				270843731C06A28C0034B082 /* SFHFKeychainUtils.m */,
 				2708436F1C0566FD0034B082 /* ETSUUID.h */,
@@ -2580,6 +2585,7 @@
 				270846001C1016590034B082 /* ZXEAN13Reader.m in Sources */,
 				2708457D1C1016580034B082 /* ZXBookmarkDoCoMoResultParser.m in Sources */,
 				270846131C1016590034B082 /* ZXModulusGF.m in Sources */,
+				2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */,
 				270845ED1C1016590034B082 /* ZXRSSExpandedFieldParser.m in Sources */,
 				24EFA2961BCE51F4005706F3 /* SDWebImageDownloader.m in Sources */,
 				270845DD1C1016590034B082 /* ZXAI013103decoder.m in Sources */,
@@ -2994,6 +3000,7 @@
 				INFOPLIST_FILE = RRDT1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltlight.openpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3014,6 +3021,7 @@
 				INFOPLIST_FILE = RRDT1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltlight.openpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

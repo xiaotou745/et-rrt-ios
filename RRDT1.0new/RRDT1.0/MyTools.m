@@ -42,6 +42,23 @@
     }
     return color;
 }
+
+@end
+
+@implementation MyTools (times)
+
+
++(NSString *)timeString:(NSString *)string{
+
+    NSString *time;
+    if (string.length==19) {
+        time=[string substringToIndex:16];
+    }else time=string;
+
+    return time;
+}
+
+
 @end
 
 @implementation MyTools (CityAddressManager)

@@ -49,8 +49,8 @@
     [super viewDidLoad];
     
     [self viewCreat];
-    
-    self.title = @"资料审核详情";
+  
+    if(_fromPCenterVC)    self.title = @"资料审核详情";
     [_myScroll setContentOffset:CGPointMake(WIDTH * _contentOfSet_index, 0) animated:NO];//设置scrollView滚动到某个位置，是否有动画效果
     _mySegment.selectedSegmentIndex = _contentOfSet_index;
 
@@ -76,7 +76,7 @@
     //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
     
     
-    _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40-HEIGHT/15 - 20)];
+    _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40)];
     _myScroll.delegate = self;
     _myScroll.pagingEnabled = YES;
     _myScroll.contentSize = CGSizeMake(WIDTH*3, 0);
@@ -96,33 +96,41 @@
     
     waitView = [[WaitingView alloc] init];
     waitView.taskId=_task.taskId;
+    if (_fromPCenterVC)waitView.taskId=@"0";
     [_myScroll addSubview:waitView];
     
     passingView = [[PassingView alloc] init];
     passingView.taskId=_task.taskId;
+    if (_fromPCenterVC)passingView.taskId=@"0";
     [_myScroll addSubview:passingView];
     
     refuseView = [[RefuseView alloc] init];
     refuseView.taskId=_task.taskId;
+    if (_fromPCenterVC)refuseView.taskId=@"0";
     [_myScroll addSubview:refuseView];
     
     
-    
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, HEIGHT - 64 - (HEIGHT/15 + 20), WIDTH, HEIGHT/15 + 20)];
-    footView.backgroundColor = UIColorFromRGB(0xe8e8e8);
-    _postBtn = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(10, 10, WIDTH - 20, HEIGHT/15)];
-    _postBtn.layer.cornerRadius = 4;
-    _postBtn.layer.masksToBounds = YES;
-    [_postBtn setTitle:@"提交资料" forState:UIControlStateNormal];
-    [_postBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _postBtn.backgroundColorForNormal = UIColorFromRGB(0x00bcd5);
-    _postBtn.shutOffColorLoadingAnim = YES;
-    _postBtn.shutOffZoomAnim = YES;
-    _postBtn.status = CoreStatusBtnStatusNormal;
-//    _postBtn.msg = @"正在提交";
-    [footView addSubview:_postBtn];
-    [self.view addSubview:footView];
-    [_postBtn addTarget:self action:@selector(postBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    // 个人中心进来 或 过期任务  不显示提交资料按钮
+    if (!_fromPCenterVC&&!_overTime) {
+        _myScroll.frame= CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40-HEIGHT/15 - 20);
+
+        UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, HEIGHT - 64 - (HEIGHT/15 + 20), WIDTH, HEIGHT/15 + 20)];
+        footView.backgroundColor = UIColorFromRGB(0xe8e8e8);
+        _postBtn = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(10, 10, WIDTH - 20, HEIGHT/15)];
+        _postBtn.layer.cornerRadius = 4;
+        _postBtn.layer.masksToBounds = YES;
+        [_postBtn setTitle:@"提交资料" forState:UIControlStateNormal];
+        [_postBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _postBtn.backgroundColorForNormal = UIColorFromRGB(0x00bcd5);
+        _postBtn.shutOffColorLoadingAnim = YES;
+        _postBtn.shutOffZoomAnim = YES;
+        _postBtn.status = CoreStatusBtnStatusNormal;
+        //    _postBtn.msg = @"正在提交";
+        [footView addSubview:_postBtn];
+        [self.view addSubview:footView];
+        [_postBtn addTarget:self action:@selector(postBtnClick) forControlEvents:UIControlEventTouchUpInside];
+
+    }
     
 }
 - (void)didChangeSegment:(DZNSegmentedControl *)control
@@ -132,7 +140,6 @@
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     int index = fabs(scrollView.contentOffset.x) / scrollView.frame.size.width;
-    
     NSLog(@">>>>>%zi",index);
     _mySegment.selectedSegmentIndex = index;
 }
@@ -199,6 +206,11 @@
      @[[NSString stringWithFormat:@"审核中(%@)",[note.userInfo objectForKey:@"waitTotal"]],
        [NSString stringWithFormat:@"已通过(%@)",[note.userInfo objectForKey:@"passTotal"]],
        [NSString stringWithFormat:@"未通过(%@)",[note.userInfo objectForKey:@"refuseTotal"]]]];
+}
+
+- (void)backBarButtonPressed{
+    if (_navBackToHomeVC)    [self.navigationController popToRootViewControllerAnimated:YES];
+    else [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

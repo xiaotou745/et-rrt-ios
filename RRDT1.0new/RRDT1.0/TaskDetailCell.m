@@ -16,7 +16,9 @@
 @property (weak, nonatomic) IBOutlet CoreLabel *taskName;
 @property (weak, nonatomic) IBOutlet CoreLabel *amount;
 @property (weak, nonatomic) IBOutlet UILabel *taskStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lineLab;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineLab_constraintHeight;
 
 @property (weak, nonatomic) IBOutlet UIImageView *img0;
 @property (weak, nonatomic) IBOutlet UIImageView *img1;
@@ -41,7 +43,7 @@
 
 -(void)setModel:(TaskDetailModel *)model{
 
-    _createDate.text=[NSString stringWithFormat:@"提交时间 %@",model.createDate];
+    _createDate.text=[NSString stringWithFormat:@"提交时间 %@", [MyTools timeString:model.createDate]];
 
     _taskName.text=[NSString stringWithFormat:@""];
     _taskName.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:model.taskType],model.taskName];
@@ -96,5 +98,13 @@
 
         }
     }
+}
+
+-(void)hideBottomViews{
+    [_taskName setHidden:YES];
+    [_taskStatus setHidden:YES];
+    [_amount setHidden:YES];
+    [_lineLab setHidden:YES];
+    _lineLab_constraintHeight.constant=0;
 }
 @end

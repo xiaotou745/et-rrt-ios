@@ -9,13 +9,16 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-#define gotoCheckProgressVC @"gotoCheckProgressVC"
 
 
 #import "MyTools.h"
+#import "UIAlertView+Blocks.h"
 
+#define gotoCheckProgressVC @"gotoCheckProgressVC"
 
 #define addressCityVersion @"addressCityVersion"
+#define getTaskSuccess_refreshWaitVC @"getTaskSuccess_refreshWaitVC"
+#define loginSuccess_refreshWaitVC @"loginSuccess_refreshWaitVC"
 
 #pragma mark -
 #pragma mark - NSUserDefaults

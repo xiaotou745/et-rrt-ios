@@ -498,30 +498,36 @@
     CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
     
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH - 40, HEIGHT/4 + 10)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH - 20, HEIGHT/4 + 10)];
     UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_tishi"]];
     
     UILabel *lab_titile1 = [[UILabel alloc] init];
+    lab_titile1.font=[UIFont systemFontOfSize:15];
     lab_titile1.textColor = UIColorFromRGB(0x666666);
     lab_titile1.textAlignment = NSTextAlignmentRight;
     
     UILabel*lab_msg1 = [[UILabel alloc] init];
+    lab_msg1.font=lab_titile1.font;
     lab_msg1.textColor = UIColorFromRGB(0x666666);
     lab_msg1.textAlignment = NSTextAlignmentLeft;
     
     UILabel *lab_titile2 = [[UILabel alloc] init];
+    lab_titile2.font=lab_titile1.font;
     lab_titile2.textColor = UIColorFromRGB(0x666666);
     lab_titile2.textAlignment = NSTextAlignmentRight;
     
     UILabel*lab_msg2 = [[UILabel alloc] init];
+    lab_msg2.font=lab_titile1.font;
     lab_msg2.textColor = UIColorFromRGB(0x666666);
     lab_msg2.textAlignment = NSTextAlignmentLeft;
     
     UILabel *lab_titile3 = [[UILabel alloc] init];
+    lab_titile3.font=lab_titile1.font;
     lab_titile3.textColor = UIColorFromRGB(0x666666);
     lab_titile3.textAlignment = NSTextAlignmentRight;
     
     UILabel*lab_msg3 = [[UILabel alloc] init];
+    lab_msg3.font=lab_titile1.font;
     lab_msg3.textColor = UIColorFromRGB(0x666666);
     lab_msg3.textAlignment = NSTextAlignmentLeft;
     
@@ -537,7 +543,7 @@
     
     lab_titile1.text = @"提现金额:";
     lab_titile2.text = @"提现账号:";
-    lab_titile3.text = @"提现人姓名:";
+    lab_titile3.text = @"提现人名:";
     lab_msg1.text = _txtMoeny.text;
     lab_msg2.text = _txtAccount.text;
     lab_msg3.text = _txtUsername.text;
@@ -553,39 +559,41 @@
         make.top.mas_equalTo(img.mas_bottom).offset(10);
         make.left.equalTo(view).with.offset(0);
         make.right.mas_equalTo(lab_msg1.mas_left);
-        make.width.mas_equalTo(lab_msg1.mas_width);
+//        make.width.mas_equalTo(lab_msg1.mas_width);
+        make.width.mas_equalTo(90);
+
     }];
     [lab_msg1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(img.mas_bottom).offset(10);
         make.left.mas_equalTo(lab_titile1.mas_right);
         make.right.equalTo(view).with.offset(-0);
-        make.width.mas_equalTo(lab_titile1.mas_width);
+//        make.width.mas_equalTo(lab_titile1.mas_width);
     }];
     
     [lab_titile2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(lab_titile1.mas_bottom).offset(10);
         make.left.equalTo(view).with.offset(0);
         make.right.mas_equalTo(lab_msg2.mas_left);
-        make.width.mas_equalTo(lab_msg2.mas_width);
+        make.width.mas_equalTo(lab_titile1.mas_width);
     }];
     [lab_msg2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(lab_titile1.mas_bottom).offset(10);
         make.left.mas_equalTo(lab_titile2.mas_right);
         make.right.equalTo(view).with.offset(-0);
-        make.width.mas_equalTo(lab_titile2.mas_width);
+//        make.width.mas_equalTo(lab_titile2.mas_width);
     }];
     
     [lab_titile3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(lab_titile2.mas_bottom).offset(10);
         make.left.equalTo(view).with.offset(0);
         make.right.mas_equalTo(lab_msg3.mas_left);
-        make.width.mas_equalTo(lab_msg3.mas_width);
+        make.width.mas_equalTo(lab_titile1.mas_width);
     }];
     [lab_msg3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(lab_titile2.mas_bottom).offset(10);
         make.left.mas_equalTo(lab_titile3.mas_right);
         make.right.equalTo(view).with.offset(-0);
-        make.width.mas_equalTo(lab_titile3.mas_width);
+//        make.width.mas_equalTo(lab_titile3.mas_width);
     }];
     
     

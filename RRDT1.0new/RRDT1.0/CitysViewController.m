@@ -17,7 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title=@"城市列表";
     self.myTableV.delegate = self;
     self.myTableV.dataSource = self;
     self.myTableV.tableFooterView = [UIView new];

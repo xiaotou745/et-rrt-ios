@@ -53,7 +53,7 @@
     
     [self viewCreat];
     
-    self.title = @"当前任务";
+    self.title = @"我的任务";
 }
 - (void)viewCreat{
     
@@ -177,13 +177,21 @@
 -(void)todoShare:(NSNotification *)not{
 
     RRDTBarViewController *barVC=[[RRDTBarViewController alloc]initWithNibName:@"RRDTBarViewController" bundle:nil];
-    barVC.urlString=[not.object description];
+    
+    Task *task=(Task *)not.object;
+    barVC.downUrl=task.downUrl;
+    barVC.scanTip=task.scanTip;
+    barVC.reminder=task.reminder;
+    
     [self.navigationController pushViewController:barVC animated:YES];
 }
 -(void)toTaskDetail:(NSNotification *)not{
     TaskDetailViewController *vc=[[TaskDetailViewController alloc]init];
     vc.task=not.object[@"task"];
+    vc.title=vc.task.taskName;
     vc.contentOfSet_index=[not.object[@"index"] integerValue];
+    if (vc.task.status==3||vc.task.status==4)  vc.overTime=YES;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)dealloc{
