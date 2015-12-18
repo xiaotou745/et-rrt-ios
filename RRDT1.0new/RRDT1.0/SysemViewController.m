@@ -43,8 +43,9 @@
     
     self.title = @"更多";
     
-    _titileArr = @[@"修改密码",@"当前版本",@"清除缓存"];
-    
+//    _titileArr = @[@"修改密码",@"当前版本",@"清除缓存"];
+    _titileArr = @[@"修改密码",@"当前版本"];
+
     _mytable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
@@ -106,7 +107,7 @@
     return 5;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return _titileArr.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 

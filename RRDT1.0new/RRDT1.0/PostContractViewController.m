@@ -282,6 +282,14 @@
     _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
     _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
     _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
+    if(_task.hotLine.length==0||_task.hotLine==nil){
+        
+        [_lab3 setHidden:YES];
+        [_img3 setHidden:YES];
+    }else{
+        [_lab3 setHidden:NO];
+        [_img3 setHidden:NO];
+    }
 
     [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
     

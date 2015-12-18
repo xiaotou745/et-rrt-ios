@@ -357,7 +357,9 @@
         
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            
+            if (_nextId == 0) {
+                [_modeArr removeAllObjects];
+            }
 //            NSLog(@"wait%@ and %@",responseObject,operation);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
@@ -366,9 +368,7 @@
 //                    [self.view makeToast:@"没有更多了" duration:1.0 position:CSToastPositionCenter];
 //                    [_mytable reloadData];
                 }else{
-                    if (_nextId == 0) {
-                        [_modeArr removeAllObjects];
-                    }
+                   
                     _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
                     
                     for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {

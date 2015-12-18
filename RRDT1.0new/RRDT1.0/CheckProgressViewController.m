@@ -49,7 +49,7 @@
     _editBTN.layer.cornerRadius=5;
     _editBTN.layer.masksToBounds=YES;
     _editBTN.layer.borderWidth=1;
-    if ([_model.taskStatus isEqualToString:@"已过期"]) {
+    if (_model.taskStatus!=1) {
         _editBTN.enabled=NO;
         _editBTN.layer.borderColor=[UIColor lightGrayColor].CGColor;
         _editBTN.backgroundColor=[UIColor lightGrayColor];

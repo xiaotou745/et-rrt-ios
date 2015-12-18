@@ -100,12 +100,7 @@
 
 @implementation NewTaskContentViewController
 
-//- (void)backPostContract{
-//    NSLog(@">>>>走了");
-//    _type = 1;
-//    [self judegMent];
-//    [self getTaskContent:_task.orderId];
-//}
+
 -(void)viewWillAppear:(BOOL)animated{
 
     [self judegMent];
@@ -114,10 +109,8 @@
             [self getTaskContent:_task.orderId];
         }];
     }else{
-        //        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
         [self getTaskContent:_task.orderId];
-        
-        
     }
 }
 - (void)viewDidLoad {
@@ -564,7 +557,6 @@
         }else if (_type == 7){
             status = @"已取消";
         }
-//        _statusLabel.text = [NSString stringWithFormat:@"状态：%@",status];
         _statusLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:_task.taskType],_task.taskGeneralInfo];
         
         
@@ -573,14 +565,7 @@
         
         [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
         _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
-//        [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xbbc0c7) range:NSMakeRange(0, 3)];
-//        [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x333333) range:NSMakeRange(3, 3)];
 
-       // if (_type == 1) {
-//            _lab1.text = [NSString stringWithFormat:@"可领 %@次",_task.availableCount];
-//            _lab2.text = [NSString stringWithFormat:@"完成时间 %@小时",_task.taskCycle];
-//            _lab3.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
-//            _lab4.text = [NSString stringWithFormat:@"结束时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 16)]];
             _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
             _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
             _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
@@ -592,53 +577,10 @@
             [_lab3 setHidden:NO];
             [_img3 setHidden:NO];
         }
-        //_task.hotLine==nil?@"无":_task.hotLine
-//        [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_lab3.text.length - 2)];
+
         [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
 
-//        }else if (_type == 2){
-//            _lab1.text = [NSString stringWithFormat:@"可领 %@次",_task.availableCount];
-//            _lab2.text = [NSString stringWithFormat:@"%@",[self timeFinsh:[_task.receivedTime substringToIndex:19] andCycle:_task.taskCycle]];
-//            _lab3.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
-//            _lab4.text = [NSString stringWithFormat:@"结束时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 16)]];
-//        }else if (_type == 3){
-//            _lab1.text = [NSString stringWithFormat:@"可领 %@次",_task.availableCount];
-//            _lab2.text = [NSString stringWithFormat:@"%@",[self timeHelper:[_task.endTime substringWithRange:NSMakeRange(0, 19)]]];
-//            _lab3.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
-//            _img4.hidden = YES;
-//        }else if (_type == 4){
-//            _lab1.text = [NSString stringWithFormat:@"可领 %@次",_task.availableCount];
-//            _lab2.text = [NSString stringWithFormat:@"%@",[self timeHelper:[_task.endTime substringWithRange:NSMakeRange(0, 19)]]];
-//            _lab3.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
-//            _lab4.text = [NSString stringWithFormat:@"提交时间 %@",_task.finishTime==nil?@"未知":[_task.finishTime substringWithRange:NSMakeRange(0, 16)]];
-//        }else if (_type == 5 || _type == 6 || _type == 7){
-//            _lab1.text = [NSString stringWithFormat:@"可领 %@次",_task.availableCount];
-//            _lab2.text = [NSString stringWithFormat:@"%@",[self timeHelper:[_task.endTime substringWithRange:NSMakeRange(0, 19)]]];
-//            _lab3.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
-//            _img4.hidden = YES;
-//        }
-//        if (_type!=1) {
-//            [cell.contentView addSubview:[self timeLabel]];
-//            [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.mas_equalTo(_statusLabel.mas_bottom);
-//                make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-//                make.right.equalTo(cell.contentView).with.offset(-12);
-//                make.height.mas_equalTo(20);
-//            }];
-//            if (_type == 2) {
-//                
-//                _timeLabel.text = [NSString stringWithFormat:@"领取时间：%@",_task.receivedTime == nil ? @"未知":[_task.receivedTime substringWithRange:NSMakeRange(0, 16)]];
-//                [_timeLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xbbc0c7) range:NSMakeRange(0, 5)];
-//                [_timeLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x333333) range:NSMakeRange(5, _timeLabel.text.length - 5)];
-//            }
-        
-//            else{
-//                _timeLabel.text = [NSString stringWithFormat:@"审核时间：%@",[_task.auditTime substringWithRange:NSMakeRange(0, 16)]];
-//                [_timeLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xbbc0c7) range:NSMakeRange(0, 5)];
-//                [_timeLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x333333) range:NSMakeRange(5, _timeLabel.text.length - 5)];
-//            }
-        
-     //   }
+
     }
     
     return cell;
@@ -647,16 +589,10 @@
     if (indexPath.section == 0) {
         return 140;
     }else if (indexPath.section == 1){
-//        CGSize size = [[_contentArr objectAtIndex:indexPath.section] boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]} context:nil].size;
-//        return size.height + 10;
+
         return      _heightSection1+25;
-;
     }
-//    CGSize size = [[_contentArr objectAtIndex:indexPath.section] boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]} context:nil].size;
-//    return size.height + 40;
     return 40;
-    
-    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 5;

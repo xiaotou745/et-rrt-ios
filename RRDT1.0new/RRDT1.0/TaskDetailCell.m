@@ -63,7 +63,7 @@
     [_amount addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_amount.text.length - 2,2)];
     
     
-    _taskStatus.text=model.taskStatus;
+    _taskStatus.text=model.taskStatusName;
     _taskStatus.textColor=UIColorFromRGB(0x00bcd5);
     if (GroupTypeText== model.groupType) {
         [_contentText setHidden:NO];

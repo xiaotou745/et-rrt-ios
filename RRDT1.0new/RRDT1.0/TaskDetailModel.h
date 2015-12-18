@@ -37,7 +37,8 @@ typedef enum: NSUInteger{
 @property(assign,nonatomic)float amount;//任务单价
 @property(assign,nonatomic)int taskType;//任务类型id（1分享类，2下载类，3签约类）
 @property(strong,nonatomic)NSString *taskTypeName;//任务类型名称
-@property(strong,nonatomic)NSString *taskStatus;//任务状态描述：进行中或已过期
+@property(assign,nonatomic)int taskStatus;//任务状态码：1是进行中，3是过期，4是终止
+@property(strong,nonatomic)NSString *taskStatusName;//任务状态描述：1是进行中，3是过期，4是终止
 @property(strong,nonatomic)NSString *auditCycle;//(审核周期)
 @property(strong,nonatomic)NSString *taskDatumId;//	资料id
 @property(assign,nonatomic)int auditStatus;//审核状态描述：待审核，通过，不通过

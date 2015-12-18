@@ -87,6 +87,10 @@
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Getmymsglist] parameters:parmeters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>>%@",operation);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (_nextId == 0) {
+            [_dataArray removeAllObjects];
+        }
+        
         NSLog(@"JSON: %@", responseObject);
         NSNumber *code = [responseObject objectForKey:@"code"];
         int code_int = [code intValue];
@@ -94,9 +98,7 @@
             if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
                 
             }else{
-                if (_nextId == 0) {
-                    [_dataArray removeAllObjects];
-                }
+                
                 
                 _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
                 for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {

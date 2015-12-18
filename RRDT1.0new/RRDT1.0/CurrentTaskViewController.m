@@ -16,7 +16,6 @@
 
 #import "CheckingTaskView.h"
 
-//#import "NotPassView.h"
 
 #import "NewTaskContentViewController.h"
 
@@ -35,9 +34,6 @@
     ReceivedView *receivedView;
     
     CheckingTaskView *checkingView;
-    
-//    NotPassView *notpassView;
-    
     
 }
 @property (nonatomic,strong) UIScrollView *myScroll;
@@ -63,9 +59,6 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receive:) name:@"select" object:nil];//点击列表通知
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changeSelcct" object:nil];//数量改变通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(againpost:) name:@"againPost" object:nil];//未通过再次提交通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveCurrent:) name:@"receiveCurrentNote" object:nil];//审核中再次领取通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listPostBackNotification:) name:@"ListPostBackNotification" object:nil];//未通过列表点击提交返回跳转
-    
     
     
     [[DZNSegmentedControl appearance] setBackgroundColor:[UIColor whiteColor]];
@@ -101,9 +94,8 @@
     
     checkingView = [[CheckingTaskView alloc] init];
     [_myScroll addSubview:checkingView];
-    
-//    notpassView = [[NotPassView alloc] init];
-//    [_myScroll addSubview:notpassView];
+    [self getTaskList];
+
 }
 # pragma mark 滑动点击监听
 - (void)didChangeSegment:(DZNSegmentedControl *)control
@@ -118,16 +110,6 @@
     NSLog(@">>>>>%zi",index);
     _mySegment.selectedSegmentIndex = index;
     
-//    if (index == 0) {
-//        [MBProgressHUD showHUDAddedTo:receivedView animated:YES];
-//        [receivedView post];
-//    }else if (index == 1){
-//        [MBProgressHUD showHUDAddedTo:checkingView animated:YES];
-//        [checkingView post];
-//    }else if (index == 2){
-//        [MBProgressHUD showHUDAddedTo:notpassView animated:YES];
-//        [notpassView post];
-//    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -162,18 +144,6 @@
     [post postGetMyTask];
     [self.navigationController pushViewController:post animated:YES];
 }
-- (void)receiveCurrent:(NSNotification *)note{
-    _mySegment.selectedSegmentIndex = 0;
-    [_myScroll setContentOffset:CGPointMake(WIDTH * _mySegment.selectedSegmentIndex, 0) animated:YES];
-    [self getTaskList];
-}
-- (void)listPostBackNotification:(NSNotification *)note{
-    NSLog(@"要跳了");
-    NewTaskContentViewController *newVC =[[NewTaskContentViewController alloc] init];
-    newVC.task = note.object;
-    newVC.type = 2;
-    [self.navigationController pushViewController:newVC animated:YES];
-}
 -(void)todoShare:(NSNotification *)not{
 
     RRDTBarViewController *barVC=[[RRDTBarViewController alloc]initWithNibName:@"RRDTBarViewController" bundle:nil];
@@ -198,8 +168,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"select" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"changeSelcct" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"againPost" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"receiveCurrentNote" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ListPostBackNotification" object:nil];
 }
 - (void)backBarButtonPressed{
     NSLog(@"back to my selef");
@@ -208,7 +176,7 @@
 #pragma mark 出现重新加载
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self getTaskList];
+//    [self getTaskList];
 }
 - (void)getTaskList{
     [MBProgressHUD showHUDAddedTo:receivedView animated:YES];
@@ -217,9 +185,6 @@
     [MBProgressHUD showHUDAddedTo:checkingView animated:YES];
     checkingView.nextId = 0;
     [checkingView post];
-//    [MBProgressHUD showHUDAddedTo:notpassView animated:YES];
-//    notpassView.nextId = 0;
-//    [notpassView post];
 }
 /*
 #pragma mark - Navigation
