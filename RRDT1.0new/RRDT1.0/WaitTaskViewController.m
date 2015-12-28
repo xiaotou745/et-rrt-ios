@@ -247,16 +247,44 @@
     _manager.delegate=nil;
 
     CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
-    
+//    double Latitude=44.060679;
+//    double longitude=87.259918;
+//116.390471,39.926002
+//    117.876627,39.830765
+//    114.900865,39.056902
+//    112.440226,37.932754
+//    111.170813,41.387036
+//    117.499483,36.698461
+//    121.455516,31.244703
+//    87.259918,44.060679
+//    CLLocation *loca=[[CLLocation alloc]initWithLatitude:Latitude longitude:longitude];
     [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         
         for (CLPlacemark * placemark in placemarks) {
-            
-            NSDictionary *test = [placemark addressDictionary];
-            _StateName=[test objectForKey:@"State"];
+//            NSLog(@"\n name:%@\n  country:%@\n postalCode:%@\n ISOcountryCode:%@\n ocean:%@\n inlandWater:%@\n administrativeArea:%@\n subAdministrativeArea:%@\n locality:%@\n subLocality:%@\n thoroughfare:%@\n subThoroughfare:%@\n",
+//                  placemark.name,
+//                  placemark.country,
+//                  placemark.postalCode,
+//                  placemark.ISOcountryCode,
+//                  placemark.ocean,
+//                  placemark.inlandWater,
+//                  placemark.administrativeArea,
+//                  placemark.subAdministrativeArea,
+//                  placemark.locality,
+//                  placemark.subLocality,
+//                  placemark.thoroughfare,
+//                  placemark.subThoroughfare
+//                  
+//                  );
+//
+//            NSLog(@"%@",placemark.addressDictionary);
+//            NSLog(@"addressDictionary :%@",placemark.addressDictionary);
+//
+//            NSDictionary *addressDictionary = [placemark addressDictionary];
+            _StateName=placemark.locality;
             //  Country(国家)  State(城市)  SubLocality(区)
             
-            NSLog(@" State(城市)》》》》》》》》》%@", _StateName);
+            NSLog(@" locality(城市) %@", _StateName);
             
             [self checkCityCode];
         }
@@ -447,8 +475,7 @@
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
-    _nextId = 0;
-    [self post];
+    [self requestNewCityDatas];
 }
 - (NSString *)timeHelper:(NSString *)timeStr{
     NSDateFormatter *dateformatter = [NSDateFormatter new];
