@@ -2415,6 +2415,9 @@
 		242ED6271BABF10E005D6D75 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = RRDT002;
 				TargetAttributes = {

@@ -261,40 +261,15 @@
     [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         
         for (CLPlacemark * placemark in placemarks) {
-//            NSLog(@"\n name:%@\n  country:%@\n postalCode:%@\n ISOcountryCode:%@\n ocean:%@\n inlandWater:%@\n administrativeArea:%@\n subAdministrativeArea:%@\n locality:%@\n subLocality:%@\n thoroughfare:%@\n subThoroughfare:%@\n",
-//                  placemark.name,
-//                  placemark.country,
-//                  placemark.postalCode,
-//                  placemark.ISOcountryCode,
-//                  placemark.ocean,
-//                  placemark.inlandWater,
-//                  placemark.administrativeArea,
-//                  placemark.subAdministrativeArea,
-//                  placemark.locality,
-//                  placemark.subLocality,
-//                  placemark.thoroughfare,
-//                  placemark.subThoroughfare
-//                  
-//                  );
-//
-//            NSLog(@"%@",placemark.addressDictionary);
-//            NSLog(@"addressDictionary :%@",placemark.addressDictionary);
-//
-//            NSDictionary *addressDictionary = [placemark addressDictionary];
             _StateName=placemark.locality;
             //  Country(国家)  State(城市)  SubLocality(区)
-            
             NSLog(@" locality(城市) %@", _StateName);
-            
             [self checkCityCode];
         }
         
     }];
 }
 -(void)checkCityCode{
-
-    //    cityInfo=_modeArr[indexPath.section][KCitys_regions][indexPath.row];
-    //    _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
 
     if (_StateName!=nil) {
         for (NSDictionary *sectionInfo in self.citysArr) {

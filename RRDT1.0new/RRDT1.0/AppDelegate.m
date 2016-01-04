@@ -29,41 +29,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    sleep(3);
-    
-//    NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
-//    
-//    NSData *data = [dd objectForKey:@"myUser"];
-//    
-//    
-//    
-//    
-//    if (data.length == 0) {
-//        LoginViewController *login = [[LoginViewController alloc] init];
-//        
-//        self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-//        
-//        [self.window makeKeyAndVisible];
-//        
-//        self.window.rootViewController = login;
-//    }else{
-//        User *user = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-//        
-//        NSLog(@">>>>>%@",user);
-//        
-//        TaskViewController *task = [[TaskViewController alloc] init];
-//        
-//        self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-//        
-//        [self.window makeKeyAndVisible];
-//        
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:task];
-//        
-//        [nav.navigationBar setBarTintColor:UIColorFromRGB(BLUEColor)];
-//        
-//        self.window.rootViewController = nav;
-//    }
-    
     
     [ETSUUID storeUniqueDeviceIDToKeychain];
 
@@ -103,59 +68,9 @@
     
     [CoreStatus beginNotiNetwork:self];
     
-    [self coreStatusCheck];
-    
-//   / [self getVersion];
-    
     return YES;
 }
-- (void)getVersion{
-    
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    
-    NSDictionary *parameters = @{@"platForm":@"2",
-                                 @"userType":@"1"};
-    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetVersion] parameters:parameters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        NSLog(@"version json>>>>>%@",responseObject);
-        NSLog(@"version json>>>>>%@",[responseObject objectForKey:@"msg"]);
-        NSNumber *code = [responseObject objectForKey:@"code"];
-        int code_int = [code intValue];
-        if (code_int == 200) {
-//            NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-            
-//            float appVersion = [[infoDic objectForKey:@"CFBundleVersion"] floatValue];
-            
-//            NSLog(@"?>?????><<%f",appVersion);
-            
-            myVersion = [[MyVersion alloc] init];
-            
-            [MyVersion setValuesForKeysWithDictionary:[responseObject objectForKey:@"data"]];
-            myVersion.version = [myVersion.version stringByReplacingOccurrencesOfString:@"." withString:@""];
-            
-            if ([myVersion.isMust integerValue] == 0) {
-                if ([myVersion.version integerValue] > [appVersion integerValue]) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本提示" message:myVersion.message delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
-                    alert.tag = 111;
-                    [alert show];
-                }
-            }else{
-                if ([myVersion.version integerValue] > [appVersion integerValue]) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"新版本提示" message:myVersion.message delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
-                    alert.tag = 222;
-                    [alert show];
-                }
-            }
-            
-            
-        }
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-        NSLog(@">>>>>%@",error);
-        NSLog(@"opera:::%@",operation);
-    }];
-    
 
-    
-}
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 111) {
         if (buttonIndex == 0) {
@@ -177,13 +92,7 @@
     }];
     
 }
-- (void)coreStatusCheck{
-    NSString * statusString = [CoreStatus currentNetWorkStatusString];
-    
-    if ([statusString isEqualToString:@"无网络"]) {
-        [self.window makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
-    }
-}
+
 - (void)coreNetworkChangeNoti:(NSNotification *)noti{
     
     NSString * statusString = [CoreStatus currentNetWorkStatusString];
