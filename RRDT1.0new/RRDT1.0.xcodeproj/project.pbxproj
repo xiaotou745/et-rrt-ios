@@ -342,6 +342,21 @@
 		270846601C118A090034B082 /* TaskDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708465F1C118A090034B082 /* TaskDetailModel.m */; };
 		270846641C12D3FA0034B082 /* CheckProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 270846621C12D3FA0034B082 /* CheckProgressViewController.m */; };
 		270846651C12D3FA0034B082 /* CheckProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 270846631C12D3FA0034B082 /* CheckProgressViewController.xib */; };
+		272229A71C3A41900077997A /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272229A61C3A41900077997A /* TabBarController.m */; };
+		272229AA1C3A43410077997A /* TabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 272229A91C3A43410077997A /* TabBarView.m */; };
+		272229AD1C3A43E30077997A /* UIView+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 272229AC1C3A43E30077997A /* UIView+Common.m */; };
+		272229B01C3A44370077997A /* ManFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 272229AF1C3A44370077997A /* ManFactory.m */; };
+		27222E011C3A77B40077997A /* BillDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E001C3A77B40077997A /* BillDetailViewController.m */; };
+		27222E041C3A77E30077997A /* PartnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E031C3A77E30077997A /* PartnerViewController.m */; };
+		27222E0B1C3B66690077997A /* SCAlipayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E061C3B66690077997A /* SCAlipayCell.m */; };
+		27222E0C1C3B66690077997A /* SCAlipayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E071C3B66690077997A /* SCAlipayCell.xib */; };
+		27222E0D1C3B66690077997A /* SCBandAliPayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E091C3B66690077997A /* SCBandAliPayVC.m */; };
+		27222E0E1C3B66690077997A /* SCBandAliPayVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E0A1C3B66690077997A /* SCBandAliPayVC.xib */; };
+		27222E111C3B680D0077997A /* NSString+evaluatePhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E101C3B680D0077997A /* NSString+evaluatePhoneNumber.m */; };
+		27222E141C3B68CD0077997A /* MBProgressHUD+show.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E131C3B68CD0077997A /* MBProgressHUD+show.m */; };
+		27222E181C3BB6AD0077997A /* SCMsgDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E161C3BB6AD0077997A /* SCMsgDetailVC.m */; };
+		27222E191C3BB6AD0077997A /* SCMsgDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E171C3BB6AD0077997A /* SCMsgDetailVC.xib */; };
+		27222E1F1C3E33270077997A /* NSString+addRMBcharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E1E1C3E33270077997A /* NSString+addRMBcharacter.m */; };
 		2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 2745185D1C219C150052196A /* UIAlertView+Blocks.m */; };
 		27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */; };
 		27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */; };
@@ -1055,6 +1070,33 @@
 		270846611C12D3FA0034B082 /* CheckProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckProgressViewController.h; sourceTree = "<group>"; };
 		270846621C12D3FA0034B082 /* CheckProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckProgressViewController.m; sourceTree = "<group>"; };
 		270846631C12D3FA0034B082 /* CheckProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckProgressViewController.xib; sourceTree = "<group>"; };
+		272229A51C3A41900077997A /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
+		272229A61C3A41900077997A /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
+		272229A81C3A43410077997A /* TabBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarView.h; sourceTree = "<group>"; };
+		272229A91C3A43410077997A /* TabBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarView.m; sourceTree = "<group>"; };
+		272229AB1C3A43E30077997A /* UIView+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Common.h"; sourceTree = "<group>"; };
+		272229AC1C3A43E30077997A /* UIView+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Common.m"; sourceTree = "<group>"; };
+		272229AE1C3A44370077997A /* ManFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManFactory.h; sourceTree = "<group>"; };
+		272229AF1C3A44370077997A /* ManFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManFactory.m; sourceTree = "<group>"; };
+		27222DFF1C3A77B40077997A /* BillDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillDetailViewController.h; sourceTree = "<group>"; };
+		27222E001C3A77B40077997A /* BillDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BillDetailViewController.m; sourceTree = "<group>"; };
+		27222E021C3A77E30077997A /* PartnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerViewController.h; sourceTree = "<group>"; };
+		27222E031C3A77E30077997A /* PartnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerViewController.m; sourceTree = "<group>"; };
+		27222E051C3B66690077997A /* SCAlipayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAlipayCell.h; sourceTree = "<group>"; };
+		27222E061C3B66690077997A /* SCAlipayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAlipayCell.m; sourceTree = "<group>"; };
+		27222E071C3B66690077997A /* SCAlipayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCAlipayCell.xib; sourceTree = "<group>"; };
+		27222E081C3B66690077997A /* SCBandAliPayVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBandAliPayVC.h; sourceTree = "<group>"; };
+		27222E091C3B66690077997A /* SCBandAliPayVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBandAliPayVC.m; sourceTree = "<group>"; };
+		27222E0A1C3B66690077997A /* SCBandAliPayVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCBandAliPayVC.xib; sourceTree = "<group>"; };
+		27222E0F1C3B680D0077997A /* NSString+evaluatePhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+evaluatePhoneNumber.h"; sourceTree = "<group>"; };
+		27222E101C3B680D0077997A /* NSString+evaluatePhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+evaluatePhoneNumber.m"; sourceTree = "<group>"; };
+		27222E121C3B68CD0077997A /* MBProgressHUD+show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+show.h"; sourceTree = "<group>"; };
+		27222E131C3B68CD0077997A /* MBProgressHUD+show.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+show.m"; sourceTree = "<group>"; };
+		27222E151C3BB6AD0077997A /* SCMsgDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMsgDetailVC.h; sourceTree = "<group>"; };
+		27222E161C3BB6AD0077997A /* SCMsgDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMsgDetailVC.m; sourceTree = "<group>"; };
+		27222E171C3BB6AD0077997A /* SCMsgDetailVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCMsgDetailVC.xib; sourceTree = "<group>"; };
+		27222E1D1C3E33270077997A /* NSString+addRMBcharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+addRMBcharacter.h"; sourceTree = "<group>"; };
+		27222E1E1C3E33270077997A /* NSString+addRMBcharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+addRMBcharacter.m"; sourceTree = "<group>"; };
 		2745185C1C219C150052196A /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		2745185D1C219C150052196A /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoImgCell.h; sourceTree = "<group>"; };
@@ -1142,6 +1184,10 @@
 				24E4A4351BAF9CCD00EC14AF /* Login */,
 				242ED6351BABF10F005D6D75 /* AppDelegate.h */,
 				242ED6361BABF10F005D6D75 /* AppDelegate.m */,
+				272229A51C3A41900077997A /* TabBarController.h */,
+				272229A61C3A41900077997A /* TabBarController.m */,
+				272229A81C3A43410077997A /* TabBarView.h */,
+				272229A91C3A43410077997A /* TabBarView.m */,
 				242ED63E1BABF10F005D6D75 /* Assets.xcassets */,
 				242ED6401BABF10F005D6D75 /* LaunchScreen.storyboard */,
 				242ED6431BABF10F005D6D75 /* Info.plist */,
@@ -1332,8 +1378,18 @@
 				24E4A4591BB00A5B00EC14AF /* MyCenterViewController.m */,
 				24DD7F6F1BB157D500446589 /* WithDrawViewController.h */,
 				24DD7F701BB157D500446589 /* WithDrawViewController.m */,
+				27222E051C3B66690077997A /* SCAlipayCell.h */,
+				27222E061C3B66690077997A /* SCAlipayCell.m */,
+				27222E071C3B66690077997A /* SCAlipayCell.xib */,
+				27222E081C3B66690077997A /* SCBandAliPayVC.h */,
+				27222E091C3B66690077997A /* SCBandAliPayVC.m */,
+				27222E0A1C3B66690077997A /* SCBandAliPayVC.xib */,
 				24DE71901BB29459007EC6F3 /* MyInfoViewController.h */,
 				24DE71911BB29459007EC6F3 /* MyInfoViewController.m */,
+				27222DFF1C3A77B40077997A /* BillDetailViewController.h */,
+				27222E001C3A77B40077997A /* BillDetailViewController.m */,
+				27222E021C3A77E30077997A /* PartnerViewController.h */,
+				27222E031C3A77E30077997A /* PartnerViewController.m */,
 				24DE71931BB2A007007EC6F3 /* SysemViewController.h */,
 				24DE71941BB2A007007EC6F3 /* SysemViewController.m */,
 				24DE71961BB2A672007EC6F3 /* ChangePasswordViewController.h */,
@@ -1350,6 +1406,9 @@
 				27FE67EC1C18586400A1CAB1 /* SCMsgListVC.h */,
 				27FE67ED1C18586400A1CAB1 /* SCMsgListVC.m */,
 				27FE67EE1C18586400A1CAB1 /* SCMsgListVC.xib */,
+				27222E151C3BB6AD0077997A /* SCMsgDetailVC.h */,
+				27222E161C3BB6AD0077997A /* SCMsgDetailVC.m */,
+				27222E171C3BB6AD0077997A /* SCMsgDetailVC.xib */,
 			);
 			name = Center;
 			sourceTree = "<group>";
@@ -1427,6 +1486,14 @@
 		24E4A4381BAF9D1B00EC14AF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				27222E1D1C3E33270077997A /* NSString+addRMBcharacter.h */,
+				27222E1E1C3E33270077997A /* NSString+addRMBcharacter.m */,
+				27222E0F1C3B680D0077997A /* NSString+evaluatePhoneNumber.h */,
+				27222E101C3B680D0077997A /* NSString+evaluatePhoneNumber.m */,
+				272229AE1C3A44370077997A /* ManFactory.h */,
+				272229AF1C3A44370077997A /* ManFactory.m */,
+				272229AB1C3A43E30077997A /* UIView+Common.h */,
+				272229AC1C3A43E30077997A /* UIView+Common.m */,
 				2745185C1C219C150052196A /* UIAlertView+Blocks.h */,
 				2745185D1C219C150052196A /* UIAlertView+Blocks.m */,
 				270843721C06A28C0034B082 /* SFHFKeychainUtils.h */,
@@ -1451,6 +1518,8 @@
 				24D7F9331BB3A634007184D7 /* BackBaseViewController.m */,
 				24D7F92F1BB3A11D007184D7 /* MBProgressHUD.h */,
 				24D7F9301BB3A11D007184D7 /* MBProgressHUD.m */,
+				27222E121C3B68CD0077997A /* MBProgressHUD+show.h */,
+				27222E131C3B68CD0077997A /* MBProgressHUD+show.m */,
 				24E4A4321BAF916800EC14AF /* UIView+Toast.h */,
 				24E4A4331BAF916800EC14AF /* UIView+Toast.m */,
 				242ED6681BABF49F005D6D75 /* MyTools.h */,
@@ -2465,6 +2534,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27222E0E1C3B66690077997A /* SCBandAliPayVC.xib in Resources */,
+				27222E191C3BB6AD0077997A /* SCMsgDetailVC.xib in Resources */,
 				270843811C0FEEAF0034B082 /* RRDTBarViewController.xib in Resources */,
 				242ED6791BAC07D9005D6D75 /* CoreTFKeyBoardToolBarView.xib in Resources */,
 				27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */,
@@ -2472,6 +2543,7 @@
 				24E5E7171BAD3D3A0066D3A5 /* CoreStatusBtnMaskView.xib in Resources */,
 				2708437C1C0EC3BD0034B082 /* RRDTWebViewController.xib in Resources */,
 				2403F53A1BCEF14600917E4A /* PrivacyPolicy_CH.txt in Resources */,
+				27222E0C1C3B66690077997A /* SCAlipayCell.xib in Resources */,
 				270846651C12D3FA0034B082 /* CheckProgressViewController.xib in Resources */,
 				27FE67F21C18586400A1CAB1 /* SCMsgListVC.xib in Resources */,
 				27FE67F01C18586400A1CAB1 /* SCMsgListCell.xib in Resources */,
@@ -2567,6 +2639,7 @@
 				270846191C1016590034B082 /* ZXPDF417Codeword.m in Sources */,
 				270846331C1016590034B082 /* ZXQRCodeFormatInformation.m in Sources */,
 				270845DC1C1016590034B082 /* ZXAbstractExpandedDecoder.m in Sources */,
+				27222E111C3B680D0077997A /* NSString+evaluatePhoneNumber.m in Sources */,
 				270845731C1016580034B082 /* ZXAztecState.m in Sources */,
 				270845AF1C1016590034B082 /* ZXGlobalHistogramBinarizer.m in Sources */,
 				24EFA2991BCE51F4005706F3 /* SDWebImagePrefetcher.m in Sources */,
@@ -2607,7 +2680,9 @@
 				242ED6771BAC07D9005D6D75 /* CoreTFManagerVC.m in Sources */,
 				2708465C1C1177EC0034B082 /* TaskDetailCell.m in Sources */,
 				27FE67F11C18586400A1CAB1 /* SCMsgListVC.m in Sources */,
+				272229AD1C3A43E30077997A /* UIView+Common.m in Sources */,
 				24ED84771BD885A600AAACBB /* WaitTaskViewController.m in Sources */,
+				27222E011C3A77B40077997A /* BillDetailViewController.m in Sources */,
 				270845711C1016580034B082 /* ZXAztecHighLevelEncoder.m in Sources */,
 				24EEDB901BE9AD880019221E /* AgainLoginViewController.m in Sources */,
 				24EFA29F1BCE51F4005706F3 /* UIImageView+WebCache.m in Sources */,
@@ -2662,6 +2737,7 @@
 				242ED6371BABF10F005D6D75 /* AppDelegate.m in Sources */,
 				270845B01C1016590034B082 /* ZXGridSampler.m in Sources */,
 				2708461E1C1016590034B082 /* ZXPDF417DetectionResultRowIndicatorColumn.m in Sources */,
+				27222E141C3B68CD0077997A /* MBProgressHUD+show.m in Sources */,
 				24E5E7181BAD3D3A0066D3A5 /* MaskViewAnimView.m in Sources */,
 				270843771C0C34080034B082 /* TaskStep.m in Sources */,
 				270845BC1C1016590034B082 /* ZXInvertedLuminanceSource.m in Sources */,
@@ -2680,6 +2756,7 @@
 				24EFA29C1BCE51F4005706F3 /* UIImage+MultiFormat.m in Sources */,
 				270845A31C1016590034B082 /* ZXGenericGFPoly.m in Sources */,
 				24642A5F1BCF8F5100B1647E /* HelpCenterViewController.m in Sources */,
+				27222E181C3BB6AD0077997A /* SCMsgDetailVC.m in Sources */,
 				24E4A45A1BB00A5B00EC14AF /* MyCenterViewController.m in Sources */,
 				24DE71981BB2A672007EC6F3 /* ChangePasswordViewController.m in Sources */,
 				24E0E6BC1BD08F92004692A7 /* AboutViewController.m in Sources */,
@@ -2687,7 +2764,9 @@
 				242ED6341BABF10F005D6D75 /* main.m in Sources */,
 				270845BE1C1016590034B082 /* ZXPlanarYUVLuminanceSource.m in Sources */,
 				2442E55E1BE0DB2C00263C96 /* PassView.m in Sources */,
+				272229A71C3A41900077997A /* TabBarController.m in Sources */,
 				270845761C1016580034B082 /* ZXAztecReader.m in Sources */,
+				272229B01C3A44370077997A /* ManFactory.m in Sources */,
 				270845F81C1016590034B082 /* ZXRSSUtils.m in Sources */,
 				270846091C1016590034B082 /* ZXOneDimensionalCodeWriter.m in Sources */,
 				27FE67F51C185CA900A1CAB1 /* MsgModel.m in Sources */,
@@ -2719,11 +2798,13 @@
 				270846181C1016590034B082 /* ZXPDF417BoundingBox.m in Sources */,
 				27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */,
 				270843801C0FEEAF0034B082 /* RRDTBarViewController.m in Sources */,
+				27222E1F1C3E33270077997A /* NSString+addRMBcharacter.m in Sources */,
 				24D7F9311BB3A11D007184D7 /* MBProgressHUD.m in Sources */,
 				2708458E1C1016580034B082 /* ZXSMSTOMMSTOResultParser.m in Sources */,
 				24F9F6F01BDF1A1D007DC68C /* NotPassTableViewCell.m in Sources */,
 				270846391C1016590034B082 /* ZXQRCodeFinderPattern.m in Sources */,
 				24E38AEA1BC8C1AE00C17380 /* ContractTextTableViewCell.m in Sources */,
+				27222E0B1C3B66690077997A /* SCAlipayCell.m in Sources */,
 				270845BD1C1016590034B082 /* ZXLuminanceSource.m in Sources */,
 				270845A21C1016590034B082 /* ZXGenericGF.m in Sources */,
 				270845B31C1016590034B082 /* ZXPerspectiveTransform.m in Sources */,
@@ -2797,6 +2878,7 @@
 				270845A71C1016590034B082 /* ZXBitMatrix.m in Sources */,
 				2708456C1C1016580034B082 /* ZXAztecDecoder.m in Sources */,
 				2708462D1C1016590034B082 /* ZXQRCodeDataBlock.m in Sources */,
+				27222E0D1C3B66690077997A /* SCBandAliPayVC.m in Sources */,
 				270845D91C1016590034B082 /* ZXMaxiCodeReader.m in Sources */,
 				270845E11C1016590034B082 /* ZXAI013x0x1xDecoder.m in Sources */,
 				24D7F92E1BB38DA9007184D7 /* User.m in Sources */,
@@ -2814,6 +2896,7 @@
 				24EFA29A1BCE51F4005706F3 /* UIButton+WebCache.m in Sources */,
 				270846121C1016590034B082 /* ZXUPCEReader.m in Sources */,
 				270845701C1016580034B082 /* ZXAztecEncoder.m in Sources */,
+				272229AA1C3A43410077997A /* TabBarView.m in Sources */,
 				24E5E7151BAD3D3A0066D3A5 /* UIView+CoreBtnExtend.m in Sources */,
 				24FADDBD1BDDF362003A1C00 /* CustomIOSAlertView.m in Sources */,
 				27FE67EF1C18586400A1CAB1 /* SCMsgListCell.m in Sources */,
@@ -2857,6 +2940,7 @@
 				270845D01C1016590034B082 /* ZXDataMatrixSymbolInfo.m in Sources */,
 				24E4A44A1BAFBC4100EC14AF /* CoreLabel.m in Sources */,
 				270846151C1016590034B082 /* ZXPDF417ECErrorCorrection.m in Sources */,
+				27222E041C3A77E30077997A /* PartnerViewController.m in Sources */,
 				270846011C1016590034B082 /* ZXEAN13Writer.m in Sources */,
 				24EFA29B1BCE51F4005706F3 /* UIImage+GIF.m in Sources */,
 				2708464A1C116E7F0034B082 /* TaskDetailViewController.m in Sources */,

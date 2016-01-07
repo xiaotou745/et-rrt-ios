@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "tel.pdf",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "客服支持.png",
       "scale" : "2x"
     },
     {

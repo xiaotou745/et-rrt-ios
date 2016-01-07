@@ -10,7 +10,6 @@
 
 @interface MyInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 {
-    User *_user;
     NSArray *arr1;
     
     NSMutableArray *userArr1 ;
@@ -138,7 +137,7 @@
         if (code_int == 200) {
             [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
             
-            _user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"userName"];
+            _user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];
             _user.userPhoneNo = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"] ;
             
             _user.sex = [[[responseObject objectForKey:@"data"] objectForKey:@"sex"] integerValue];
@@ -157,7 +156,6 @@
         }else{
             [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:[responseObject objectForKey:@"msg"] offsetY:-100 failClickBlock:^{
                 NSLog(@"?>?>>>>>??>?>");
-                [self getMyInfo];
             }];
         }
         
@@ -165,7 +163,6 @@
         NSLog(@"Error: %@", error);
         [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"未知错误" offsetY:-100 failClickBlock:^{
             NSLog(@"?>?>>>>>??>?>");
-            [self getMyInfo];
         }];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];

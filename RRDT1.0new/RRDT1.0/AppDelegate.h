@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "TabBarController.h"
+#import "TabBarView.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate,TabBarViewDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong, nonatomic) TabBarController *tabBarController;
+@property (strong, nonatomic) TabBarView *customTabBar;
 
+-(void)getmsgCount;
 @end
 

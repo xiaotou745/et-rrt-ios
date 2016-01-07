@@ -10,6 +10,10 @@
 
 @implementation MyTools
 
++ (void)closeKeyboard
+{
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+}
 
 + (void)call:(NSString *)phoneNumber atView:(UIView *)aView{
     UIWebView*callWebview =[[UIWebView alloc] init];

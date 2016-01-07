@@ -33,9 +33,8 @@
 
 @property (nonatomic,strong)UITextField *txtPassword;
 
-//@property (nonatomic,strong)UITextField *txtEnPassword;
+@property (nonatomic,strong)UITextField *linkPhone;
 
-//@property (nonatomic,strong)UITextField *txtUsername;
 
 @property (nonatomic,strong)CoreStatusBtn *joinBtn;
 
@@ -63,11 +62,10 @@
         
         TFModel *tfm3=[TFModel modelWithTextFiled:_txtPassword inputView:_myscroll name:nil insetBottom:30];
         
-//        TFModel *tfm4=[TFModel modelWithTextFiled:_txtEnPassword inputView:_myscroll name:nil insetBottom:0];
+        TFModel *tfm4=[TFModel modelWithTextFiled:_linkPhone inputView:_myscroll name:nil insetBottom:0];
         
-//        TFModel *tfm5=[TFModel modelWithTextFiled:_txtUsername inputView:_myscroll name:nil insetBottom:0];
         
-        return @[tfm1,tfm2,tfm3];
+        return @[tfm1,tfm2,tfm3,tfm4];
         
     }];
 }
@@ -75,11 +73,8 @@
 - (void)viewCreat{
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    
     self.title = @"注册";
 
-    
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
@@ -87,11 +82,8 @@
     _mytable.scrollEnabled = NO;
     [self.view addSubview:_mytable];
     
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"0xffffff" alpha:0.8]];
-    
-
     
     UIView *footview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT/3)];
     _mytable.tableFooterView = footview;
@@ -179,7 +171,7 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return 4;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
@@ -191,7 +183,7 @@
     return 5;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return HEIGHT/10;
+    return HEIGHT/12;
 }
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *idenifier = @"cell";
@@ -201,10 +193,10 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     if (indexPath.row == 0) {
-        _txtphone = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH - 110, HEIGHT/10)];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/10, HEIGHT/10)];
+        _txtphone = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH - 110, HEIGHT/12)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/12, HEIGHT/12)];
         UIImageView *img_user = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_phone"]];
-        img_user.frame = CGRectMake(HEIGHT/40, HEIGHT/40, HEIGHT/20, HEIGHT/20);
+        img_user.frame = CGRectMake(HEIGHT/48, HEIGHT/48, HEIGHT/24, HEIGHT/24);
         [view addSubview:img_user];
         _txtphone.clearButtonMode = YES;
         _txtphone.leftViewMode = UITextFieldViewModeAlways;
@@ -212,7 +204,7 @@
         _txtphone.placeholder = @"请输入手机号";
         
         
-        countBtn = [[CoreCountBtn alloc]initWithFrame:CGRectMake(WIDTH - 110, 5, 100, HEIGHT/10 - 10)];
+        countBtn = [[CoreCountBtn alloc]initWithFrame:CGRectMake(WIDTH - 110, 5, 100, HEIGHT/12 - 10)];
         countBtn.layer.masksToBounds = YES;
         countBtn.layer.cornerRadius = 2;
         countBtn.layer.borderWidth = 1;
@@ -234,10 +226,10 @@
 
         [cell.contentView addSubview:_txtphone];
     }else if (indexPath.row == 1){
-        _txtVerifyCode = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT/10)];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/10, HEIGHT/10)];
+        _txtVerifyCode = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT/12)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/12, HEIGHT/12)];
         UIImageView *img_user = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_verifycode"]];
-        img_user.frame = CGRectMake(HEIGHT/40, HEIGHT/40, HEIGHT/20, HEIGHT/20);
+        img_user.frame = CGRectMake(HEIGHT/48, HEIGHT/48, HEIGHT/24, HEIGHT/24);
         [view addSubview:img_user];
         _txtVerifyCode.clearButtonMode = YES;
         _txtVerifyCode.leftViewMode = UITextFieldViewModeAlways;
@@ -245,10 +237,10 @@
         _txtVerifyCode.placeholder = @"请输入验证码";
         [cell.contentView addSubview:_txtVerifyCode];
     }else if (indexPath.row == 2){
-        _txtPassword = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH - 60, HEIGHT/10)];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/10, HEIGHT/10)];
+        _txtPassword = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH - 60, HEIGHT/12)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/12, HEIGHT/12)];
         UIImageView *img_user = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_password"]];
-        img_user.frame = CGRectMake(HEIGHT/40, HEIGHT/40, HEIGHT/20, HEIGHT/20);
+        img_user.frame = CGRectMake(HEIGHT/48, HEIGHT/48, HEIGHT/24, HEIGHT/24);
         [view addSubview:img_user];
         _txtPassword.clearButtonMode = YES;
         _txtPassword.secureTextEntry = YES;
@@ -257,7 +249,7 @@
         _txtPassword.placeholder = @"请输入密码";
         _txtPassword.rightViewMode = UITextFieldViewModeAlways;
         
-        KLSwitch *klswitch = [[KLSwitch alloc] initWithFrame:CGRectMake(WIDTH - 60, HEIGHT/40, 50, HEIGHT/20)];
+        KLSwitch *klswitch = [[KLSwitch alloc] initWithFrame:CGRectMake(WIDTH - 60, HEIGHT/48, 50, HEIGHT/24)];
         [cell.contentView addSubview:klswitch];
         klswitch.didChangeHandler = ^(BOOL isOn) {
             if (isOn) {
@@ -267,6 +259,17 @@
             }
         };
         [cell.contentView addSubview:_txtPassword];
+    }else{
+        _linkPhone = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT/12)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, HEIGHT/12, HEIGHT/12)];
+        UIImageView *img_user = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_phone"]];
+        img_user.frame = CGRectMake(HEIGHT/48, HEIGHT/48, HEIGHT/24, HEIGHT/24);
+        [view addSubview:img_user];
+        _linkPhone.clearButtonMode = YES;
+        _linkPhone.leftViewMode = UITextFieldViewModeAlways;
+        _linkPhone.leftView = view;
+        _linkPhone.placeholder = @"请输入推荐人手机号（非必填）";
+        [cell.contentView addSubview:_linkPhone];
     }
     return cell;
 }
@@ -287,7 +290,7 @@
                     NSDictionary *parameters = @{@"phoneNo": _txtphone.text,
                                                  @"passWord":[MyMD5 md5:_txtPassword.text],
                                                  @"verifyCode":_txtVerifyCode.text,
-//                                                 @"name":_txtUsername.text
+                                                 @"recommendPhone":_linkPhone.text=nil?@"":_linkPhone.text
                                                  };
                     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserRegister] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSLog(@"JSON: %@", responseObject);
@@ -304,7 +307,7 @@
                             user.isLogin = YES;
                             
                             
-                            user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"userName"];
+                            user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];
                             
                             NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:user];
                             NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];

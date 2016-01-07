@@ -14,6 +14,8 @@
 #import "WithDrawViewController.h"
 
 #import "MyInfoViewController.h"
+#import "BillDetailViewController.h"
+#import "PartnerViewController.h"
 
 #import "SysemViewController.h"
 
@@ -22,13 +24,16 @@
 #import "MyTaskViewController.h"
 #import "SCMsgListVC.h"
 #import "TaskDetailViewController.h"
+#import "LoginViewController.h"
+#import "AppDelegate.h"
 
 @interface MyCenterViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
-    User *_user;
     
     UIView *lineView0;
     
+    UILabel *phoneStr;
+    UILabel *nameStr;
 }
 @property (nonatomic,strong)UITableView *mytable;
 
@@ -38,6 +43,8 @@
 
 @property (nonatomic,strong)UILabel *lab_phone;
 @property (nonatomic,strong)UILabel *lab_name;
+@property (nonatomic,strong)UILabel *lab_toLogin;
+
 
 @property (nonatomic,strong)UIImageView *headImage;
 
@@ -49,60 +56,88 @@
 
 @implementation MyCenterViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.navigationItem.leftBarButtonItem=nil;
     [self viewCreat];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(NewMessageNotify:) name:notify_newMessage object:nil];
 }
 - (void)viewCreat{
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"更多" style:UIBarButtonItemStylePlain target:self action:@selector(more)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"0xffffff" alpha:0.8]];
-    
-    
+    [self setNoMsgRightBTNItem];
     self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
-    
-    _user = [[User alloc] init];
     
     self.title = @"个人中心";
     
-    _imageArr = @[@"0",@"icon_tixian",@"icon_wancheng",@"icon_wancheng",@"icon_helpcenter",@"icon_kefu"];
-    _titleArr = @[@"0",@"提现",@"资料审核详情",@"消息中心",@"帮助中心",@"客服支持"];
+    _imageArr = @[@[@"0"],@[@"icon_mingxi",@"icon_hehuoren",@"icon_shenhe"],@[@"icon_help"],@[@"icon_more"]];
+    //,@[@"icon_kefu"] ,@[@"客服支持"]
+    _titleArr = @[@[@"0"],@[@"资金明细",@"我的合伙人",@"资料审核详情"],@[@"帮助中心"],@[@"更多"]];
     
-    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
+    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64- IOS_TAB_BAR_HEIGHT) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
     [self.view addSubview:_mytable];
     _mytable.showsHorizontalScrollIndicator = NO;
     _mytable.showsVerticalScrollIndicator = NO;
-    _mytable.tableFooterView = [UIView new];
+//    _mytable.tableFooterView = [UIView new];
+
+    UIView *footView=[[UIView  alloc ]initWithFrame:CGRectMake(0, 0, DEF_SCEEN_WIDTH, 40)];
+//    footView.backgroundColor=[UIColor orangeColor];
+    UILabel *linkLab=[ManFactory createLabelWithFrame:CGRectMake(50, 20,180, 18) Font:15 Text:@"联系客服  010-57173598"];
+    linkLab.textAlignment=NSTextAlignmentCenter;
+    linkLab.textColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1];
+    UIImageView *linkIcon=[ManFactory createImageViewWithFrame:CGRectMake(linkLab.right, linkLab.top, linkLab.height, linkLab.height) ImageName:@"icon_kefu"];
+    
+    UIView *tapView=[[UIView alloc]initWithFrame:CGRectMake(linkLab.left, linkLab.top, linkLab.width+linkLab.height, linkLab.height)];
+    tapView.userInteractionEnabled=YES;
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callKe)];
+    [tapView addGestureRecognizer:tap];
+    
+    [footView addSubview:linkLab];
+    [footView addSubview:linkIcon];
+    [footView addSubview:tapView];
+
+    _mytable.tableFooterView = footView;
+
 
 }
-- (void)more{
-    SysemViewController *sys = [[SysemViewController alloc] init];
-    [self.navigationController pushViewController:sys animated:YES];
+- (void)msgCenter{
+   
+    SCMsgListVC *mytask = [[SCMsgListVC alloc] initWithNibName:@"SCMsgListVC" bundle:nil];
+    [self.navigationController pushViewController:mytask animated:YES];
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
-        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
-            NSLog(@"?>?>>>>>??>?>");
+    [self showTabBar];
+    _user = [[User alloc] init];
+
+    [_mytable reloadData];
+
+        if (_user.isLogin){
             [self getMyInfo];
-        }];
-    }else{
-        [self getMyInfo];
-    }
+            [self getmsgCount];
+            
+        }else {
+        _lab_name.text = @"";
+        _lab_phone.text = @"";
+        _lab_allmoney.text =@"¥0.00";
+        _headImage.image = [UIImage imageNamed:@"icon_usermorentu"];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+
+        }
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 0) {
-        return 20;
+        return 10;
     }
-    return 10;
+    return 5;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
@@ -114,7 +149,7 @@
     return _titleArr.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return [_titleArr[section]count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *idenifier = @"cell";
@@ -126,10 +161,14 @@
     
     
     if (indexPath.section == 0) {
-        _headImage = [[UIImageView alloc] init];
-        _headImage.layer.masksToBounds = YES;
-        _headImage.layer.cornerRadius  = 3;
-        [cell.contentView addSubview:_headImage];
+        if (!_headImage) {
+            _headImage = [[UIImageView alloc] init];
+            _headImage.layer.masksToBounds = YES;
+            _headImage.layer.cornerRadius  = 3;
+            _headImage.image = [UIImage imageNamed:@"icon_usermorentu"];
+            [cell.contentView addSubview:_headImage];
+        }
+        
         [_headImage mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(cell.contentView).with.offset(10);
             make.top.equalTo(cell.contentView).with.offset(10);
@@ -137,17 +176,22 @@
             make.width.mas_equalTo(60);
         }];
         
-        UILabel *phoneStr = [[UILabel alloc] init];
-        phoneStr.font = [UIFont systemFontOfSize:14];
-        phoneStr.textColor = UIColorFromRGB(0x888888);
-        phoneStr.text = @"账号";
-        [cell.contentView addSubview:phoneStr];
+        if (!phoneStr){
+            phoneStr = [[UILabel alloc] init];
+            phoneStr.font = [UIFont systemFontOfSize:14];
+            phoneStr.textColor = UIColorFromRGB(0x888888);
+            phoneStr.text = @"账号";
+            [cell.contentView addSubview:phoneStr];
+        }
         
-        UILabel *nameStr = [[UILabel alloc] init];
-        nameStr.font = [UIFont systemFontOfSize:14];
-        nameStr.textColor = UIColorFromRGB(0x888888);
-        nameStr.text = @"姓名";
-        [cell.contentView addSubview:nameStr];
+        if (!nameStr) {
+            nameStr = [[UILabel alloc] init];
+            nameStr.font = [UIFont systemFontOfSize:14];
+            nameStr.textColor = UIColorFromRGB(0x888888);
+            nameStr.text = @"姓名";
+            [cell.contentView addSubview:nameStr];
+        }
+       
 
         [phoneStr mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(_headImage.mas_right).offset(10);
@@ -159,25 +203,70 @@
             make.top.mas_equalTo(phoneStr.mas_bottom).offset(0);
             make.height.mas_equalTo(30);
         }];
-        _lab_name = [[UILabel alloc] init];
-        _lab_name.font = [UIFont systemFontOfSize:14];
-        _lab_name.textColor = UIColorFromRGB(0x333333);
-        [cell.contentView addSubview:_lab_name];
-        _lab_phone = [[UILabel alloc] init];
-        _lab_phone.font = [UIFont systemFontOfSize:14];
-        _lab_phone.textColor = UIColorFromRGB(0x333333);
-        [cell.contentView addSubview:_lab_phone];
+        
+        if (!_lab_name) {
+            _lab_name = [[UILabel alloc] init];
+            _lab_name.font = [UIFont systemFontOfSize:14];
+            _lab_name.textColor = UIColorFromRGB(0x333333);
+            [cell.contentView addSubview:_lab_name];
+        }
+        
+        if (!_lab_phone) {
+            _lab_phone = [[UILabel alloc] init];
+            _lab_phone.font = [UIFont systemFontOfSize:14];
+            _lab_phone.textColor = UIColorFromRGB(0x333333);
+            [cell.contentView addSubview:_lab_phone];
+        }
+        
+        
         [_lab_phone mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(phoneStr.mas_right).offset(15);
             make.top.equalTo(cell.contentView).with.offset(10);
             make.height.mas_equalTo(30);
         }];
+        
+        
+        
         [_lab_name mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(nameStr.mas_right).offset(15);
             make.top.mas_equalTo(phoneStr.mas_bottom).offset(0);
             make.height.mas_equalTo(30);
         }];
         
+        if (!_lab_toLogin) {
+            _lab_toLogin = [[UILabel alloc] init];
+            _lab_toLogin.text=@"去登录";
+            _lab_toLogin.textAlignment=NSTextAlignmentCenter;
+//            _lab_toLogin.backgroundColor=[UIColor orangeColor];
+            _lab_toLogin.font = [UIFont systemFontOfSize:15];
+            _lab_toLogin.textColor = UIColorFromRGB(0x333333);
+            [cell.contentView addSubview:_lab_toLogin];
+        }
+        
+        [_lab_toLogin mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(_headImage.mas_right).offset(10);
+            make.right.equalTo(cell.contentView).with.offset(-50);
+            
+            make.top.equalTo(cell.contentView).with.offset(0);
+            make.bottom.equalTo(cell.contentView).with.offset(-40);
+        }];
+
+        
+        if(_user.isLogin){
+        
+            [_lab_toLogin setHidden:YES];
+            [_lab_name setHidden:NO];
+            [_lab_phone setHidden:NO];
+            [phoneStr setHidden:NO];
+            [nameStr setHidden:NO];
+            
+        }else{
+            [_lab_toLogin setHidden:NO];
+            [_lab_name setHidden:YES];
+            [_lab_phone setHidden:YES];
+            [phoneStr setHidden:YES];
+            [nameStr setHidden:YES];
+        }
         UIView *view1 = [[UIView alloc] init];
         view1.userInteractionEnabled=YES;
         UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewTap)];
@@ -204,7 +293,7 @@
             make.bottom.mas_equalTo(cell.contentView);
             make.left.equalTo(cell.contentView).with.offset(0);
             make.height.equalTo(@40);
-            make.right.mas_equalTo(cell.contentView.mas_right);
+            make.right.mas_equalTo(cell.contentView);
         }];
 //        [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.bottom.mas_equalTo(cell.contentView);
@@ -300,6 +389,20 @@
         _lab_allmoney.textColor = UIColorFromRGB(0xf7585d);
         _lab_allmoney.font = [UIFont systemFontOfSize:18];
         [view1 addSubview:_lab_allmoney];
+        
+//        UIButton *moneyBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-80, 5, 70, 30)];
+        UIButton *moneyBtn=[[UIButton alloc]init];
+        moneyBtn.layer.cornerRadius=3;
+        moneyBtn.layer.borderWidth=0.5;
+        moneyBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
+        [moneyBtn setTitle:@"提现" forState:UIControlStateNormal];
+        [moneyBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
+
+        [moneyBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
+
+        [moneyBtn addTarget:self action:@selector(getMoney) forControlEvents:UIControlEventTouchUpInside];
+        [view1 addSubview:moneyBtn];
+        
         _lab_ketixian = [[UILabel alloc] init];
         _lab_ketixian.textAlignment = NSTextAlignmentCenter;
         _lab_ketixian.textColor = UIColorFromRGB(0xf7585d);
@@ -317,6 +420,14 @@
             make.left.equalTo(lab1.mas_right);
             make.right.equalTo(view1);
         }];
+        
+        [moneyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@28);
+            make.centerY.equalTo(view1);
+            make.width.equalTo(@70);
+            make.right.equalTo(view1).with.offset(-15);
+        }];
+        
         [_lab_ketixian mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@20);
             make.top.equalTo(view2);
@@ -340,11 +451,11 @@
         }];
         
     }else{
-        cell.textLabel.text  = [_titleArr objectAtIndex:indexPath.section];
+        cell.textLabel.text  = [_titleArr objectAtIndex:indexPath.section][indexPath.row];
         cell.textLabel.textColor = UIColorFromRGB(0x333333);
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         UIImageView *img_right = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_right"]];
-        cell.imageView.image = [UIImage imageNamed:[_imageArr objectAtIndex:indexPath.section]];
+        cell.imageView.image = [UIImage imageNamed:[_imageArr objectAtIndex:indexPath.section][indexPath.row]];
         img_right.frame = CGRectMake(0, 0, 10, 10);
         cell.accessoryView = img_right;
         if (indexPath.section == 5) {
@@ -359,25 +470,38 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0) {
-        MyInfoViewController *myinfo = [[MyInfoViewController alloc] init];
-        [self.navigationController pushViewController:myinfo animated:YES];
+        if(_user.isLogin){
+            MyInfoViewController *myinfo = [[MyInfoViewController alloc] init];
+            [self.navigationController pushViewController:myinfo animated:YES];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+        }
+        
     }else if (indexPath.section == 1){
-        WithDrawViewController *withDraw = [[WithDrawViewController alloc] init];
-        [self.navigationController pushViewController:withDraw animated:YES];
+        
+        if (indexPath.row==0) {
+            BillDetailViewController *billVC=[[BillDetailViewController alloc]init];
+            [self.navigationController pushViewController:billVC animated:YES];
+        }else if(indexPath.row==1){
+            PartnerViewController *partner=[[PartnerViewController alloc]init];
+            [self.navigationController pushViewController:partner animated:YES];
+            
+        }else{
+            TaskDetailViewController *TaskDetailV = [[TaskDetailViewController alloc] init];
+            TaskDetailV.fromPCenterVC=YES;
+            [self.navigationController pushViewController:TaskDetailV animated:YES];
+        }
+ 
     }else if (indexPath.section == 2){
-        TaskDetailViewController *TaskDetailV = [[TaskDetailViewController alloc] init];
-        TaskDetailV.fromPCenterVC=YES;
-        [self.navigationController pushViewController:TaskDetailV animated:YES];
-        
-    }else if (indexPath.section == 3){
-        SCMsgListVC *mytask = [[SCMsgListVC alloc] initWithNibName:@"SCMsgListVC" bundle:nil];
-        [self.navigationController pushViewController:mytask animated:YES];
-        
-    }else if (indexPath.section == 4){
         HelpCenterViewController *help = [[HelpCenterViewController alloc] init];
         [self.navigationController pushViewController:help animated:YES];
 
-    }else if (indexPath.section == 5){
+    }else if (indexPath.section == 3){
+        SysemViewController *sys = [[SysemViewController alloc] init];
+        [self.navigationController pushViewController:sys animated:YES];
+
+    }else if (indexPath.section == 4){
 
         [self callKe];
     }
@@ -391,7 +515,8 @@
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
     
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"JSON: %@", responseObject);
@@ -400,14 +525,24 @@
         if (code_int == 200) {
             [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
             
-            _user.userName      = [[responseObject objectForKey:@"data"] objectForKey:@"userName"];//用户名
+            _user.userName      = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];//用户名
             _user.userPhoneNo   = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"];
+            
+            _user.sex = [[[responseObject objectForKey:@"data"] objectForKey:@"sex"] integerValue];
+            _user.age = [[[responseObject objectForKey:@"data"] objectForKey:@"age"] integerValue];
+            _user.headImage = [[responseObject objectForKey:@"data"] objectForKey:@"headImage"];
+            
             _user.balance       = [[[responseObject objectForKey:@"data"] objectForKey:@"balance"] floatValue];//余额
             _user.withdrawing   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdrawing"] floatValue];//提现中
             _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
-            _user.withdraw      = [[[responseObject objectForKey:@"data"] objectForKey:@"withdraw"] floatValue];
 
+            _user.totalAmount   = [[[responseObject objectForKey:@"data"] objectForKey:@"totalAmount"] floatValue];//累计金额
+            _user.withdraw   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdraw"] floatValue];//可以体现的金额
             
+            _user.accountType   =[[[responseObject objectForKey:@"data"] objectForKey:@"accountType"] intValue];
+            _user.accountNo =[[responseObject objectForKey:@"data"] objectForKey:@"accountNo"];
+            _user.trueName =[[responseObject objectForKey:@"data"] objectForKey:@"trueName"];
+
             
             _lab_name.text = _user.userName;
             _lab_phone.text = _user.userPhoneNo;
@@ -445,7 +580,6 @@
         }else{
             
             [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:[responseObject objectForKey:@"msg"] offsetY:-100 failClickBlock:^{
-                [self getMyInfo];
             }];
         }
         
@@ -453,9 +587,58 @@
         NSLog(@"Error: %@", error);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
-            [self getMyInfo];
         }];
     }];
+}
+
+-(void)getmsgCount{
+
+    AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    [app getmsgCount];
+    
+//    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+//    
+//    NSLog(@">>>>>>%@",_user.userId);
+//    NSDictionary *parameters = @{@"userId": _user.userId};
+//    
+//    
+//    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getmymsgcount] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"JSON: %@", responseObject);
+//        NSNumber *code = [responseObject objectForKey:@"code"];
+//        int code_int = [code intValue];
+//        if (code_int == 200) {
+//            [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
+//            NSInteger count=[responseObject[@"data"]integerValue];
+//            
+//            if (count)  [self setMsgRightBTNItem];
+//            else        [self setNoMsgRightBTNItem];
+
+//        }else{
+//            
+////            [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:[responseObject objectForKey:@"msg"] offsetY:-100 failClickBlock:^{
+////            }];
+//        }
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"Error: %@", error);
+//        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
+//        }];
+//    }];
+
+}
+
+-(void)NewMessageNotify:(NSNotification *)notif{
+
+    if ([notif.object boolValue]) [self setMsgRightBTNItem];
+    else [self setNoMsgRightBTNItem];
+}
+-(void)setNoMsgRightBTNItem{
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"NoMsgRightBTNItem"] style:UIBarButtonItemStylePlain target:self action:@selector(msgCenter)];
+
+}
+-(void)setMsgRightBTNItem{
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"MsgRightBTNItem"] style:UIBarButtonItemStylePlain target:self action:@selector(msgCenter)];
+    
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
@@ -466,6 +649,10 @@
 -(void)viewTap{
 
 
+}
+-(void)getMoney{
+    WithDrawViewController *withDraw = [[WithDrawViewController alloc] init];
+    [self.navigationController pushViewController:withDraw animated:YES];
 }
 - (void)callKe{
     NSString *num = [[NSString alloc] initWithFormat:@"telprompt://010-57173598"];

@@ -843,7 +843,7 @@
             //拍照
             BOOL flag = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
             if (flag) {
-                imagePickerController.allowsEditing = YES;
+//                imagePickerController.allowsEditing = YES;
                 imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;//相机
                 [self presentViewController:imagePickerController animated:YES completion:^{
                     
@@ -851,7 +851,7 @@
             }
         }else if (buttonIndex == 1){
             //图片库
-            imagePickerController.allowsEditing = YES;
+//            imagePickerController.allowsEditing = YES;
             imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;//图片库
             [self presentViewController:imagePickerController animated:YES completion:^{
                 
@@ -863,7 +863,7 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
     NSData *data = UIImageJPEGRepresentation(image, 0.3);
     

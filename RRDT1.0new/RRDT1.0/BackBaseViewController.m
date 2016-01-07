@@ -7,7 +7,7 @@
 //
 
 #import "BackBaseViewController.h"
-
+#import "AppDelegate.h"
 @interface BackBaseViewController ()
 
 @end
@@ -18,7 +18,8 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    [self  hideTabBar];
+
     self.view.backgroundColor = [UIColor whiteColor];
     // 初始化一个返回按钮
 //    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
@@ -34,6 +35,10 @@
     self.navigationItem.leftBarButtonItem = backButton;
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
 }
+- (void)postAlertWithMsg:(NSString *)msg{
+    
+    [MBProgressHUD showText:msg];
+}
 
 #pragma mark - BarButton Pressed
 
@@ -46,5 +51,23 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+- (void)hideTabBar
+{
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    for (UIView *view in app.window.subviews) {
+        if (view.tag == 888) {
+            view.hidden = YES;
+        }
+    }
+}
 
+- (void)showTabBar
+{
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    for (UIView *view in app.window.subviews) {
+        if (view.tag == 888) {
+            view.hidden = NO;
+        }
+    }
+}
 @end

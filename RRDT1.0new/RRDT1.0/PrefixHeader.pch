@@ -13,6 +13,11 @@
 
 #import "MyTools.h"
 #import "UIAlertView+Blocks.h"
+#import "UIView+Common.h"
+#import "ManFactory.h"
+#import "NSString+evaluatePhoneNumber.h"
+#import "MBProgressHUD+show.h"
+#import "NSString+addRMBcharacter.h"
 
 #define gotoCheckProgressVC @"gotoCheckProgressVC"
 
@@ -20,6 +25,8 @@
 #define getTaskSuccess_refreshWaitVC @"getTaskSuccess_refreshWaitVC"
 #define loginSuccess_refreshWaitVC @"loginSuccess_refreshWaitVC"
 
+#define notify_newMessage @"notify_newMessage"
+#define notify_bandingAlipaySuccess @"notify_bandingAlipaySuccess"
 #pragma mark -
 #pragma mark - NSUserDefaults
 
@@ -44,7 +51,18 @@ NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];              
  */
 #define DEF_PERSISTENT_GET_OBJECT(key) [[NSUserDefaults standardUserDefaults] objectForKey:key]
 
+/**
+ * appDelegate单例
+ */
+#define  DEF_APP (AppDelegate *)[UIApplication sharedApplication].delegate
 
+#define DEF_SCEEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define DEF_SCEEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+
+#define IOS7_OR_LATER_NAV_BAR_HEIGHT 64.0f
+#define IOS6_OR_EARLIER_NAV_BAR_HEIGHT 44.0f
+#define IOS_TAB_BAR_HEIGHT 49.0f
 
 
 #define MAS_SHORTHAND

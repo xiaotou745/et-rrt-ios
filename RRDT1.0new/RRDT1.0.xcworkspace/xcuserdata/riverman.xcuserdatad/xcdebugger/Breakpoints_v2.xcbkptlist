@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
             landmarkName = "-post"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,28 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
-            landmarkName = "-post"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "446"
-            endingLineNumber = "446"
+            startingLineNumber = "388"
+            endingLineNumber = "388"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/WaitTaskViewController.m"
+            timestampString = "473753061.099843"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "408"
+            endingLineNumber = "408"
+            landmarkName = "-buttonTitleForEmptyDataSet:forState:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "393"
-            endingLineNumber = "393"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
             landmarkName = "-post"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/CurrentTaskViewController.m"
-            timestampString = "472111952.098248"
+            timestampString = "473745971.359594"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "-getTaskList"
             landmarkType = "5">
          </BreakpointContent>
@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "471924587.081689"
+            timestampString = "473657123.173407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-downPullRefreshAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -922,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "471924587.081689"
+            timestampString = "473657123.173407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "-requestMsgList"
             landmarkType = "5">
             <Locations>
@@ -938,11 +938,11 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.911878"
+                  timestampString = "473832486.868706"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "87"
-                  endingLineNumber = "87"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
                   offsetFromSymbolStart = "908">
                </Location>
                <Location
@@ -953,11 +953,11 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.912047"
+                  timestampString = "473832486.868897"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "87"
-                  endingLineNumber = "87"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
                   offsetFromSymbolStart = "92">
                </Location>
             </Locations>
@@ -970,7 +970,71 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "472126972.276429"
+            timestampString = "473657123.173407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "-requestMsgList"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/SCMsgListVC.m"
+            timestampString = "473657123.173407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "-requestMsgList"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__29-[SCMsgListVC requestMsgList]_block_invoke"
+                  moduleName = "RRDT1.0"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
+                  timestampString = "473832486.871319"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "1320">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__29-[SCMsgListVC requestMsgList]_block_invoke_2"
+                  moduleName = "RRDT1.0"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
+                  timestampString = "473832486.871585"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/SCMsgListVC.m"
+            timestampString = "473657123.173407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
@@ -986,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "472126972.276429"
+            timestampString = "473657123.173407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "-requestMsgList"
             landmarkType = "5">
             <Locations>
@@ -1002,75 +1066,11 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.913717"
+                  timestampString = "473832486.873307"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "1320">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[SCMsgListVC requestMsgList]_block_invoke_2"
-                  moduleName = "RRDT1.0"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.913863"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "118"
-                  endingLineNumber = "118"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "472126972.276429"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "-requestMsgList"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RRDT1.0/SCMsgListVC.m"
-            timestampString = "472126972.276429"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "-requestMsgList"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[SCMsgListVC requestMsgList]_block_invoke"
-                  moduleName = "RRDT1.0"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.916462"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "104"
-                  endingLineNumber = "104"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
                   offsetFromSymbolStart = "724">
                </Location>
                <Location
@@ -1081,11 +1081,11 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/SCMsgListVC.m"
-                  timestampString = "472638503.916625"
+                  timestampString = "473832486.873465"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "104"
-                  endingLineNumber = "104"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
                   offsetFromSymbolStart = "740">
                </Location>
             </Locations>
@@ -1098,11 +1098,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/MyTools.m"
-            timestampString = "471927396.2398"
+            timestampString = "473832190.957817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "+writeToFile:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1114,11 +1114,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/MyTools.m"
-            timestampString = "471927396.2398"
+            timestampString = "473832190.957817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "+readCityAddress"
             landmarkType = "5">
          </BreakpointContent>
@@ -1130,11 +1130,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/MyTools.m"
-            timestampString = "471927396.2398"
+            timestampString = "473832190.957817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "+writeToFile:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1146,11 +1146,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "386"
-            endingLineNumber = "386"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "-post"
             landmarkType = "5">
             <Locations>
@@ -1194,11 +1194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "471944924.371105"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "-changeCurrentCity:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1210,12 +1210,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
-            landmarkName = "-locationManager:didUpdateToLocation:fromLocation:"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
+            landmarkName = "-checkCityCode"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1226,27 +1226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "515"
-            endingLineNumber = "515"
-            landmarkName = "-getCitysRegion"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "558"
-            endingLineNumber = "558"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
             landmarkName = "-configCitys:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1258,12 +1242,26 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
-            landmarkName = "-checkCityCode"
+            startingLineNumber = "516"
+            endingLineNumber = "516">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/WaitTaskViewController.m"
+            timestampString = "473753014.863694"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
             <Locations>
                <Location
@@ -1306,12 +1304,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
-            landmarkName = "-checkCityCode"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1322,12 +1320,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753061.099843"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
-            landmarkName = "-getCitysRegion"
+            startingLineNumber = "484"
+            endingLineNumber = "484"
+            landmarkName = "-configCitys:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1338,27 +1336,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "307"
-            endingLineNumber = "307"
-            landmarkName = "-checkCityCode"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/MyCenterViewController.m"
-            timestampString = "471929967.123585"
+            timestampString = "473828990.251123"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "521"
+            endingLineNumber = "521"
             landmarkName = "-getMyInfo"
             landmarkType = "5">
          </BreakpointContent>
@@ -1546,7 +1544,7 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/WaitingView.m"
-                  timestampString = "472638503.926623"
+                  timestampString = "473832486.882468"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "118"
@@ -1561,7 +1559,7 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/WaitingView.m"
-                  timestampString = "472638503.926789"
+                  timestampString = "473832486.882705"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "118"
@@ -1878,11 +1876,11 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__38-[PostContractViewController postImg:]_block_invoke634"
+                  symbolName = "__38-[PostContractViewController postImg:]_block_invoke632"
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/PostContractViewController.m"
-                  timestampString = "472638503.931346"
+                  timestampString = "473832486.888809"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "951"
@@ -1897,7 +1895,7 @@
                   moduleName = "RRDT1.0"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/PostContractViewController.m"
-                  timestampString = "472638503.931485"
+                  timestampString = "473832486.888971"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "951"
@@ -1930,11 +1928,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/TaskDetailViewController.m"
-            timestampString = "471965134.374041"
+            timestampString = "473582662.952138"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "-postBtnClick"
             landmarkType = "5">
          </BreakpointContent>
@@ -1962,11 +1960,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472050895.469718"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
             landmarkName = "-viewCreat"
             landmarkType = "5">
          </BreakpointContent>
@@ -1978,11 +1976,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472050895.469718"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "-viewCreat"
             landmarkType = "5">
          </BreakpointContent>
@@ -2025,22 +2023,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RRDT1.0/LoginViewController.m"
-            timestampString = "472102899.621209"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "-login"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "RRDT1.0/CurrentTaskViewController.m"
             timestampString = "472111952.098248"
             startingColumnNumber = "9223372036854775807"
@@ -2074,11 +2056,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/TaskDetailViewController.m"
-            timestampString = "472103045.964722"
+            timestampString = "473582662.952138"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "-toCheckProVC:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2090,11 +2072,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472637429.453462"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
             landmarkName = "-locationManager:didUpdateToLocation:fromLocation:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2106,12 +2088,348 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RRDT1.0/WaitTaskViewController.m"
-            timestampString = "472638461.97176"
+            timestampString = "473753014.863694"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "242"
-            endingLineNumber = "242"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-locationManager:didFailWithError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/AppDelegate.m"
+            timestampString = "473744227.406654"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "-tabBarView:didSelectAtIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "-viewCreat"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-viewCreat"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "-getTaskList"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/CurrentTaskViewController.m"
+            timestampString = "473745971.359594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "-getTaskList"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/ReceivedView.m"
+            timestampString = "473583267.728947"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "-post"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/ReceivedView.m"
+            timestampString = "473583278.071276"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "-post"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/RegisterViewController.m"
+            timestampString = "473586202.406531"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "-joinClick"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RegisterViewController joinClick]"
+                  moduleName = "RRDT1.0"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/RegisterViewController.m"
+                  timestampString = "473832486.903591"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "295"
+                  endingLineNumber = "295"
+                  offsetFromSymbolStart = "1440">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__35-[RegisterViewController joinClick]_block_invoke"
+                  moduleName = "RRDT1.0"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riverman/Desktop/RRDT/renrenditui_iosapp/RRDT1.0new/RRDT1.0/RegisterViewController.m"
+                  timestampString = "473832486.903755"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "295"
+                  endingLineNumber = "295"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/RegisterViewController.m"
+            timestampString = "473586282.085201"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "-joinClick"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/SysemViewController.m"
+            timestampString = "473673519.436303"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/MyCenterViewController.m"
+            timestampString = "473838716.280572"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "640"
+            endingLineNumber = "640"
+            landmarkName = "-setMsgRightBTNItem"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/AppDelegate.m"
+            timestampString = "473744325.792446"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "-getmsgCount"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/AppDelegate.m"
+            timestampString = "473744325.792446"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "-getmsgCount"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/TabBarView.m"
+            timestampString = "473744599.23534"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "-initWithFrame:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/MyCenterViewController.m"
+            timestampString = "473838716.280572"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
+            landmarkName = "-NewMessageNotify:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/MyCenterViewController.m"
+            timestampString = "473838716.280572"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "636"
+            endingLineNumber = "636"
+            landmarkName = "-setNoMsgRightBTNItem"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RRDT1.0/SCBandAliPayVC.m"
+            timestampString = "473839656.210389"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "-bandingClick"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

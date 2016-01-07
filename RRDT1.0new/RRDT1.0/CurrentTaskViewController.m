@@ -23,6 +23,7 @@
 
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
+#import "LoginViewController.h"
 
 #define kBakgroundColor     [UIColor colorWithRed:0/255.0 green:87/255.0 blue:173/255.0 alpha:1.0]
 #define kTintColor          [UIColor colorWithRed:20/255.0 green:200/255.0 blue:255/255.0 alpha:1.0]
@@ -48,7 +49,7 @@
     [super viewDidLoad];
     
     [self viewCreat];
-    
+    self.navigationItem.leftBarButtonItem=nil;
     self.title = @"我的任务";
 }
 - (void)viewCreat{
@@ -94,8 +95,7 @@
     
     checkingView = [[CheckingTaskView alloc] init];
     [_myScroll addSubview:checkingView];
-    [self getTaskList];
-
+    
 }
 # pragma mark 滑动点击监听
 - (void)didChangeSegment:(DZNSegmentedControl *)control
@@ -176,7 +176,15 @@
 #pragma mark 出现重新加载
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    [self getTaskList];
+    [self showTabBar];
+    
+    _user = [[User alloc] init];
+    if (!_user.isLogin){
+        
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+    }else     [self getTaskList];
+
 }
 - (void)getTaskList{
     [MBProgressHUD showHUDAddedTo:receivedView animated:YES];

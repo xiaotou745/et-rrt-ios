@@ -22,7 +22,7 @@
     self.title = @"帮助中心";
     
     self.view.backgroundColor = [UIColor whiteColor];
-    myWeb = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64)];
+    myWeb = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT)];
     myWeb.delegate = self;
     [self.view addSubview:myWeb];
     

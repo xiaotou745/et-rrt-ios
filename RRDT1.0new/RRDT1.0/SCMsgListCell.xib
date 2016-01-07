@@ -15,8 +15,15 @@
                 <rect key="frame" x="0.0" y="0.0" width="422" height="89.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TaskDetail_arrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="cQE-Gr-QiZ">
+                        <rect key="frame" x="402" y="36" width="12" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="12" id="N7f-WK-pHs"/>
+                            <constraint firstAttribute="height" constant="18" id="eYx-h5-0EK"/>
+                        </constraints>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="海淘的价格战" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0do-rb-ddo">
-                        <rect key="frame" x="8" y="8" width="286" height="20"/>
+                        <rect key="frame" x="8" y="8" width="256" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="hiB-ME-eHE"/>
                         </constraints>
@@ -25,11 +32,11 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06-15 10:12" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="atH-Vd-Gbr">
-                        <rect key="frame" x="8" y="28" width="406" height="53"/>
+                        <rect key="frame" x="8" y="28" width="391" height="53"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="hCg-sr-iwQ"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                         <variation key="default">
@@ -49,14 +56,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-12-16 10:49" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pg3-6k-yki">
-                        <rect key="frame" x="294" y="8" width="120" height="20"/>
+                        <rect key="frame" x="264" y="8" width="135" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="atH-Vd-Gbr" secondAttribute="trailing" id="074-Hd-cdo"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="atH-Vd-Gbr" secondAttribute="trailing" constant="15" id="074-Hd-cdo"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="cQE-Gr-QiZ" secondAttribute="trailing" id="1Vb-Po-e8V"/>
                     <constraint firstItem="0do-rb-ddo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="4C6-d3-fyb"/>
                     <constraint firstAttribute="bottomMargin" secondItem="0do-rb-ddo" secondAttribute="bottom" constant="20" id="6wJ-9Y-o7x"/>
                     <constraint firstItem="atH-Vd-Gbr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Cll-KJ-A66"/>
@@ -64,12 +72,13 @@
                     <constraint firstItem="aor-bn-ixV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Kb9-BX-DbE"/>
                     <constraint firstAttribute="bottomMargin" secondItem="aor-bn-ixV" secondAttribute="bottom" constant="-8" id="Oaz-4q-DWF"/>
                     <constraint firstAttribute="bottomMargin" secondItem="atH-Vd-Gbr" secondAttribute="bottom" id="P4T-9J-zxZ"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="0do-rb-ddo" secondAttribute="trailing" constant="120" id="V24-fv-l0p"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="0do-rb-ddo" secondAttribute="trailing" constant="150" id="V24-fv-l0p"/>
+                    <constraint firstItem="cQE-Gr-QiZ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="YHw-Da-2pU"/>
                     <constraint firstItem="pg3-6k-yki" firstAttribute="centerY" secondItem="0do-rb-ddo" secondAttribute="centerY" id="atT-it-GKw"/>
                     <constraint firstItem="pg3-6k-yki" firstAttribute="height" secondItem="0do-rb-ddo" secondAttribute="height" id="jDg-sM-gbp"/>
                     <constraint firstItem="atH-Vd-Gbr" firstAttribute="top" secondItem="0do-rb-ddo" secondAttribute="bottom" id="kfy-lk-Cbx"/>
                     <constraint firstItem="pg3-6k-yki" firstAttribute="leading" secondItem="0do-rb-ddo" secondAttribute="trailing" id="mWj-Co-63N"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="pg3-6k-yki" secondAttribute="trailing" id="prf-Cw-zh2"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="pg3-6k-yki" secondAttribute="trailing" constant="15" id="prf-Cw-zh2"/>
                     <constraint firstAttribute="trailingMargin" secondItem="aor-bn-ixV" secondAttribute="trailing" constant="-15" id="rXs-jM-YUX"/>
                     <constraint firstItem="atH-Vd-Gbr" firstAttribute="top" secondItem="0do-rb-ddo" secondAttribute="bottom" constant="28" id="zfu-0d-4lX"/>
                 </constraints>
@@ -88,4 +97,7 @@
             <point key="canvasLocation" x="265" y="225"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="TaskDetail_arrowIcon" width="18" height="18"/>
+    </resources>
 </document>

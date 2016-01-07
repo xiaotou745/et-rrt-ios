@@ -19,9 +19,7 @@
 #import "AgainLoginViewController.h"
 
 @interface ChangePasswordViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
-{
-    User *_user;
-}
+
 
 @property (nonatomic,strong)UITableView  *mytable;
 @property (nonatomic,strong)UIScrollView *myscroll;

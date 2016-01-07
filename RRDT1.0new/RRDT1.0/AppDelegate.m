@@ -10,7 +10,7 @@
 
 //#import "LoginViewController.h"
 //
-//#import "User.h"
+#import "User.h"
 //
 //#import "TaskViewController.h"
 
@@ -18,9 +18,10 @@
 
 #import "MyVersion.h"
 #import "ETSUUID.h"
-@interface AppDelegate ()<CoreStatusProtocol,UIAlertViewDelegate>
+@interface AppDelegate ()<CoreStatusProtocol>
 {
     MyVersion *myVersion;
+    User *_user;
 }
 @end
 
@@ -40,55 +41,69 @@
         User *user = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     }
     
-    
-    
    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
-        WaitTaskViewController *task = [[WaitTaskViewController alloc] init];
     
         self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     
         [self.window makeKeyAndVisible];
-    
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:task];
-    
-        [nav.navigationBar setBarTintColor:UIColorFromRGB(0x1F2226)];
-    
-        [nav.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
-//        nav.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName, nil];//修改标题颜色
-    
-
-    
-        nav.navigationBar.translucent = NO;
-    
-        self.window.rootViewController = nav;
-    
-
-    
+    [self setRootViewControllerWithChildVC];
+    [self getmsgCount];
     [CoreStatus beginNotiNetwork:self];
     
     return YES;
 }
+#pragma  mark 设置 childTabBarVC
+-(void)setRootViewControllerWithChildVC
+{
+    self.tabBarController = [[TabBarController  alloc] init];
+    self.window.rootViewController = self.tabBarController;
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag == 111) {
-        if (buttonIndex == 0) {
-            [[UIApplication sharedApplication]openURL:[NSURL URLWithString:myVersion.version]];
-        }
-    }else if (alertView.tag == 222){
-        [self exitApplication];
-    }
+    // 底部导航栏
+    _customTabBar = [[TabBarView alloc] initWithFrame:CGRectMake(0, DEF_SCEEN_HEIGHT-IOS_TAB_BAR_HEIGHT, DEF_SCEEN_WIDTH, IOS_TAB_BAR_HEIGHT)];
+    _customTabBar.tag = 888;
+    //_customTabBar.backgroundColor=[UIColor orangeColor];
+    _customTabBar.delegate=self;
+    [self.window addSubview:_customTabBar];
     
 }
-- (void)exitApplication {
-    UIWindow *window = self.window;
+-(void)tabBarView:(TabBarView *)tabBarView didSelectAtIndex:(int)index
+{
+    self.tabBarController.selectedIndex=index;
+}
+
+-(void)getmsgCount{
     
-    [UIView animateWithDuration:1.0f animations:^{
-        window.alpha = 0;
-        window.frame = CGRectMake(0, window.bounds.size.width, 0, 0);
-    } completion:^(BOOL finished) {
-        exit(0);
+    _user=[[User alloc]init];
+    if (!_user.isLogin) {
+        return;
+    }
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
+    NSLog(@">>>>>>%@",_user.userId);
+    NSDictionary *parameters = @{@"userId": _user.userId};
+    
+    
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getmymsgcount] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        NSNumber *code = [responseObject objectForKey:@"code"];
+        int code_int = [code intValue];
+        if (code_int == 200) {
+//            [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
+            NSInteger count=[responseObject[@"data"]integerValue];
+            BOOL newMessage=count=0?NO:YES;
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:notify_newMessage object:@(newMessage)];
+            
+            if (newMessage) [_customTabBar showMessageIcon];
+            else [_customTabBar hiddenMessageIcon];
+            
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+  
     }];
     
 }

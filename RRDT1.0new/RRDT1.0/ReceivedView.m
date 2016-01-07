@@ -14,7 +14,7 @@
 
 - (instancetype)init
 {
-    self = [super initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - 40) style:UITableViewStyleGrouped];
+    self = [super initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - 40 -IOS_TAB_BAR_HEIGHT) style:UITableViewStyleGrouped];
     if (self) {
         
         self.backgroundColor = [UIColor grayColor];

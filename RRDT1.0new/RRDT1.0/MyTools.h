@@ -32,13 +32,13 @@
 
 #pragma mark 用户接口
 
-//#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
-#define URL_All @"http://apinew.renrenditui.cn/20151217/services/"
+#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
+//#define URL_All @"http://apinew.renrenditui.cn/20151217/services/"
 /*
  *上传图片
  */
-//#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
-#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
+#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
+//#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
 
 
 
@@ -126,6 +126,37 @@
  */
 #define URL_Gethotregionandall @"/region/gethotregionandall"
 
+/*
+ *1.3.4 绑定支付宝账号
+ */
+#define URL_bindalipay @"/userc/bindalipay"
+
+
+/*
+ *1.3.5 获取未读消息数量
+ */
+#define URL_getmymsgcount @"/msg/getmymsgcount"
+
+/*
+ *1.3.6 获取资金明细列表（收支记录）
+ */
+#define URL_getbalancerecordlist @"/userc/getbalancerecordlist"
+
+/*
+ *1.3.7 资料审核详情分组后列表（新增）
+ */
+#define URL_getmytaskdatumgrouplist @"/taskdatum/getmytaskdatumgrouplist"
+
+/*
+ *1.3.8 任务参与人列表（新增）
+ */
+#define URL_getclienterlistbytaskid @"/userc/getclienterlistbytaskid"
+
+/*
+ *1.3.9 获取合伙人分红信息（新增）
+ */
+#define URL_getpartnerinfo @"/userc/getpartnerinfo"
+
 
 /*
  *版本更新
@@ -148,6 +179,7 @@
 #define GRARYColor  0x767676
 
 @interface MyTools : NSObject
++ (void)closeKeyboard;
 + (void)call:(NSString *)phoneNumber atView:(UIView *)aView;
 
 +(NSString *)getTasktype:(int)type;

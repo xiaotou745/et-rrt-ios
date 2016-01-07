@@ -159,9 +159,7 @@
 }
 - (void)passAgain:(NSNotification *)note{
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"CurrentNotification" object:nil userInfo:nil];
-    //    CurrentTaskViewController *current = [[CurrentTaskViewController alloc] init];
-    //    [self.navigationController pushViewController:current animated:YES];
+
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

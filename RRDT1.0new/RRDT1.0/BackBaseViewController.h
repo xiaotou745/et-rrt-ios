@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface BackBaseViewController : UIViewController
+{
+    User *_user;
 
+}
+- (void)showTabBar;
+- (void)postAlertWithMsg:(NSString *)msg;
 @end

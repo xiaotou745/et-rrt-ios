@@ -8,14 +8,11 @@
 
 #import "SCMsgListVC.h"
 #import "SCMsgListCell.h"
-//#import "SCMsgDetailVC.h"
+#import "SCMsgDetailVC.h"
 #import "MJRefresh.h"
 
 @interface SCMsgListVC ()<UITableViewDataSource,UITableViewDelegate>
-{
-    User *_user;
 
-}
 @property (weak, nonatomic) IBOutlet UITableView *scmlTableView;
 @property (weak, nonatomic) IBOutlet UILabel *noMsgLab;
 
@@ -164,7 +161,7 @@
 //    return 60;
     MsgModel *task  = [[MsgModel alloc] init];
     task=self.dataArray[indexPath.row];
-    CGSize size = [task.msg boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} context:nil].size;
+    CGSize size = [task.msg boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
     return size.height + 40;
 }
 
@@ -184,8 +181,11 @@
 {
     MsgModel *task  = [[MsgModel alloc] init];
     task=self.dataArray[indexPath.row];
-    task.hasRead=1;
-    [_scmlTableView reloadData];
+//    task.hasRead=1;
+//    [_scmlTableView reloadData];
+    SCMsgDetailVC *vc=[[SCMsgDetailVC alloc]initWithNibName:@"SCMsgDetailVC" bundle:nil];
+    vc.model=task;
+    [self.navigationController pushViewController:vc animated:YES];
 
 }
 

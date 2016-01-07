@@ -11,11 +11,10 @@
 #import "CoreTFManagerVC.h"
 
 #import "CoreStatusBtn.h"
+#import "SCBandAliPayVC.h"
 
 @interface WithDrawViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
-{
-    User *_user;
-    
+{    
     CoreStatusBtn *btn;
 }
 
@@ -43,6 +42,7 @@
     [super viewDidLoad];
     
     [self viewCreat];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getMyInfo) name:notify_bandingAlipaySuccess object:nil];
 
 }
 - (void)viewCreat{
@@ -52,11 +52,6 @@
     self.title = @"提现";
     _user = [[User alloc] init];
     NSLog(@">?>>>>%@",_user.userName);
-    
-    
-
-    
-    
     _mytable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
@@ -142,15 +137,28 @@
         if (code_int == 200) {
             [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
             
+            _user.userName      = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];//用户名
+            _user.userPhoneNo   = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"];
             
-            _user.userName      = [[responseObject objectForKey:@"data"] objectForKey:@"userName"];//用户名
+            _user.sex = [[[responseObject objectForKey:@"data"] objectForKey:@"sex"] integerValue];
+            _user.age = [[[responseObject objectForKey:@"data"] objectForKey:@"age"] integerValue];
+            _user.headImage = [[responseObject objectForKey:@"data"] objectForKey:@"headImage"];
+            
+            _user.balance       = [[[responseObject objectForKey:@"data"] objectForKey:@"balance"] floatValue];//余额
+            _user.withdrawing   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdrawing"] floatValue];//提现中
+            _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
+            
             _user.totalAmount   = [[[responseObject objectForKey:@"data"] objectForKey:@"totalAmount"] floatValue];//累计金额
             _user.withdraw   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdraw"] floatValue];//可以体现的金额
             
-            
+            _user.accountType   =[[[responseObject objectForKey:@"data"] objectForKey:@"accountType"] intValue];
+            _user.accountNo =[[responseObject objectForKey:@"data"] objectForKey:@"accountNo"];
+            _user.trueName =[[responseObject objectForKey:@"data"] objectForKey:@"trueName"];
+
             _moneyLab.text  = [NSString stringWithFormat:@"%.2f",_user.withdraw];
 //            _nameLab.text   = [NSString stringWithFormat:@"%@的财富",_user.userName];
-            _leijiLab.text  = [NSString stringWithFormat:@"累计财富:   ¥%.2f",_user.totalAmount];
+            _leijiLab.text  = [NSString stringWithFormat:@"已提现:   ¥%.2f",_user.totalAmount];
+            [_mytable reloadData];
             
         }else{
             [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
@@ -163,6 +171,16 @@
 }
 - (void)btnClick{
     
+//    CustomIOSAlertView *alert = [self tishiAlert];
+//    [alert show];
+    if (_user.accountType == -1) {
+        [UIAlertView showAlertViewWithTitle:nil message:@"绑定支付宝帐户后才能申请提现哦" cancelButtonTitle:@"取消" otherButtonTitles:@[@"绑定支付宝"] onDismiss:^(NSInteger buttonIndex){
+            [self gotoBandingAlipayVC];
+        } onCancel:^(
+         
+         ){}];
+        return;
+    }
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]){
         [self.view makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
     }else{
@@ -176,13 +194,14 @@
             [self.view makeToast:@"请输入正确的金额" duration:1.0 position:CSToastPositionTop];
 
         }else{
-            if (_txtAccount.text.length == 0) {
-                [self.view makeToast:@"请输入支付宝账号" duration:1.0 position:CSToastPositionTop];
-            }else{
-                if (_txtUsername.text.length == 0) {
-                    [self.view makeToast:@"请输入开户姓名" duration:1.0 position:CSToastPositionTop];
-                }else{
-                    
+            
+//            if (_txtAccount.text.length == 0) {
+//                [self.view makeToast:@"请输入支付宝账号" duration:1.0 position:CSToastPositionTop];
+//            }else{
+//                if (_txtUsername.text.length == 0) {
+//                    [self.view makeToast:@"请输入开户姓名" duration:1.0 position:CSToastPositionTop];
+//                }else{
+//                
 //                    NSString *msg = [NSString stringWithFormat:@"确认提现?\n提现金额:%@\n提现账号:%@\n提现人姓名:%@",_txtMoeny.text,_txtAccount.text,_txtUsername.text];
 //                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 //                    alert.tag = 111;
@@ -195,8 +214,8 @@
                         }
                     }];
 
-                }
-            }
+//                }
+//            }
         }
         }
         
@@ -209,8 +228,8 @@
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     NSDictionary *parameters = @{@"userId": _user.userId,
                                  @"amount": _txtMoeny.text,
-                                 @"accountInfo":_txtAccount.text,
-                                 @"trueName":_txtUsername.text};
+                                 @"accountInfo":_user.accountNo,
+                                 @"trueName":_user.trueName};
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_WithDraw] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>%@",parameters);
         NSLog(@"JSON: %@", responseObject);
@@ -261,7 +280,7 @@
     if (section == 0) {
         return 1;
     }else{
-        return 3;
+        return 2;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -281,7 +300,7 @@
     
     if (indexPath.section == 0) {
         UILabel *myLabel = [[UILabel alloc] init];
-        myLabel.text = @"可提现金额";
+        myLabel.text = @"我的余额";
         myLabel.font = [UIFont systemFontOfSize:12];
         myLabel.textColor = UIColorFromRGB(0x888888);
         [cell.contentView addSubview:myLabel];
@@ -337,9 +356,46 @@
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         cell.textLabel.textColor = UIColorFromRGB(0x333333);
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"提现金额";
+            
+            cell.textLabel.text = @"提现账户";
+            
+            UIButton *alipayBtn=[[UIButton alloc]initWithFrame:CGRectMake(90, 12, 60, 25)];
+            alipayBtn.layer.cornerRadius=3;
+            alipayBtn.layer.borderWidth=0.5;
+            alipayBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
+            [alipayBtn setTitle:@"支付宝" forState:UIControlStateNormal];
+            [alipayBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+            [alipayBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
+            alipayBtn.userInteractionEnabled=NO;
+            
+            [cell.contentView addSubview:alipayBtn];
+            
+            UIImageView *arrowRight=[ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-20, 15, 15, 20) ImageName:@"icon_right"];
+            [cell.contentView addSubview:arrowRight];
+            
+            _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(alipayBtn.right, 5, WIDTH-alipayBtn.right-30, 40)];
+            _txtAccount.font=[UIFont systemFontOfSize:14];
+            _txtAccount.textColor=[UIColor darkGrayColor];
+            _txtAccount.enabled=NO;
+//            _txtAccount.backgroundColor=[UIColor orangeColor];
+            _txtAccount.textAlignment = NSTextAlignmentCenter;
+            _txtAccount.returnKeyType = UIReturnKeyDone;
+            _txtAccount.clearButtonMode = YES;
+            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
+            [_txtAccount setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+            cell.accessoryView = _txtAccount;
+            
+            if(_user.accountType==-1){
+                _txtAccount.text=@"未设置";
+            }else if(_user.accountType==2){
+                _txtAccount.text=[_user.accountNo replaceNumberWithStar];
 
-            _txtMoeny = [[UITextField alloc]initWithFrame:CGRectMake(20, 10, WIDTH-120, 50)];
+            }
+            
+        }else if (indexPath.row == 1){
+            
+            cell.textLabel.text = @"提现金额";
+            _txtMoeny = [[UITextField alloc]initWithFrame:CGRectMake(20, 5, WIDTH-120, 40)];
             _txtMoeny.tag = 999999;
             _txtMoeny.textAlignment = NSTextAlignmentLeft;
             _txtMoeny.returnKeyType = UIReturnKeyDone;
@@ -348,20 +404,11 @@
             _txtMoeny.placeholder = @"请输入提现金额,最低10元";
             [_txtMoeny setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
             [_txtMoeny setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-            cell.accessoryView = _txtMoeny;
-        }else if (indexPath.row == 1){
-            cell.textLabel.text = @"支付宝账号";
-            _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(20, 10, WIDTH-120, 50)];
-            _txtAccount.textAlignment = NSTextAlignmentLeft;
-            _txtAccount.returnKeyType = UIReturnKeyDone;
-            _txtAccount.clearButtonMode = YES;
-            _txtAccount.placeholder = @"邮箱地址/手机号码";
-            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
-            [_txtAccount setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-            cell.accessoryView = _txtAccount;
+                       cell.accessoryView = _txtMoeny;
+           
         }else{
             cell.textLabel.text = @"支付宝姓名";
-            _txtUsername = [[UITextField alloc]initWithFrame:CGRectMake(20, 10, WIDTH-120, 50)];
+            _txtUsername = [[UITextField alloc]initWithFrame:CGRectMake(20, 5, WIDTH-120, 40)];
             _txtUsername.textAlignment = NSTextAlignmentLeft;
             _txtUsername.returnKeyType = UIReturnKeyDone;
             _txtUsername.clearButtonMode = YES;
@@ -384,6 +431,16 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 5;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    if (indexPath.section==1&&indexPath.row==0) {
+        [self gotoBandingAlipayVC];
+    }
+}
+-(void)gotoBandingAlipayVC{
+    SCBandAliPayVC *alipayVC=[[SCBandAliPayVC alloc]initWithNibName:@"SCBandAliPayVC" bundle:nil];
+    [self.navigationController pushViewController:alipayVC animated:YES];
 }
 #pragma mark 注册键盘
 -(void)viewDidAppear:(BOOL)animated{
@@ -500,6 +557,13 @@
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH - 20, HEIGHT/4 + 10)];
     UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_tishi"]];
+    [img setHidden:YES];
+    UILabel *titleLab = [[UILabel alloc] init];
+    titleLab.font=[UIFont systemFontOfSize:17];
+    titleLab.text=@"请核实您的提现信息";
+    titleLab.textColor = [UIColor blackColor];
+    titleLab.textAlignment = NSTextAlignmentCenter;
+
     
     UILabel *lab_titile1 = [[UILabel alloc] init];
     lab_titile1.font=[UIFont systemFontOfSize:15];
@@ -534,6 +598,7 @@
     
     
     [view addSubview:img];
+    [view addSubview:titleLab];
     [view addSubview:lab_titile1];
     [view addSubview:lab_titile2];
     [view addSubview:lab_titile3];
@@ -542,17 +607,23 @@
     [view addSubview:lab_msg3];
     
     lab_titile1.text = @"提现金额:";
-    lab_titile2.text = @"提现账号:";
+    lab_titile2.text = @"提现账户:";
     lab_titile3.text = @"提现人名:";
-    lab_msg1.text = _txtMoeny.text;
-    lab_msg2.text = _txtAccount.text;
-    lab_msg3.text = _txtUsername.text;
+    lab_msg1.text = [NSString stringWithFormat:@"%@元",_txtMoeny.text];
+    lab_msg2.text = _user.accountNo;
+    lab_msg3.text = _user.trueName;
     
     [img mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(view).with.offset(10);
         make.centerX.mas_equalTo(view.mas_centerX);
         make.height.mas_equalTo(HEIGHT/16);
         make.width.mas_equalTo(HEIGHT/16);
+    }];
+    [titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(view).with.offset(10);
+        make.centerX.mas_equalTo(view.mas_centerX);
+        make.height.mas_equalTo(HEIGHT/16);
+        make.width.mas_equalTo(DEF_SCEEN_WIDTH);
     }];
     
     [lab_titile1 mas_makeConstraints:^(MASConstraintMaker *make) {

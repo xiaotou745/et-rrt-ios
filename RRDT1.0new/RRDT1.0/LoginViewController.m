@@ -236,7 +236,7 @@
                 user.userId = [[responseObject objectForKey:@"data"] objectForKey:@"userId"];
                 user.userPhoneNo = _txtUsername.text;
                 user.isLogin = YES;
-                user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"userName"];
+                user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];
                 
                 NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:user];
                 NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];

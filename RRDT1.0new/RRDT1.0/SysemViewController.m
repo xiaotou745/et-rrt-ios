@@ -84,15 +84,18 @@
     NSLog(@">>>>>%zi",buttonIndex);
     if (buttonIndex == 1) {
         
-//        
-//        AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
-//        LoginViewController *login = [[LoginViewController alloc] init];
-//        appdelegate.window.rootViewController = login;
+        _user = [[User alloc] init];
+        _user.isLogin = NO;
+        _user.userId=@"";
+        _user.userPhoneNo=@"";
+        _user.fullHeadImage=@"";
+        _user.userName=@"";
+        _user.headImage=@"";
+        NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:_user];
         NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
-        [dd setObject:@"" forKey:@"myUser"];
+        [dd setObject:userData forKey:@"myUser"];
         [dd synchronize];
-        User *user = [[User alloc] init];
-        user.isLogin = NO;
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
 
     }

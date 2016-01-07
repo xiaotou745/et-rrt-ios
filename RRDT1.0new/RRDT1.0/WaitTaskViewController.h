@@ -10,7 +10,7 @@
  *  首页 可抢列表
  */
 #import <UIKit/UIKit.h>
-
-@interface WaitTaskViewController : UIViewController
+#import "BackBaseViewController.h"
+@interface WaitTaskViewController : BackBaseViewController
 
 @end

@@ -11,16 +11,18 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "LoginViewController.h"
-
 #import "WaitTaskTableViewCell.h"
-
-#import "MyCenterViewController.h"
-
-#import "CurrentTaskViewController.h"
-
 #import "NewTaskContentViewController.h"
 #import "CitysViewController.h"
+//orderBy	排序方式 1是佣金，2是审核周期，3是预计用时，4是参与人数，5是发布时间（int类型）
+typedef enum : NSUInteger {
+    orderByCommission=1,
+    orderByCycle,
+    orderByAverageTime,
+    orderByJoinNumbers,
+    orderByCreateTime,
+
+} orderByType;
 
 @interface WaitTaskViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
@@ -30,15 +32,13 @@
 
 @property (nonatomic,strong) UITableView *mytable;
 
-@property (nonatomic,strong) UILabel *cityLabel;
-
 @property (nonatomic,strong) NSMutableArray     *modeArr;
 
 @property (nonatomic,assign) float              Longitude;
 
 @property (nonatomic,assign) float              Latitude;
 
-@property (nonatomic,assign) NSInteger          nextId;
+@property (nonatomic,assign) NSInteger          currentPage;
 
 @property(nonatomic,strong)NSDictionary *currentCityInfo;
 @property(nonatomic,strong)NSString *StateName;//定位到的 城市名
@@ -49,36 +49,31 @@
 
 @implementation WaitTaskViewController
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
 
-    User *user = [[User alloc] init];
-    
-    if (user.isLogin == NO) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
-        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"0xffffff" alpha:0.8]];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-    }else{
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(mytask)];
-        [self.navigationItem.rightBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_center"] style:UIBarButtonItemStylePlain target:self action:@selector(mycenter)];
-        [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
-    }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self showTabBar];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
     _modeArr = [NSMutableArray array];
     self.citysArr=[NSMutableArray array];
     
-    _nextId = 0;
+    _currentPage = 0;
     //默认为北京
     _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
-    _cityLabel.text = _currentCityInfo[cityName];
+    
+    self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
+    [self.navigationItem.rightBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_currentCityInfo[cityName]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
+    [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
+    
+ 
 
     [self viewCreat];
 
@@ -100,39 +95,16 @@
 
 }
 -(void)requestNewCityDatas{
-    _cityLabel.text = _currentCityInfo[cityName];
-    _nextId = 0;
+    [self.navigationItem.leftBarButtonItem setTitle:_currentCityInfo[cityName]];
+    _currentPage = 0;
     [self post];
 
 }
-- (void)current{
-    [self mytask];
-}
-- (void)viewCreat{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(current) name:@"CurrentNotification" object:nil];
 
-    UIView *bgView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-    bgView.backgroundColor=[UIColor whiteColor];
-    UITapGestureRecognizer *tap1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
-    bgView.userInteractionEnabled =YES;
-    [bgView addGestureRecognizer:tap1];
-    [self.view addSubview:bgView];
+- (void)viewCreat{
+
     
-    UIImageView *address_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_address"]];
-    address_img.frame = CGRectMake(10, 10, 20, 20);
-    [bgView addSubview:address_img];
-    
-    
-    _cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, WIDTH - 40, 40)];
-    _cityLabel.backgroundColor = [UIColor whiteColor];
-    _cityLabel.textColor = UIColorFromRGB(0x333333);
-    _cityLabel.font = [UIFont systemFontOfSize:12];
-    [self.view addSubview:_cityLabel];
-    UITapGestureRecognizer *tap2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(address_imgHandle)];
-    _cityLabel.userInteractionEnabled =YES;
-    [_cityLabel addGestureRecognizer:tap2];
-    
-    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40) style:UITableViewStyleGrouped];
+    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0,0, WIDTH, HEIGHT - 64 -IOS_TAB_BAR_HEIGHT) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
     _mytable.emptyDataSetDelegate = self;
@@ -144,7 +116,7 @@
     _mytable.backgroundColor = UIColorFromRGB(0xe8e8e8);
     _mytable.tableFooterView = [UIView new];
     _mytable.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        _nextId = 0;
+        _currentPage = 0;
 //        [_mytable.header beginRefreshing];
         [self post];
 //        [_mytable.header endRefreshing];
@@ -152,6 +124,7 @@
     _mytable.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
 //        [_mytable.footer beginRefreshing];
+        _currentPage++;
         [self post];
 //        [_mytable.footer endRefreshing];
     }];
@@ -170,19 +143,7 @@
 
     [self.navigationController pushViewController:citysVC animated:YES];
 }
-- (void)mycenter{
-    MyCenterViewController *mycenter = [[MyCenterViewController alloc] init];
-    
-    [self.navigationController pushViewController:mycenter animated:YES];
-}
-- (void)mytask{
-    CurrentTaskViewController *currentVC = [[CurrentTaskViewController alloc] init];
-    [self.navigationController pushViewController:currentVC animated:YES];
-}
-- (void)login{
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
-    [self.navigationController pushViewController:loginVC animated:YES];
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -340,7 +301,10 @@
     
     return cell;
 }
+-(void)sortType{
+    
 
+}
 #pragma mark 请求数据
 - (void)post{
     
@@ -352,15 +316,16 @@
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         
         User *user = [[User alloc] init];
-        
+        //pageSize	每次获取数据的条数(不需要时传0，则每页15条记录)
         NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
-                                    @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
+                                    @"currentPage"       :[NSString stringWithFormat:@"%zi",_currentPage],
+                                    @"pageSize":@(0),
                                     @"itemsCount"   :@"10"
-                                    ,@"cityCode":_currentCityInfo[cityCode]};
+                                    ,@"cityCode":_currentCityInfo[cityCode],@"orderBy":@(orderByCommission)};
         
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            if (_nextId == 0) {
+            if (_currentPage == 0) {
                 [_modeArr removeAllObjects];
             }
 //            NSLog(@"wait%@ and %@",responseObject,operation);
@@ -368,12 +333,9 @@
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {
                 if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
-//                    [self.view makeToast:@"没有更多了" duration:1.0 position:CSToastPositionCenter];
-//                    [_mytable reloadData];
+
                 }else{
-                   
-                    _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
-                    
+                                       
                     for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
                         Task *task  = [[Task alloc] init];
                         [task setValuesForKeysWithDictionary:dic];
@@ -531,9 +493,5 @@
 //    [MyTools writeToFile:self.citysArr];
 //    NSArray *ssssss=[MyTools readCityAddress];
 }
-- (void)dealloc{
-    
-     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CurrentNotification" object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"passAgain" object:nil];
-}
+
 @end
