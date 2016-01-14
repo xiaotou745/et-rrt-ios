@@ -179,12 +179,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MsgModel *task  = [[MsgModel alloc] init];
-    task=self.dataArray[indexPath.row];
-//    task.hasRead=1;
-//    [_scmlTableView reloadData];
+    MsgModel *model  = [[MsgModel alloc] init];
+    model=self.dataArray[indexPath.row];
+    model.hasRead=1;
+    [self.dataArray replaceObjectAtIndex:indexPath.row withObject:model];
+    [_scmlTableView reloadData];
+    
     SCMsgDetailVC *vc=[[SCMsgDetailVC alloc]initWithNibName:@"SCMsgDetailVC" bundle:nil];
-    vc.model=task;
+    vc.model=model;
     [self.navigationController pushViewController:vc animated:YES];
 
 }

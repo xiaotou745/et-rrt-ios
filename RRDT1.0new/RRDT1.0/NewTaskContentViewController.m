@@ -20,7 +20,8 @@
 #import "RRDTWebViewController.h"
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
-//#import "CheckProgressViewController.h"
+#import "JoinsListViewController.h"
+
 @interface NewTaskContentViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     User *user;
@@ -53,7 +54,14 @@
  */
 @property (nonatomic,strong) CoreLabel        *statusLabel;
 
-
+/**
+ 任务类型
+ */
+@property (nonatomic,strong) UILabel      *taskType;
+/**
+ 任务类型视图
+ */
+@property (nonatomic,strong) UIImageView      *taskTypeView;
 /**
  时间
  */
@@ -116,6 +124,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self viewCreat];
@@ -124,8 +133,8 @@
     self.title = @"任务详情";
 
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
-    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
+//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
     
 }
 - (void)backTo{
@@ -293,6 +302,9 @@
             [cell.contentView addSubview:[self headImageView]];
             [cell.contentView addSubview:[self headLabel]];
             [cell.contentView addSubview:[self statusLabel]];
+            [cell.contentView addSubview:[self taskTypeView]];
+            [self.taskTypeView addSubview:[self taskType]];
+
             [cell.contentView addSubview:[self moneyLab]];
             [cell.contentView addSubview:[self line_label]];
             
@@ -317,7 +329,7 @@
             [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(cell.contentView).with.offset(15);
                 make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-                make.right.equalTo(cell.contentView).with.offset(-12);
+                make.right.equalTo(cell.contentView).with.offset(-50);
                 make.height.mas_equalTo(20);
             }];
             [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -557,14 +569,12 @@
         }else if (_type == 7){
             status = @"已取消";
         }
-        _statusLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:_task.taskType],_task.taskGeneralInfo];
-        
-        
-        [_statusLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-        [_statusLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:_task.taskType] range:NSMakeRange(0,4)];
-        
-        [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
+        _statusLabel.text =_task.taskGeneralInfo;
         _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
+        
+        _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
+        _taskType.text=[MyTools getTasktype:_task.taskType];
+
 
             _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
             _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
@@ -720,6 +730,22 @@
         _timeLabel.font = [UIFont systemFontOfSize:12];
     }
     return _timeLabel;
+}
+
+- (UILabel *)taskType{
+    if (!_taskType) {
+        _taskType = [ManFactory  createLabelWithFrame:CGRectMake(0, 0, _taskTypeView.width-5, _taskTypeView.height) Font:14 Text:@""];
+        _taskType.textAlignment=NSTextAlignmentRight;
+        _taskType.textColor = [UIColor whiteColor];
+    }
+    return _taskType;
+}
+-(UIImageView *)taskTypeView{
+    
+    if (!_taskTypeView) {
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-50, 0, 50, 20) ImageName:@""];
+    }
+    return _taskTypeView;
 }
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {

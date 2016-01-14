@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface RRDTBarViewController : UIViewController
+#import "BackBaseViewController.h"
+@interface RRDTBarViewController : BackBaseViewController
 
 /**
  downUrl	非签约任务 时 下载地址

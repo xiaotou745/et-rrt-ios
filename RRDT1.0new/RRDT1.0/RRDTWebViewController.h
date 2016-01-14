@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface RRDTWebViewController : UIViewController
+#import "BackBaseViewController.h"
+@interface RRDTWebViewController : BackBaseViewController
 
 @property(strong, nonatomic)NSString *navTitle;
 @property(strong, nonatomic)NSString *urlString;

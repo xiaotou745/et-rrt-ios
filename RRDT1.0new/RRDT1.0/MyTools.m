@@ -24,6 +24,18 @@
     
 }
 
++(NSString *)getTasktypeImageName:(int)type{
+    NSString *tasktype;
+    if (taskType_write==type) {
+        tasktype=@"taskType_write";
+    }else if (taskType_share==type){
+        tasktype=@"taskType_share";
+    }else if (taskType_download==type){
+        tasktype=@"taskType_download";
+    }
+    return tasktype;
+}
+
 +(NSString *)getTasktype:(int)type{
     NSString *tasktype;
     if (taskType_write==type) {

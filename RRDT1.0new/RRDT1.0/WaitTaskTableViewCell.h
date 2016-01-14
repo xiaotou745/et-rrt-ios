@@ -33,6 +33,11 @@
  */
 @property (nonatomic,strong) UILabel      *taskType;
 /**
+ 任务类型视图
+ */
+@property (nonatomic,strong) UIImageView      *taskTypeView;
+
+/**
  左lab
  */
 //@property (nonatomic,strong) UILabel        *leftLab;

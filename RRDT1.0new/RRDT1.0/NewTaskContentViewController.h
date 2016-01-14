@@ -10,8 +10,8 @@
  *  任务详情
  */
 #import <UIKit/UIKit.h>
-
-@interface NewTaskContentViewController : UIViewController
+#import "BackBaseViewController.h"
+@interface NewTaskContentViewController : BackBaseViewController
 
 @property (nonatomic,strong) Task *task;
 

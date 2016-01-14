@@ -14,15 +14,7 @@
 #import "WaitTaskTableViewCell.h"
 #import "NewTaskContentViewController.h"
 #import "CitysViewController.h"
-//orderBy	排序方式 1是佣金，2是审核周期，3是预计用时，4是参与人数，5是发布时间（int类型）
-typedef enum : NSUInteger {
-    orderByCommission=1,
-    orderByCycle,
-    orderByAverageTime,
-    orderByJoinNumbers,
-    orderByCreateTime,
-
-} orderByType;
+#import "OrderByTypeView.h"
 
 @interface WaitTaskViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
@@ -45,6 +37,10 @@ typedef enum : NSUInteger {
 
 @property (nonatomic,strong) NSMutableArray     *citysArr;
 
+//排序的自定义view
+@property(nonatomic,strong)OrderByTypeView *oderByView;
+@property (nonatomic,assign) NSInteger      orderByType;
+
 @end
 
 @implementation WaitTaskViewController
@@ -57,18 +53,19 @@ typedef enum : NSUInteger {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.title = @"可接任务";
+
     _modeArr = [NSMutableArray array];
     self.citysArr=[NSMutableArray array];
     
     _currentPage = 0;
+    _orderByType=1;
     //默认为北京
     _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
     
     self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
-    [self.navigationItem.rightBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_currentCityInfo[cityName]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
     [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
@@ -76,13 +73,16 @@ typedef enum : NSUInteger {
  
 
     [self viewCreat];
-
+    [self createOderByView];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeCurrentCity:) name:kChooseCityNotif object:nil];
     //领取任务后刷新当前城市的数据
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess) name:loginSuccess_refreshWaitVC object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeOrderType:) name:OrderByTypeView_select object:nil];
+    
     [self getLocation];
     [self getCitysRegion];
+    
 }
 
 -(void)changeCurrentCity:(NSNotification *)notif{
@@ -129,13 +129,8 @@ typedef enum : NSUInteger {
 //        [_mytable.footer endRefreshing];
     }];
     
-
-    
-    self.title = @"可接任务";
-    
-    
-    
 }
+
 -(void)address_imgHandle{
        CitysViewController *citysVC=[[CitysViewController alloc]initWithNibName:@"CitysViewController" bundle:nil];
     citysVC.modeArr=[NSMutableArray arrayWithArray:_citysArr];
@@ -272,13 +267,9 @@ typedef enum : NSUInteger {
     if (_modeArr.count > 0) {
         Task *task = [_modeArr objectAtIndex:indexPath.section];
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
-        cell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
-
-       
-        [cell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-         [cell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
-        
-        [cell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,cell.infoLabel.text.length - 4)];
+        cell.infoLabel.text =task.taskGeneralInfo;
+        cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+        cell.taskType.text=[MyTools getTasktype:task.taskType];
         
         
         cell.moneyLab.textColor = [UIColor clearColor];
@@ -301,9 +292,24 @@ typedef enum : NSUInteger {
     
     return cell;
 }
+
+-(void)createOderByView{
+    
+    _oderByView=[[OrderByTypeView alloc]init];
+    [self.view addSubview:_oderByView];
+    [self sortType];
+    
+}
+
 -(void)sortType{
     
-
+      [_oderByView setHidden:!_oderByView.hidden];
+}
+-(void)changeOrderType:(NSNotification *)notif{
+    
+    [self sortType];
+    _orderByType=[notif.object integerValue];
+    [self post];
 }
 #pragma mark 请求数据
 - (void)post{
@@ -320,10 +326,9 @@ typedef enum : NSUInteger {
         NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
                                     @"currentPage"       :[NSString stringWithFormat:@"%zi",_currentPage],
                                     @"pageSize":@(0),
-                                    @"itemsCount"   :@"10"
-                                    ,@"cityCode":_currentCityInfo[cityCode],@"orderBy":@(orderByCommission)};
+                                    @"cityCode":_currentCityInfo[cityCode],@"orderBy":@(_orderByType)};
         
-        
+        NSLog(@"_orderByType===%ld",(long)_orderByType);
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             if (_currentPage == 0) {
                 [_modeArr removeAllObjects];
@@ -356,9 +361,7 @@ typedef enum : NSUInteger {
             [_mytable.header endRefreshing];
             [_mytable.footer endRefreshing];
             
-            
             [self.view makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
-            
             
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }];
@@ -385,6 +388,14 @@ typedef enum : NSUInteger {
     newTask.type = 1;
     newTask.onlyType = 999;
     [self.navigationController pushViewController:newTask animated:YES];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    //滚动表视图  隐藏排序view
+    if (!_oderByView.hidden) {
+        [self sortType];
+    }
 }
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
 {

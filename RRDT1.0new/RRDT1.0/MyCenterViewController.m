@@ -41,6 +41,8 @@
 
 @property (nonatomic,strong)NSArray *titleArr;
 
+@property (nonatomic,strong)UIView *view1;
+
 @property (nonatomic,strong)UILabel *lab_phone;
 @property (nonatomic,strong)UILabel *lab_name;
 @property (nonatomic,strong)UILabel *lab_toLogin;
@@ -51,6 +53,9 @@
 @property (nonatomic,strong)UILabel *lab_allmoney;
 @property (nonatomic,strong)UILabel *lab_ketixian;
 @property (nonatomic,strong)UILabel *lab_tixianzhong;
+
+@property (nonatomic,strong)UILabel *lab_wodeyue;
+@property (nonatomic,strong)UIButton *moneyBtn;
 
 @end
 
@@ -267,14 +272,19 @@
             [phoneStr setHidden:YES];
             [nameStr setHidden:YES];
         }
-        UIView *view1 = [[UIView alloc] init];
-        view1.userInteractionEnabled=YES;
-        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewTap)];
-        [view1 addGestureRecognizer:tap];
         
-//        view1.layer.borderColor = UIColorFromRGB(0x888888).CGColor;
-//        view1.layer.borderWidth = 0.5;
-        [cell.contentView addSubview:view1];
+        if (!_view1) {
+            _view1 = [[UIView alloc] init];
+            _view1.userInteractionEnabled=YES;
+            UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewTap)];
+            [_view1 addGestureRecognizer:tap];
+            //        view1.layer.borderColor = UIColorFromRGB(0x888888).CGColor;
+            //        view1.layer.borderWidth = 0.5;
+            [cell.contentView addSubview:_view1];
+        }
+        
+        
+
         
         UIView *view2 = [[UIView alloc] init];
 //        view2.layer.borderColor = UIColorFromRGB(0x888888).CGColor;
@@ -289,7 +299,7 @@
 
         
         
-        [view1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_view1 mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.mas_equalTo(cell.contentView);
             make.left.equalTo(cell.contentView).with.offset(0);
             make.height.equalTo(@40);
@@ -320,7 +330,7 @@
             make.height.equalTo(@0.5);
             make.left.equalTo(cell.contentView);
             make.right.equalTo(cell.contentView);
-            make.bottom.mas_equalTo(view1.mas_top);
+            make.bottom.mas_equalTo(_view1.mas_top);
         }];
         
         UIView *lineView1 = [[UIView alloc] init];
@@ -328,28 +338,31 @@
         lineView1.backgroundColor = UIColorFromRGB(0x888888);
         [cell.contentView addSubview:lineView1];
         [lineView1 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(view1.mas_top);
-            make.bottom.mas_equalTo(view1.mas_bottom);
+            make.top.mas_equalTo(_view1.mas_top);
+            make.bottom.mas_equalTo(_view1.mas_bottom);
             make.width.equalTo(@0.5);
-            make.left.mas_equalTo(view1.mas_right);
+            make.left.mas_equalTo(_view1.mas_right);
         }];
         UIView *lineView2 = [[UIView alloc] init];
         lineView2.backgroundColor = UIColorFromRGB(0x888888);
         lineView2.alpha = 0.5;
         [cell.contentView addSubview:lineView2];
         [lineView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(view1.mas_top);
-            make.bottom.mas_equalTo(view1.mas_bottom);
+            make.top.mas_equalTo(_view1.mas_top);
+            make.bottom.mas_equalTo(_view1.mas_bottom);
             make.width.equalTo(@0.5);
             make.left.mas_equalTo(view2.mas_right);
         }];
         
-        UILabel *lab1 = [[UILabel alloc] init];
-        lab1.text = @"我的余额";
-//        lab1.textAlignment = NSTextAlignmentCenter;
-        lab1.textColor = UIColorFromRGB(0x333333);
-        lab1.font = [UIFont systemFontOfSize:15];
-        [view1 addSubview:lab1];
+        if (!_lab_wodeyue) {
+            _lab_wodeyue = [[UILabel alloc] init];
+            _lab_wodeyue.text = @"我的余额";
+            //        _lab_wodeyue.textAlignment = NSTextAlignmentCenter;
+            _lab_wodeyue.textColor = UIColorFromRGB(0x333333);
+            _lab_wodeyue.font = [UIFont systemFontOfSize:15];
+            [_view1 addSubview:_lab_wodeyue];
+        }
+       
         
 //        UILabel *lab2 = [[UILabel alloc] init];
 //        lab2.text = @"可提现";
@@ -365,10 +378,10 @@
 //        lab3.font = [UIFont systemFontOfSize:14];
 //        [view3 addSubview:lab3];
         
-        [lab1 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(view1);
-            make.bottom.equalTo(view1);
-            make.left.equalTo(view1).offset(10);
+        [_lab_wodeyue mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(_view1);
+            make.bottom.equalTo(_view1);
+            make.left.equalTo(_view1).offset(10);
             make.width.equalTo(@70);
         }];
 //        [lab2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -384,24 +397,26 @@
 //            make.right.equalTo(view3);
 //        }];
         
-        _lab_allmoney = [[UILabel alloc] init];
-//        _lab_allmoney.textAlignment = NSTextAlignmentCenter;
-        _lab_allmoney.textColor = UIColorFromRGB(0xf7585d);
-        _lab_allmoney.font = [UIFont systemFontOfSize:18];
-        [view1 addSubview:_lab_allmoney];
+        if (!_lab_allmoney) {
+            _lab_allmoney = [[UILabel alloc] init];
+            //        _lab_allmoney.textAlignment = NSTextAlignmentCenter;
+            _lab_allmoney.textColor = UIColorFromRGB(0xf7585d);
+            _lab_allmoney.font = [UIFont systemFontOfSize:18];
+            [_view1 addSubview:_lab_allmoney];
+        }
+       
         
-//        UIButton *moneyBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-80, 5, 70, 30)];
-        UIButton *moneyBtn=[[UIButton alloc]init];
-        moneyBtn.layer.cornerRadius=3;
-        moneyBtn.layer.borderWidth=0.5;
-        moneyBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
-        [moneyBtn setTitle:@"提现" forState:UIControlStateNormal];
-        [moneyBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
-
-        [moneyBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
-
-        [moneyBtn addTarget:self action:@selector(getMoney) forControlEvents:UIControlEventTouchUpInside];
-        [view1 addSubview:moneyBtn];
+        if (!_moneyBtn) {
+            _moneyBtn=[[UIButton alloc]init];
+            _moneyBtn.layer.cornerRadius=3;
+            _moneyBtn.layer.borderWidth=0.5;
+            _moneyBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
+            [_moneyBtn setTitle:@"提现" forState:UIControlStateNormal];
+            [_moneyBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
+            [_moneyBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
+            [_moneyBtn addTarget:self action:@selector(getMoney) forControlEvents:UIControlEventTouchUpInside];
+            [_view1 addSubview:_moneyBtn];
+        }
         
         _lab_ketixian = [[UILabel alloc] init];
         _lab_ketixian.textAlignment = NSTextAlignmentCenter;
@@ -415,17 +430,17 @@
         [view3 addSubview:_lab_tixianzhong];
         
         [_lab_allmoney mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(view1);
-            make.top.equalTo(view1);
-            make.left.equalTo(lab1.mas_right);
-            make.right.equalTo(view1);
+            make.height.equalTo(_view1);
+            make.top.equalTo(_view1);
+            make.left.equalTo(_lab_wodeyue.mas_right);
+            make.right.equalTo(_view1);
         }];
         
-        [moneyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        [_moneyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@28);
-            make.centerY.equalTo(view1);
+            make.centerY.equalTo(_view1);
             make.width.equalTo(@70);
-            make.right.equalTo(view1).with.offset(-15);
+            make.right.equalTo(_view1).with.offset(-15);
         }];
         
         [_lab_ketixian mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -484,8 +499,9 @@
             BillDetailViewController *billVC=[[BillDetailViewController alloc]init];
             [self.navigationController pushViewController:billVC animated:YES];
         }else if(indexPath.row==1){
-            PartnerViewController *partner=[[PartnerViewController alloc]init];
-            [self.navigationController pushViewController:partner animated:YES];
+            
+            [self getPartnerInfo];
+            
             
         }else{
             TaskDetailViewController *TaskDetailV = [[TaskDetailViewController alloc] init];
@@ -506,6 +522,47 @@
         [self callKe];
     }
 }
+
+-(void)getPartnerInfo{
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
+    NSLog(@">>>>>>%@",_user.userId);
+    NSDictionary *parameters = @{@"userId": _user.userId};
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getpartnerinfo] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        NSLog(@"JSON: %@", responseObject);
+        NSNumber *code = [responseObject objectForKey:@"code"];
+        int code_int = [code intValue];
+        if (code_int == 200) {
+            [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
+            
+            PartnerViewController *partner=[[PartnerViewController alloc]initWithNibName:@"PartnerViewController" bundle:nil];
+            
+            partner.partnerNum__=[[[responseObject objectForKey:@"data"] objectForKey:@"partnerNum"]description];
+            partner.recommendPhone__=[[responseObject objectForKey:@"data"] objectForKey:@"recommendPhone"];
+            partner.bonusTotal__=[[[responseObject objectForKey:@"data"] objectForKey:@"bonusTotal"]description];
+
+            
+            [self.navigationController pushViewController:partner animated:YES];
+            
+        }else{
+//            
+//            [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:[responseObject objectForKey:@"msg"] offsetY:-100 failClickBlock:^{
+//            }];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
+//        }];
+    }];
+
+
+}
 - (void)back{
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -525,6 +582,7 @@
         if (code_int == 200) {
             [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
             
+            
             _user.userName      = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];//用户名
             _user.userPhoneNo   = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"];
             
@@ -534,8 +592,13 @@
             
             _user.balance       = [[[responseObject objectForKey:@"data"] objectForKey:@"balance"] floatValue];//余额
             _user.withdrawing   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdrawing"] floatValue];//提现中
-            _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
-
+//            NSString *fullHeadImage=[[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
+//            if([fullHeadImage isKindOfClass:[NSNull class]]||fullHeadImage==nil){
+//                fullHeadImage=@"";
+//                };
+            
+            _user.fullHeadImage =[[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
+            
             _user.totalAmount   = [[[responseObject objectForKey:@"data"] objectForKey:@"totalAmount"] floatValue];//累计金额
             _user.withdraw   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdraw"] floatValue];//可以体现的金额
             

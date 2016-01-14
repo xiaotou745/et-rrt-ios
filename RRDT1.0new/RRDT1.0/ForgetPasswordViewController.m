@@ -62,8 +62,8 @@
 //    [self.view addSubview:btn];
     [footView addSubview:btn];
     _mytable.tableFooterView = footView;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
     
 }
 - (void)back{

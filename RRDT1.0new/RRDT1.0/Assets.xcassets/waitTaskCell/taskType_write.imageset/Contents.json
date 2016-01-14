@@ -2,6 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "label1.pdf",
       "scale" : "1x"
     },
     {

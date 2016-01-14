@@ -33,6 +33,15 @@ typedef void(^RefuseViewBlock)(void);
  */
 @property (nonatomic,strong) CoreLabel      *moneyLab;
 
+/**
+ 任务类型
+ */
+@property (nonatomic,strong) UILabel      *taskType;
+/**
+ 任务类型视图
+ */
+@property (nonatomic,strong) UIImageView      *taskTypeView;
+
 
 @property (nonatomic,strong) UIImageView    *img_wait;
 @property (nonatomic,strong) UILabel        *waitLab;

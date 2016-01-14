@@ -17,6 +17,8 @@
         [self headLabel];
         [self moneyLab];
         [self infoLabel];
+        [self taskTypeView];
+        [self taskType];
 //        [self taskType];
 //        [self leftLab];
 //        [self rightLab];
@@ -45,7 +47,7 @@
         [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).with.offset(15);
             make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-            make.right.equalTo(self).with.offset(-12);
+            make.right.equalTo(self).with.offset(-50);
             make.height.mas_equalTo(20);
         }];
         
@@ -62,13 +64,7 @@
             make.width.mas_equalTo(100);
             make.height.equalTo(@40);
         }];
-        
-        [_taskType mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(_headImageView.mas_top);
-            make.right.equalTo(self).with.offset(-10);
-            make.width.mas_equalTo(60);
-            make.height.equalTo(@20);
-        }];
+    
         
 //        [_leftLab mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.bottom.equalTo(self).with.offset(-15);
@@ -123,7 +119,9 @@
     if (!_infoLabel) {
         _infoLabel = [[CoreLabel alloc] init];
         _infoLabel.font = [UIFont systemFontOfSize:12];
-        _infoLabel.textColor = UIColorFromRGB(0xbbc0c7);
+//        _infoLabel.textColor = UIColorFromRGB(0xbbc0c7);
+        _infoLabel.textColor = UIColorFromRGB(0x888888);
+
         _infoLabel.numberOfLines = 2;
         [self addSubview:_infoLabel];
     }
@@ -131,17 +129,20 @@
 }
 - (UILabel *)taskType{
     if (!_taskType) {
-        _taskType = [[UILabel alloc] init];
-        _taskType.font = [UIFont systemFontOfSize:12];
-        _taskType.textAlignment=NSTextAlignmentCenter;
+        _taskType = [ManFactory  createLabelWithFrame:CGRectMake(0, 0, _taskTypeView.width-5, _taskTypeView.height) Font:14 Text:@""];
+        _taskType.textAlignment=NSTextAlignmentRight;
         _taskType.textColor = [UIColor whiteColor];
-        _taskType.backgroundColor=UIColorFromRGB(0x32bcf6);
-        _taskType.layer.cornerRadius=3;
-        _taskType.layer.masksToBounds=YES;
-        _taskType.numberOfLines = 1;
-        [self addSubview:_taskType];
+        [_taskTypeView addSubview:_taskType];
     }
     return _taskType;
+}
+-(UIImageView *)taskTypeView{
+
+    if (!_taskTypeView) {
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(self.width-50, 0, 50, 20) ImageName:@""];
+        [self addSubview:_taskTypeView];
+    }
+    return _taskTypeView;
 }
 //- (UILabel *)leftLab{
 //    if (!_leftLab) {

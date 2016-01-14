@@ -372,18 +372,18 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    [manager POST:[NSString stringWithFormat:@"%@2",URL_PostImg] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:@{@"uploadFrom":@(2)} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];
         
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@">>>%@",responseObject);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if ([[responseObject objectForKey:@"Status"] integerValue]== 1) {
-            _user.fullHeadImage = [[responseObject objectForKey:@"Result"] objectForKey:@"FileUrl"];
-            [userArr1 replaceObjectAtIndex:0 withObject:[[responseObject objectForKey:@"Result"] objectForKey:@"RelativePath"]];
+        if ([[responseObject objectForKey:@"code"] integerValue]== 200) {
+            _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fileUrl"];
+            [userArr1 replaceObjectAtIndex:0 withObject:[[responseObject objectForKey:@"data"] objectForKey:@"relativePath"]];
             
         }else{
-            [self.view makeToast:[responseObject objectForKey:@"Message"] duration:1.0 position:CSToastPositionTop];
+            [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
         }
     } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
         NSLog(@"-----%@",operation);

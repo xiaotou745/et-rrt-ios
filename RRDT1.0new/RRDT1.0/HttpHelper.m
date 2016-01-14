@@ -17,6 +17,7 @@
     
     manager.requestSerializer=[AFJSONRequestSerializer serializer];
     manager.responseSerializer=[AFJSONResponseSerializer serializer];
+    ((AFJSONResponseSerializer *)manager.responseSerializer).removesKeysWithNullValues=YES;
 //    [manager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/plain", @"text/html", nil];
     

@@ -47,7 +47,7 @@
 {
 //    UILabel *titleLabel=[ManFactory createLabelWithFrame:CGRectMake(20, 80, DEF_SCEEN_WIDTH-40, 30) Font:18 Text:self.infoDic[@"Content"]];
 //    
-    UILabel *timeLabel=[ManFactory createLabelWithFrame:CGRectMake(10,6, 200, 30) Font:16 Text:_model.createDate];
+    UILabel *timeLabel=[ManFactory createLabelWithFrame:CGRectMake(10,6, 200, 30) Font:16 Text:[MyTools timeString:_model.createDate]];
 
     NSString * contents = _model.msg;
     UITextView *infoText=[ManFactory createTextViewWithFrame:CGRectMake(5, timeLabel.bottom, DEF_SCEEN_WIDTH-10, DEF_SCEEN_HEIGHT-timeLabel.bottom) textFont:14   textString:[NSString stringWithFormat:@"    %@",contents] isEditable:NO];
@@ -60,8 +60,39 @@
     [self.view addSubview:timeLabel];
     [self.view addSubview:infoText];
     
+    [self updateMsg];
+    
 }
-
+-(void)updateMsg{
+    
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    _user = [[User alloc] init];
+    NSLog(@">>>>>>%@",_user.userId);
+    NSDictionary *parmeters = @{@"userId":_user.userId,
+                                @"msgId":_model.msgId,
+                                @"opType":@(2)};
+    
+    
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_updatemsg] parameters:parmeters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@">>>>>%@",operation);
+        
+        NSLog(@"JSON: %@", responseObject);
+        NSNumber *code = [responseObject objectForKey:@"code"];
+        int code_int = [code intValue];
+        if (code_int == 200) {
+    
+        }else{
+            
+        }
+     
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        
+        
+    }];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

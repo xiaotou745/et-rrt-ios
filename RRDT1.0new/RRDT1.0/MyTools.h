@@ -37,8 +37,11 @@
 /*
  *上传图片
  */
-#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
+//#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
+#define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
+
 //#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
+//#define URL_PostImg @"http://upload.renrenditui.cn/upload/fileupload/uploadimg"
 
 
 
@@ -121,6 +124,12 @@
  */
 #define URL_Getmymsglist @"/msg/getmymsglist"
 
+
+/*
+ *1.3.2 删除或将消息置为已读V1.0.2
+ */
+#define URL_updatemsg @"/msg/updatemsg"
+
 /*
  *1.3.3 获取城市列表信息V1.0.2
  */
@@ -157,7 +166,6 @@
  */
 #define URL_getpartnerinfo @"/userc/getpartnerinfo"
 
-
 /*
  *版本更新
  */
@@ -181,6 +189,8 @@
 @interface MyTools : NSObject
 + (void)closeKeyboard;
 + (void)call:(NSString *)phoneNumber atView:(UIView *)aView;
+
++(NSString *)getTasktypeImageName:(int)type;
 
 +(NSString *)getTasktype:(int)type;
 +(UIColor *)getTasktypeBGColor:(int)type;

@@ -932,7 +932,7 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    [manager POST:[NSString stringWithFormat:@"%@3",URL_PostImg] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:@{@"uploadFrom":@(3)} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@">>>%@",responseObject);

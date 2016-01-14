@@ -57,6 +57,7 @@
     _mytable.dataSource = self;
     _mytable.showsHorizontalScrollIndicator = NO;
     _mytable.showsVerticalScrollIndicator   = NO;
+    _mytable.keyboardDismissMode=UIScrollViewKeyboardDismissModeInteractive;
     [self.view addSubview:_mytable];
     
     
@@ -183,43 +184,40 @@
     }
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]){
         [self.view makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
-    }else{
-        
-        float myMoney = [[_txtMoeny text] floatValue];
-        
-        if (myMoney < 10.0) {
-            [self.view makeToast:@"金额需大于等于10元" duration:1.0 position:CSToastPositionTop];
-        }else{
-            if (_txtMoeny.text.length == 0 ) {
-            [self.view makeToast:@"请输入正确的金额" duration:1.0 position:CSToastPositionTop];
-
-        }else{
-            
-//            if (_txtAccount.text.length == 0) {
-//                [self.view makeToast:@"请输入支付宝账号" duration:1.0 position:CSToastPositionTop];
-//            }else{
-//                if (_txtUsername.text.length == 0) {
-//                    [self.view makeToast:@"请输入开户姓名" duration:1.0 position:CSToastPositionTop];
-//                }else{
-//                
-//                    NSString *msg = [NSString stringWithFormat:@"确认提现?\n提现金额:%@\n提现账号:%@\n提现人姓名:%@",_txtMoeny.text,_txtAccount.text,_txtUsername.text];
-//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//                    alert.tag = 111;
-//                    [alert show];
-                    CustomIOSAlertView *alert = [self tishiAlert];
-                    [alert show];
-                    [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-                        if (buttonIndex == 1) {
-                            [self wantGeyMonry];
-                        }
-                    }];
-
-//                }
-//            }
-        }
-        }
-        
+        return;
     }
+        
+    float myMoney = [[_txtMoeny text] floatValue];
+        
+    if (myMoney < 10.0) {
+        [self.view makeToast:@"提现金额不能小于10元" duration:1.0 position:CSToastPositionTop];
+        return;
+    }
+    
+    if (myMoney > 1000.0) {
+        [self.view makeToast:@"单笔提现金额不能超过1000元" duration:1.0 position:CSToastPositionTop];
+        return;
+    }
+    int moneyAmout=[[_txtMoeny text] intValue];
+
+    if (moneyAmout%10!=0) {
+        [self.view makeToast:@"提现金额必须为10的整数倍" duration:1.0 position:CSToastPositionTop];
+        return;
+    }
+    
+    if (_txtMoeny.text.length == 0 ) {
+        [self.view makeToast:@"请输入正确的金额" duration:1.0 position:CSToastPositionTop];
+        return;
+    }
+    
+            CustomIOSAlertView *alert = [self tishiAlert];
+            [alert show];
+            [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
+                if (buttonIndex == 1) {
+                        [self wantGeyMonry];
+                }
+            }];
+
 }
 - (void)wantGeyMonry{
     
@@ -287,7 +285,7 @@
     if (indexPath.section == 0) {
         return 150;
     }else{
-        return 50;
+        return 44;
     }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

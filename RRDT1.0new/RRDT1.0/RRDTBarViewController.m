@@ -23,9 +23,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"邀请扫码";
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
-    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
-    self.view.backgroundColor=[UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:1];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
+//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+//    self.view.backgroundColor=[UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:1];
     _titleLab.textColor=UIColorFromRGB(0x00bcd5);
     
     [self creatBarView];

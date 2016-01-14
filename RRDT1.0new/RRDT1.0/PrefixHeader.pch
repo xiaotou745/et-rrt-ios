@@ -27,6 +27,9 @@
 
 #define notify_newMessage @"notify_newMessage"
 #define notify_bandingAlipaySuccess @"notify_bandingAlipaySuccess"
+#define notify_selectBillDetailCell @"notify_selectBillDetailCell"
+
+
 #pragma mark -
 #pragma mark - NSUserDefaults
 

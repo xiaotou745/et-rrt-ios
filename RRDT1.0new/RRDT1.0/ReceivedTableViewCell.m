@@ -19,6 +19,9 @@
         [self moneyLab];
         [self infoLabel];
         
+        [self taskTypeView];
+        [self taskType];
+        
         [self img_wait];
         [self waitLab];
         [self waitView];
@@ -52,7 +55,7 @@
         [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).with.offset(15);
             make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-            make.right.equalTo(self).with.offset(-12);
+            make.right.equalTo(self).with.offset(-50);
             make.height.mas_equalTo(20);
         }];
         
@@ -171,7 +174,23 @@
     }
     return _infoLabel;
 }
-
+- (UILabel *)taskType{
+    if (!_taskType) {
+        _taskType = [ManFactory  createLabelWithFrame:CGRectMake(0, 0, _taskTypeView.width-5, _taskTypeView.height) Font:14 Text:@""];
+        _taskType.textAlignment=NSTextAlignmentRight;
+        _taskType.textColor = [UIColor whiteColor];
+        [_taskTypeView addSubview:_taskType];
+    }
+    return _taskType;
+}
+-(UIImageView *)taskTypeView{
+    
+    if (!_taskTypeView) {
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(self.width-50, 0, 50, 20) ImageName:@""];
+        [self addSubview:_taskTypeView];
+    }
+    return _taskTypeView;
+}
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {
         _moneyLab = [[CoreLabel alloc] init];

@@ -37,8 +37,8 @@
     self.title = @"人人推用户协议";
     
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
     //    UITextView *txtview = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT-44)];
     txtview=[[UITextView alloc]initWithFrame:CGRectMake(10, 10, WIDTH-20, HEIGHT-64-20)];

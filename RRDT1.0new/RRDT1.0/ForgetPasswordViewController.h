@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BackBaseViewController.h"
 
-
-@interface ForgetPasswordViewController : UIViewController
+@interface ForgetPasswordViewController : BackBaseViewController
 
 //@property (nonatomic,assign) int tag;
 @end

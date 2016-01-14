@@ -80,12 +80,9 @@
             
             cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
             
-            cell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
-            
-            [cell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-            [cell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
-            
-            [cell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,cell.infoLabel.text.length - 4)];
+            cell.infoLabel.text =task.taskGeneralInfo;
+            cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+            cell.taskType.text=[MyTools getTasktype:task.taskType];
             
             
             cell.waitLab.text = [NSString stringWithFormat:@"审核中(%d)",task.auditWaitNum];
@@ -131,12 +128,11 @@
             }
             checkCell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
             
-            checkCell.infoLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:task.taskType],task.taskGeneralInfo];
+            checkCell.infoLabel.text =task.taskGeneralInfo;
+            checkCell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+            checkCell.taskType.text=[MyTools getTasktype:task.taskType];
             
-            [checkCell.infoLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-            [checkCell.infoLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:task.taskType] range:NSMakeRange(0,4)];
-            
-            [checkCell.infoLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,checkCell.infoLabel.text.length - 4)];
+
             NSString *msg=[NSString stringWithFormat:@"成功分享 %d次",task.complateNum];
             if (task.complateNum==0) {
                 msg=@"任务进行中";

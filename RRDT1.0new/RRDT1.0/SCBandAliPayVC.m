@@ -32,16 +32,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1];
-    [self configNavBar];
     _user=[[User alloc]init];
+    [self configNavBar];
 }
+
 -(void)configNavBar
 {
     self.title=@"绑定支付宝";
     self.alipayTableV.delegate=self;
     self.alipayTableV.dataSource=self;
     self.alipayTableV.sectionFooterHeight=0;
-    self.alipayTableV.keyboardDismissMode=UIScrollViewKeyboardDismissModeOnDrag;
+    self.alipayTableV.keyboardDismissMode=UIScrollViewKeyboardDismissModeInteractive;
     self.alipayTableV.scrollEnabled=NO;
     self.alipayTableV.backgroundColor=self.view.backgroundColor;
     
@@ -92,9 +93,15 @@
 //        }
 //    }
     
-    _titles=@[@[@{kSCAlipayCell_title:@"手机验证码",
+    _titles=@[
+              @[@{kSCAlipayCell_title:@"已绑定手机",
+                  kSCAlipayCell_text:[_user.userPhoneNo replaceNumberWithStar],
+                  kSCAlipayCell_placeholder:@""}],
+              
+              @[@{kSCAlipayCell_title:@"手机验证码",
                   kSCAlipayCell_text:_checkCode,
-                  kSCAlipayCell_placeholder:@"请输入收到的验证码"}],
+                  kSCAlipayCell_placeholder:@"请输入短信验证码"}],
+              
               @[@{kSCAlipayCell_title:@"支付宝账户",
                 kSCAlipayCell_text:_alipayNumber,
                 kSCAlipayCell_placeholder:@"请输入支付宝账户"}],
@@ -121,7 +128,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    NSLog(@"indexPath  %ld  %ld",indexPath.section,indexPath.row);
-    return 50;
+    return 40;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -143,7 +150,8 @@
     cell.dic=infoDic;
     
     if(indexPath.section==0){
-        _codeBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-80, 7, 75, 30)];
+        [cell.contentTF setEnabled:NO];
+        _codeBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-100, 5, 85, 30)];
         _codeBtn.layer.cornerRadius=3;
         _codeBtn.layer.borderWidth=0.5;
         _codeBtn.layer.borderColor=[UIColor lightGrayColor].CGColor;
@@ -348,7 +356,7 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     //
-    if (textField.tag == 1001 ) {
+    if (textField.tag == 1002 ) {
         textField.keyboardType=UIKeyboardTypeEmailAddress;
     }  //
     else  textField.keyboardType=UIKeyboardTypeDefault;
@@ -356,13 +364,13 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField.tag== 1000) {
+    if (textField.tag== 1001) {
         _checkCode=textField.text;
         
-    }else if (textField.tag ==1001){
+    }else if (textField.tag ==1002){
         _alipayNumber=textField.text;
         
-    }else if (textField.tag ==1002){
+    }else if (textField.tag ==1003){
         _alipayName=textField.text;
     }
 
@@ -517,7 +525,10 @@
     return alertView;
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
 
+    [MyTools closeKeyboard];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
