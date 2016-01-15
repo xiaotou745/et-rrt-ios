@@ -22,15 +22,22 @@
 
 -(void)setModel:(BillDetailModel *)model{
 
-    _titleLab.text=model.recordTypeName;
+    if ([model.recordTypeName isEqualToString:@"任务奖励"])
+        _titleLab.text=[NSString stringWithFormat:@"%@-%@",model.recordTypeName,model.remark];
+    else    _titleLab.text=model.recordTypeName;
+
     _timeLab.text=[MyTools timeString:model.operateTime];
-    _amoutLab.text=[NSString stringWithFormat:@"%.2f元",model.amount];
+    
     
     if (_isInComeCell) {
         _amoutLab.textColor= UIColorFromRGB(0xf7585d);
+        _amoutLab.text=[NSString stringWithFormat:@"+%.2f元",model.amount];
+
     }else{
         _amoutLab.textColor=UIColorFromRGB(0x00bc87);
+        _amoutLab.text=[NSString stringWithFormat:@"%.2f元",model.amount];
     }
+    [_amoutLab addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_amoutLab.text.length - 1,1)];
 
 }
 @end

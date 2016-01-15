@@ -11,4 +11,6 @@
 
 @interface JoinsListViewController : BackBaseViewController
 
+
+@property(nonatomic,strong)NSString *taskId;
 @end

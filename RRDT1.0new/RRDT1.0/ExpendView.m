@@ -81,7 +81,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     BillDetailModel *model=_modeArr[indexPath.row];
-    [[NSNotificationCenter defaultCenter]postNotificationName:notify_selectBillDetailCell object:model];
+    [[NSNotificationCenter defaultCenter]postNotificationName:notify_selectBillDetailCell object:@{@"model":model,@"isInComeCell":@(NO)}];
     
 }
 #pragma mark 请求数据

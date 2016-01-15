@@ -16,7 +16,7 @@
 
 #import "CurrentTaskViewController.h"
 #import "TaskStep.h"
-
+#import "ParterModel.h"
 #import "RRDTWebViewController.h"
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
@@ -26,7 +26,7 @@
 {
     User *user;
     
-    NSInteger _webViews;//记录详情页链接的个数
+//    NSInteger _webViews;//记录详情页链接的个数
     
     CGFloat _heightSection1;
 }
@@ -36,10 +36,14 @@
 
 @property (nonatomic,strong) NSMutableArray *contentArr;
 
-@property (nonatomic,strong) NSMutableArray *taskSteps;
+@property (nonatomic,strong) NSMutableArray *taskSteps;//任务步骤信息LIST
 @property (nonatomic,strong) NSMutableArray *task_steps;//步骤
 @property (nonatomic,strong) NSMutableArray *task_contents;//补充说明
 @property (nonatomic,strong) NSMutableArray *task_links;//链接
+
+@property (nonatomic,assign) NSInteger partnerTotal;//任务参与人总数
+@property (nonatomic,strong) NSMutableArray *partnerList;//任务参与人LIST
+
 
 /**
  主照片
@@ -95,8 +99,6 @@
 
 /** 领取任务按钮 */
 @property (nonatomic,strong) CoreStatusBtn *btn_receive;
-/** 放弃任务按钮 */
-@property (nonatomic,strong) CoreStatusBtn *btn_giveup;
 /** 再次领取任务按钮 */
 @property (nonatomic,strong) CoreStatusBtn *btn_againReceive;
 /** 提交合同任务按钮 */
@@ -142,14 +144,18 @@
 }
 - (void)viewCreat{
     _contentArr = [NSMutableArray array];
+    
     _taskSteps = [NSMutableArray array];
     _task_steps = [NSMutableArray array];
     _task_contents= [NSMutableArray array];
     _task_links = [NSMutableArray array];
-    _webViews=0;
+    
+    _partnerList=[NSMutableArray array];
+    
+//    _webViews=0;
     _heightSection1=0;
     
-    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
+    _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64-HEIGHT/12) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
     _mytable.dataSource = self;
     _mytable.showsVerticalScrollIndicator = NO;
@@ -157,16 +163,7 @@
     _mytable.backgroundColor = UIColorFromRGB(0xe8e8e8);
     [self.view addSubview:_mytable];
     
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT/15 + 40)];
-    
-    
-//    [footView addSubview:[self btn_againReceive]];
-//    [footView addSubview:[self btn_giveup]];
-    [footView addSubview:[self btn_receive]];
-    [footView addSubview:[self btn_lookPost]];
-    [footView addSubview:[self btn_post]];
-    _mytable.tableFooterView = footView;
-    
+    [self.view addSubview:[self btn_receive]];
     [self judegMent];
 
 }
@@ -177,12 +174,10 @@
         
         _btn_post.hidden = YES;
         _btn_lookPost.hidden = YES;
-        _btn_giveup.hidden = YES;
         _btn_againReceive.hidden = YES;
         
         _timeLabel.hidden = YES;
     }else if (_type == 2){
-        _btn_giveup.hidden = NO;
         [_btn_post setTitle:@"继续任务" forState:UIControlStateNormal];
         
         if(_task.taskType==taskType_download||_task.taskType==taskType_share){
@@ -203,11 +198,9 @@
         _btn_againReceive.hidden = NO;
         
         _btn_post.hidden = YES;
-        _btn_giveup.hidden = YES;
         _btn_receive.hidden = YES;
         _timeLabel.hidden = YES;
     }else if (_type == 4){
-        _btn_giveup.hidden = NO;
         [_btn_post setTitle:@"重新提交" forState:UIControlStateNormal];
         _btn_post.tag = 222;
         _btn_post.hidden = NO;
@@ -220,7 +213,6 @@
         _btn_lookPost.hidden = NO;
         _btn_againReceive.hidden = NO;
         
-        _btn_giveup.hidden = YES;
         _btn_post.hidden = YES;
         _btn_receive.hidden = YES;
         _timeLabel.hidden = YES;
@@ -228,7 +220,6 @@
         
         _btn_lookPost.hidden = YES;
         _btn_againReceive.hidden = YES;
-        _btn_giveup.hidden = YES;
         _btn_post.hidden = YES;
         _btn_receive.hidden = YES;
         _timeLabel.hidden = YES;
@@ -286,10 +277,8 @@
     return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    // 是否包含任务流程 兼容老数据
-//    if(_task_steps.count)
-//    else return 1+_webViews;
-    return 2+_webViews;
+
+    return 2+_task_links.count+(_partnerTotal?1:0);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *idenifier = @"cell";
@@ -494,46 +483,80 @@
             }
 
         }else{
+           
+            //外链
+            if (indexPath.section<2+_task_links.count) {
+                UIImageView *iconImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_linkIcon"]];
+//                iconImg.layer.cornerRadius=5;
+//                iconImg.layer.masksToBounds=YES;
+                [cell.contentView addSubview:iconImg];
+                
+                [iconImg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.centerY.equalTo(cell.contentView).with.offset(0);
+                    make.left.equalTo(cell.contentView).with.offset(15);
+                    make.height.equalTo(@15);
+                    make.width.equalTo(@15);
+                    
+                }];
+                
+                UIImageView *arrowImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_arrowIcon"]];
+                [cell.contentView addSubview:arrowImg];
+                
+                [arrowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.centerY.equalTo(cell.contentView).with.offset(0);
+                    make.right.equalTo(cell.contentView).with.offset(-10);
+                    make.height.equalTo(@20);
+                    make.width.equalTo(@15);
+                    
+                }];
+                
+                
+                TaskStep *step=[[TaskStep alloc]init];
+                step=_task_links[indexPath.section-2];
+                
+                UILabel *linkTitle = [[UILabel alloc] init];
+                linkTitle.font = [UIFont systemFontOfSize:15];
+                linkTitle.textColor = UIColorFromRGB(0x333333);
+                linkTitle.text = step.linkTitle;
+                [cell.contentView addSubview:linkTitle];
+                [linkTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.centerY.equalTo(cell.contentView).with.offset(0);
+                    make.left.equalTo(iconImg.mas_right).with.offset(10);
+                    make.right.equalTo(arrowImg.mas_right).with.offset(-10);
+                    make.height.equalTo(@20);
+                }];
+                
+             //任务参与人列表
+            }else{
             
-            UIImageView *iconImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_linkIcon"]];
-            iconImg.layer.cornerRadius=5;
-            iconImg.layer.masksToBounds=YES;
-            [cell.contentView addSubview:iconImg];
-            
-            [iconImg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(cell.contentView).with.offset(0);
-                make.left.equalTo(cell.contentView).with.offset(15);
-                make.height.equalTo(@10);
-                make.width.equalTo(@10);
+//                cell.textLabel.text=[_partnerList description];
+                
+                UILabel *titleLab=[ManFactory createLabelWithFrame:CGRectMake(10, 5, DEF_SCEEN_WIDTH-20, 25) Font:15 Text:[NSString stringWithFormat:@"任务参与人数(%@)",[@(_partnerTotal)description]]];
+                [cell.contentView addSubview:titleLab];
 
-            }];
-            
-            UIImageView *arrowImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_arrowIcon"]];
-            [cell.contentView addSubview:arrowImg];
+                CGFloat  headWith=50;
+                int      headCount=5;
+              CGFloat  HorizonalSpace=(DEF_SCEEN_WIDTH-headWith*headCount)/(headCount+1);
+                
+                for (int i=0; i<_partnerList.count; i++) {
+                    
+                    ParterModel *model=[[ParterModel alloc]init];
+                    model=_partnerList[i];
+                    UIImageView *parterIcon=[ManFactory createImageViewWithFrame:CGRectMake((HorizonalSpace+headWith)*i+HorizonalSpace, titleLab.bottom+5, headWith, headWith) ImageName:@"icon_usermorentu"];
+//                    parterIcon.backgroundColor=[UIColor orangeColor];
+                    [parterIcon  sd_setImageWithURL:[NSURL URLWithString:model.headImage] placeholderImage:[UIImage imageNamed:@"icon_usermorentu"]];
+                    [cell.contentView addSubview:parterIcon];
+                    
+                    UILabel *parterName=[ManFactory createLabelWithFrame:CGRectMake(0, 0, HorizonalSpace+headWith, 20) Font:14 Text:model.clienterName];
+                    parterName.textColor=UIColorFromRGB(0x666666);
+                    parterName.textAlignment=NSTextAlignmentCenter;
+                    parterName.center=CGPointMake(parterIcon.left+parterIcon.width/2, parterIcon.bottom+20);
+                    [cell.contentView addSubview:parterName];
 
-            [arrowImg mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(cell.contentView).with.offset(0);
-                make.right.equalTo(cell.contentView).with.offset(-10);
-                make.height.equalTo(@20);
-                make.width.equalTo(@15);
-
-            }];
-            
-            
-            TaskStep *step=[[TaskStep alloc]init];
-            step=_task_links[indexPath.section-2];
-
-            UILabel *linkTitle = [[UILabel alloc] init];
-            linkTitle.font = [UIFont systemFontOfSize:15];
-            linkTitle.textColor = UIColorFromRGB(0x333333);
-            linkTitle.text = step.linkTitle;
-            [cell.contentView addSubview:linkTitle];
-            [linkTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(cell.contentView).with.offset(0);
-                make.left.equalTo(iconImg.mas_right).with.offset(10);
-                make.right.equalTo(arrowImg.mas_right).with.offset(-10);
-                make.height.equalTo(@20);
-            }];
+                }
+                
+            }
+        
         }
     }
     
@@ -599,10 +622,12 @@
     if (indexPath.section == 0) {
         return 140;
     }else if (indexPath.section == 1){
-
         return      _heightSection1+25;
+    }else if (indexPath.section <2+_task_links.count){
+        return      44;
+    }else{
+        return 120;
     }
-    return 40;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 5;
@@ -629,16 +654,19 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.section>=2) {
+    if (indexPath.section>=2&&indexPath.section<2+_task_links.count) {
         TaskStep *step=[[TaskStep alloc]init];
         step =_task_links[indexPath.section-2];
         
         RRDTWebViewController *web=[[RRDTWebViewController  alloc]initWithNibName:@"RRDTWebViewController" bundle:nil];
         web.urlString=step.content;
         [self.navigationController pushViewController:web animated:YES];
+    }else{
+    
+        JoinsListViewController *joinVC=[[JoinsListViewController alloc]initWithNibName:@"JoinsListViewController" bundle:nil];
+        joinVC.taskId=_task.taskId;
+        [self.navigationController pushViewController:joinVC animated:YES];
     }
-    
-    
 }
 
 #pragma mark 成功获取任务详情之后 任务赋值
@@ -647,6 +675,15 @@
     if(!_task)    _task=[[Task alloc]init];
 
     [_task setValuesForKeysWithDictionary:dic[@"task"]];
+    _partnerTotal=[dic[@"partnerTotal"]integerValue];
+    
+    [_partnerList removeAllObjects];
+    for (NSDictionary *parterDic in dic[@"partnerList"]) {
+        ParterModel *model=[[ParterModel alloc]init];
+        [model setValuesForKeysWithDictionary:parterDic];
+        [_partnerList addObject:model];
+    }
+    
     
     NSArray *taskSetps=dic[@"taskSetps"];
     for (NSDictionary *tmpDic in taskSetps) {
@@ -663,7 +700,7 @@
 
         }else if ([step.setpType intValue]==setpType_urlLink) {
             [_task_links addObject:step];
-            _webViews++;
+//            _webViews++;
         }
     }
     
@@ -866,10 +903,10 @@
 
 - (CoreStatusBtn *)btn_receive{
     if (!_btn_receive) {
-        _btn_receive = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(60, 20, WIDTH - 120, HEIGHT/15)];
+        _btn_receive = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(0,HEIGHT-64-HEIGHT/12, WIDTH, HEIGHT/12)];
         _btn_receive.tag = 1;
-        _btn_receive.layer.masksToBounds = YES;
-        _btn_receive.layer.cornerRadius = 4;
+//        _btn_receive.layer.masksToBounds = YES;
+//        _btn_receive.layer.cornerRadius = 4;
         _btn_receive.backgroundColorForNormal = UIColorFromRGB(0x9a3b8);
         _btn_receive.shutOffColorLoadingAnim = YES;
         _btn_receive.shutOffZoomAnim = YES;
@@ -882,23 +919,7 @@
     }
     return _btn_receive;
 }
-- (CoreStatusBtn *)btn_giveup{
-    if (!_btn_giveup) {
-        _btn_giveup = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(20, 20, WIDTH/2 - 40, HEIGHT/15)];
-        _btn_giveup.layer.masksToBounds = YES;
-        _btn_giveup.layer.cornerRadius = 4;
-        _btn_giveup.backgroundColorForNormal = UIColorFromRGB(0x75d3e0);
-        _btn_giveup.shutOffColorLoadingAnim = YES;
-        _btn_giveup.shutOffZoomAnim = YES;
-        _btn_giveup.status = CoreStatusBtnStatusNormal;
-        _btn_giveup.msg = @"";
-        [_btn_giveup setTitle:@"放弃任务" forState:UIControlStateNormal];
-        [_btn_giveup setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _btn_giveup.hidden = YES;
-        [_btn_giveup addTarget:self action:@selector(giveupTask) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _btn_giveup;
-}
+
 - (CoreStatusBtn *)btn_againReceive{
     if (!_btn_againReceive) {
         _btn_againReceive = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(WIDTH/2+20, 20, WIDTH/2 - 40, HEIGHT/15)];
@@ -1047,55 +1068,7 @@
 
     return alertView;
 }
-#pragma mark 放弃任务
-- (void)giveupTask{
-    
-    
-    CustomIOSAlertView *alert = [self successAlert:@"icon_tishi" andtitle:@"提示" andmsg:@"任务还未完成，确认要放弃吗？" andButtonItem:[NSMutableArray arrayWithObjects:@"确定",@"取消", nil]];
-    [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-        NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
-        [alertView close];
-        if (buttonIndex == 0) {
-            if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]){
-                [self.view makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
-            }else{
-                _btn_giveup.status = CoreStatusBtnStatusProgress;
-                NSLog(@">>>>>%@",_task.orderId);
-                AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-                NSDictionary *parameters = @{@"userId":user.userId,
-                                             @"orderId":_task.orderId,
-                                             @"remark":@""};
-                NSLog(@">>>>>%@",parameters);
-                [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GiveUpTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"JSON: %@", responseObject);
-                    NSNumber *code = [responseObject objectForKey:@"code"];
-                    int code_int = [code intValue];
-                    if (code_int == 200) {
-                        
-                        _btn_giveup.status = CoreStatusBtnStatusSuccess;
-                        
-                        [self.view makeToast:@"放弃成功" duration:1.0 position:CSToastPositionTop];
-                        _type = 1;
-                        [self judegMent];
-                        [self getTaskContent:_task.orderId];
-                        
-                    }else{
-                        _btn_giveup.status = CoreStatusBtnStatusFalse;
-                        NSLog(@"code : %zi    %@",code,[responseObject objectForKey:@"msg"]);
-                        [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
-                    }
-                    
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    NSLog(@"Error: %@", error);
-                }];
-            }
-        }
-        
-    }];
-    [alert show];
-    
-    
-}
+
 -(void)postcont:(UIButton *)btn{
     [self postcont:btn navBackToHomeVC:NO];
 }

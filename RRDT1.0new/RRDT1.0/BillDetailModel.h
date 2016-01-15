@@ -17,5 +17,6 @@
 @property(nonatomic,strong)NSString  *recordTypeName;
 @property(nonatomic,strong)NSString  *operateTime;
 @property(nonatomic,strong)NSString  *remark;
+@property(nonatomic,strong)NSString  *relationNo;
 
 @end

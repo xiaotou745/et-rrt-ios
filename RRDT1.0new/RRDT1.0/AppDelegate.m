@@ -90,14 +90,12 @@
         int code_int = [code intValue];
         if (code_int == 200) {
 //            [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
-            NSInteger count=[responseObject[@"data"]integerValue];
-            BOOL newMessage=count=0?NO:YES;
+           int  dataCount=[responseObject[@"data"]intValue];
             
-            [[NSNotificationCenter defaultCenter]postNotificationName:notify_newMessage object:@(newMessage)];
+            [[NSNotificationCenter defaultCenter]postNotificationName:notify_newMessage object:@(dataCount)];
             
-            if (newMessage) [_customTabBar showMessageIcon];
+            if (dataCount) [_customTabBar showMessageIcon];
             else [_customTabBar hiddenMessageIcon];
-            
             
         }
         

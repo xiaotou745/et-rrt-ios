@@ -103,7 +103,8 @@
 -(void)gotoBillDetailVC:(NSNotification *)notif{
 
     SCBillDetailVC *detailVC=[[SCBillDetailVC alloc]initWithNibName:@"SCBillDetailVC" bundle:nil];
-    detailVC.model=notif.object;
+    detailVC.model=notif.object[@"model"];
+    detailVC.isInCome=[notif.object[@"isInComeCell"]boolValue];
     [self.navigationController pushViewController:detailVC animated:YES];
     
 }

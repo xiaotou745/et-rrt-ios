@@ -15,4 +15,5 @@
 
 
 @property(strong,nonatomic)BillDetailModel *model;
+@property(assign,nonatomic)BOOL isInCome;
 @end

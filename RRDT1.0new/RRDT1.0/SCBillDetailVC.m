@@ -7,13 +7,13 @@
 //
 
 #import "SCBillDetailVC.h"
-
+#import "CoreLabel.h"
 
 @interface SCBillDetailVC ()
 
 
 @property (weak, nonatomic) IBOutlet UILabel *payStatus;
-@property (weak, nonatomic) IBOutlet UILabel *payAmout;
+@property (weak, nonatomic) IBOutlet CoreLabel *payAmout;
 
 
 @property (weak, nonatomic) IBOutlet UILabel *relationType;
@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *payReason;
 @property (weak, nonatomic) IBOutlet UILabel *payDetail;
 @property (weak, nonatomic) IBOutlet UILabel *payTime;
+@property (weak, nonatomic) IBOutlet UILabel *relationNo;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *payDetailHeight;
 
@@ -84,12 +85,23 @@
     [_RelationNo setAttributedText:AttributedString];
     */
     
-    _relationType.text =_model.recordTypeName;
-    _payAmout.text  =    [NSString stringWithFormat:@"%.2f",_model.amount];
-//    _payReason.text =   _payInfo[@"recordType"];
+//    _relationType.text =_model.recordTypeName;
+    if (_isInCome) {
+        _payAmout.textColor= UIColorFromRGB(0xf7585d);
+        _payAmout.text  =    [NSString stringWithFormat:@"+%.2f元",_model.amount];
+
+    }else{
+        _payAmout.textColor= UIColorFromRGB(0x00bc87);
+        _payAmout.text  =    [NSString stringWithFormat:@"%.2f元",_model.amount];
+
+    }
+    [_payAmout addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_payAmout.text.length - 1,1)];
+
+    
+    _payReason.text =   _model.recordTypeName;
     _payDetail.text =   _model.remark;
     _payTime.text   =   [MyTools timeString:_model.operateTime];
-
+    _RelationNo.text=_model.relationNo;
 
 }
 //-(void)configNavBar

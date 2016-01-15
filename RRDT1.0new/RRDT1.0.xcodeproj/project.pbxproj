@@ -368,6 +368,9 @@
 		27222E3D1C4631B60077997A /* OrderByTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E3C1C4631B60077997A /* OrderByTypeView.m */; };
 		27222E431C4654BE0077997A /* JoinsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E411C4654BE0077997A /* JoinsListViewController.m */; };
 		27222E441C4654BE0077997A /* JoinsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E421C4654BE0077997A /* JoinsListViewController.xib */; };
+		27222E471C48A5F80077997A /* ParterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E461C48A5F80077997A /* ParterModel.m */; };
+		27222E4B1C48CC9D0077997A /* JoinsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E491C48CC9D0077997A /* JoinsListCell.m */; };
+		27222E4C1C48CC9D0077997A /* JoinsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E4A1C48CC9D0077997A /* JoinsListCell.xib */; };
 		2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 2745185D1C219C150052196A /* UIAlertView+Blocks.m */; };
 		27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */; };
 		27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */; };
@@ -1126,6 +1129,11 @@
 		27222E401C4654BE0077997A /* JoinsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoinsListViewController.h; sourceTree = "<group>"; };
 		27222E411C4654BE0077997A /* JoinsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinsListViewController.m; sourceTree = "<group>"; };
 		27222E421C4654BE0077997A /* JoinsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JoinsListViewController.xib; sourceTree = "<group>"; };
+		27222E451C48A5F80077997A /* ParterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParterModel.h; sourceTree = "<group>"; };
+		27222E461C48A5F80077997A /* ParterModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParterModel.m; sourceTree = "<group>"; };
+		27222E481C48CC9D0077997A /* JoinsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoinsListCell.h; sourceTree = "<group>"; };
+		27222E491C48CC9D0077997A /* JoinsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinsListCell.m; sourceTree = "<group>"; };
+		27222E4A1C48CC9D0077997A /* JoinsListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JoinsListCell.xib; sourceTree = "<group>"; };
 		2745185C1C219C150052196A /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		2745185D1C219C150052196A /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoImgCell.h; sourceTree = "<group>"; };
@@ -1312,6 +1320,9 @@
 				27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */,
 				27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */,
 				27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */,
+				27222E481C48CC9D0077997A /* JoinsListCell.h */,
+				27222E491C48CC9D0077997A /* JoinsListCell.m */,
+				27222E4A1C48CC9D0077997A /* JoinsListCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -1321,7 +1332,6 @@
 			children = (
 				27222E3B1C4631B60077997A /* OrderByTypeView.h */,
 				27222E3C1C4631B60077997A /* OrderByTypeView.m */,
-				248E59BE1BEA0C5900735498 /* Cell */,
 				24F9F6DF1BDF10C9007DC68C /* CheckingTaskView.h */,
 				24F9F6E01BDF10C9007DC68C /* CheckingTaskView.m */,
 				24609D971BDE2CAE0078CD94 /* ReceivedView.h */,
@@ -1594,6 +1604,7 @@
 		24E4A4611BB0170A00EC14AF /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				248E59BE1BEA0C5900735498 /* Cell */,
 				248E59BF1BEA0C8800735498 /* View */,
 				24DD33241BDE197F00F93630 /* CurrentTaskViewController.h */,
 				24DD33251BDE197F00F93630 /* CurrentTaskViewController.m */,
@@ -2443,6 +2454,8 @@
 				27222E341C438A430077997A /* BillDetailModel.m */,
 				27FE67F31C185CA900A1CAB1 /* MsgModel.h */,
 				27FE67F41C185CA900A1CAB1 /* MsgModel.m */,
+				27222E451C48A5F80077997A /* ParterModel.h */,
+				27222E461C48A5F80077997A /* ParterModel.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -2602,6 +2615,7 @@
 				27222E441C4654BE0077997A /* JoinsListViewController.xib in Resources */,
 				270843811C0FEEAF0034B082 /* RRDTBarViewController.xib in Resources */,
 				242ED6791BAC07D9005D6D75 /* CoreTFKeyBoardToolBarView.xib in Resources */,
+				27222E4C1C48CC9D0077997A /* JoinsListCell.xib in Resources */,
 				27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */,
 				2493683A1BB55381007AB32F /* CMView.xib in Resources */,
 				24E5E7171BAD3D3A0066D3A5 /* CoreStatusBtnMaskView.xib in Resources */,
@@ -2840,6 +2854,7 @@
 				270845F81C1016590034B082 /* ZXRSSUtils.m in Sources */,
 				270846091C1016590034B082 /* ZXOneDimensionalCodeWriter.m in Sources */,
 				27FE67F51C185CA900A1CAB1 /* MsgModel.m in Sources */,
+				27222E4B1C48CC9D0077997A /* JoinsListCell.m in Sources */,
 				270846251C1016590034B082 /* ZXPDF417Dimensions.m in Sources */,
 				2708458B1C1016580034B082 /* ZXResultParser.m in Sources */,
 				270845C01C1016590034B082 /* ZXResultPoint.m in Sources */,
@@ -2959,6 +2974,7 @@
 				2708456D1C1016580034B082 /* ZXAztecDetector.m in Sources */,
 				270845FE1C1016590034B082 /* ZXCode39Writer.m in Sources */,
 				270846411C1016590034B082 /* ZXMultiDetector.m in Sources */,
+				27222E471C48A5F80077997A /* ParterModel.m in Sources */,
 				2708459F1C1016590034B082 /* ZXMathUtils.m in Sources */,
 				24E4A44B1BAFBC4100EC14AF /* CoreLabelModel.m in Sources */,
 				270845D81C1016590034B082 /* ZXMaxiCodeDecoder.m in Sources */,

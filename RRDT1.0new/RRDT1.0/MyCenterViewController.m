@@ -714,6 +714,11 @@
 
 }
 -(void)getMoney{
+    
+    if (_user.balance <10.0f) {
+        [self postAlertWithMsg:@"余额不足10元，暂时不能提现"];
+        return;
+    }
     WithDrawViewController *withDraw = [[WithDrawViewController alloc] init];
     [self.navigationController pushViewController:withDraw animated:YES];
 }

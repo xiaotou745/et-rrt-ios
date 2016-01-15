@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CoreLabel.h"
 #import "BillDetailModel.h"
 @interface BillDetailCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLab;
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLab;
-@property (weak, nonatomic) IBOutlet UILabel *amoutLab;
+@property (weak, nonatomic) IBOutlet CoreLabel *amoutLab;
 
 
 @property(assign,nonatomic)BOOL isInComeCell;

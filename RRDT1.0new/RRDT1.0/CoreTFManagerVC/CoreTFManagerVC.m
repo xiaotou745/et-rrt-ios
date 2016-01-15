@@ -509,8 +509,8 @@
         BOOL basicTest = [string isEqualToString:filtered];
         if (!basicTest) {
             
-            [self showMyMessage:@"只能输入数字和小数点"];
-            return NO;
+//            [self showMyMessage:@"只能输入数字和小数点"];
+//            return NO;
         }
         if (NSNotFound != nDotLoc && range.location > nDotLoc + 2) {
             [self showMyMessage:@"小数点后最多两位"];

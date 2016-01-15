@@ -67,7 +67,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_currentCityInfo[cityName]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self congfigCityLength]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
     [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
     
  
@@ -75,9 +75,12 @@
     [self viewCreat];
     [self createOderByView];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeCurrentCity:) name:kChooseCityNotif object:nil];
-    //领取任务后刷新当前城市的数据
+    //登陆后刷新当前城市的数据
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess) name:loginSuccess_refreshWaitVC object:nil];
-    
+    //领取任务 刷新当前城市的数据
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(post) name:getTaskSuccess_refreshWaitVC object:nil];
+
+    //切换任务排序分
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeOrderType:) name:OrderByTypeView_select object:nil];
     
     [self getLocation];
@@ -95,12 +98,19 @@
 
 }
 -(void)requestNewCityDatas{
-    [self.navigationItem.leftBarButtonItem setTitle:_currentCityInfo[cityName]];
+    
+    
+    [self.navigationItem.leftBarButtonItem setTitle:[self congfigCityLength]];
     _currentPage = 0;
     [self post];
 
 }
 
+-(NSString *)congfigCityLength{
+    //城市超过4个字，后面显示省略号
+    NSString *title=_currentCityInfo[cityName];
+   return  title.length>4?[title stringByReplacingCharactersInRange:NSMakeRange(4,title.length-4) withString:@"…"]:title;
+}
 - (void)viewCreat{
 
     

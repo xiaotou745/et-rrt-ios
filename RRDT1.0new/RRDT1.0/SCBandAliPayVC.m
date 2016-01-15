@@ -10,8 +10,14 @@
 #import "SCAlipayCell.h"
 #import "CoreLabel.h"
 
-@interface SCBandAliPayVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+#define verifyCodeBtnTitle @"获取验证码"
 
+@interface SCBandAliPayVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+{
+    int _countingNum;
+    NSTimer * _timer;
+    BOOL _isCounting;
+}
 @property (weak, nonatomic) IBOutlet UITableView *alipayTableV;
 
 @property (nonatomic,strong)NSArray *titles;
@@ -151,11 +157,11 @@
     
     if(indexPath.section==0){
         [cell.contentTF setEnabled:NO];
-        _codeBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-100, 5, 85, 30)];
+        _codeBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-110, 5, 100, 30)];
         _codeBtn.layer.cornerRadius=3;
         _codeBtn.layer.borderWidth=0.5;
         _codeBtn.layer.borderColor=[UIColor lightGrayColor].CGColor;
-        [_codeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+        [_codeBtn setTitle:verifyCodeBtnTitle forState:UIControlStateNormal];
         [_codeBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_codeBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
         
@@ -170,8 +176,8 @@
 #pragma mark 获取验证码
 - (void)sendCode{
     
-    _codeBtn.enabled=NO;
-
+    [self verificationCodeBtnCountDown];
+    
     //sType类型 1注册 2修改密码 3忘记密码 4绑定支付宝
     NSDictionary *dataDic = @{@"phoneNo":_user.userPhoneNo,
                               @"sType"  :@"4"};
@@ -183,8 +189,6 @@
         NSInteger code = [[responseObject objectForKey:@"code"]  intValue];
         if (code == 200) {
             NSLog(@"验证码已经发送");
-            [_codeBtn  setTitle:@"已发送" forState:UIControlStateNormal];
-            [_codeBtn setTitleColor:[UIColor lightGrayColor]  forState:UIControlStateNormal];
 
         }else{
             [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
@@ -194,6 +198,44 @@
         NSLog(@">%@",operation.responseString);
     }];
     
+}
+#pragma mark -  请求验证码倒计时
+/// 请求验证码倒计时
+- (void)verificationCodeBtnCountDown{
+    //开始计时
+    self.codeBtn.enabled = NO;
+    [_codeBtn setTitleColor:[UIColor lightGrayColor]  forState:UIControlStateNormal];
+
+    _countingNum = 60;
+    if (_isCounting == YES) {
+    }else{
+        [NSThread detachNewThreadSelector:@selector(fireTimer) toTarget:self withObject:nil];
+    }
+}
+
+- (void)fireTimer{
+    _isCounting = YES;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countingnumber:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] run];
+}
+
+- (void)countingnumber:(NSTimer *)timer{
+    _countingNum--;
+    [self.codeBtn setTitle:[NSString stringWithFormat:@"%@(%d)",@"重新发送",_countingNum] forState:UIControlStateDisabled];
+    if (_countingNum == 0) {
+        [self invalidateTimer];
+    }
+}
+
+- (void)invalidateTimer{
+    _isCounting = NO;
+    [_timer invalidate];
+    _timer = nil;
+    self.codeBtn.enabled = YES;
+    self.codeBtn.userInteractionEnabled = YES;
+    [self.codeBtn setTitle:verifyCodeBtnTitle forState:UIControlStateNormal];
+    [_codeBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
+
 }
 
 -(void)bandingClick{

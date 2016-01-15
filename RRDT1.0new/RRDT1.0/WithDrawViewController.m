@@ -236,18 +236,23 @@
         int code_int = [code intValue];
         if (code_int == 200) {
             btn.status = CoreStatusBtnStatusSuccess;
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"提现成功" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-//            [alert show];
-            CustomIOSAlertView *alert = [self successAlert:@"icon_tishi" andtitle:@"提示" andmsg:@"提现申请已提交，款项会尽快打到您的账户，请耐心等待" andButtonItem:[NSMutableArray arrayWithObjects:@"确定", nil]];
-            [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
-                NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
-                
-                [alertView close];
 
+            [UIAlertView showAlertViewWithTitle:nil message:@"提现申请已提交，款项会尽快打到您的账户，请耐心等待" cancelButtonTitle:@"确定" otherButtonTitles:nil onDismiss:^(NSInteger buttonIndex){} onCancel:^(){
+            
                 [self.navigationController popViewControllerAnimated:YES];
-                
+
             }];
-            [alert show];
+            
+//            CustomIOSAlertView *alert = [self successAlert:@"icon_tishi" andtitle:@"提示" andmsg:@"提现申请已提交，款项会尽快打到您的账户，请耐心等待" andButtonItem:[NSMutableArray arrayWithObjects:@"确定", nil]];
+//            [alert setOnButtonTouchUpInside:^(CustomIOSAlertView *alertView, int buttonIndex) {
+//                NSLog(@"Block: Button at position %d is clicked on alertView %d.", buttonIndex, (int)[alertView tag]);
+//                
+//                [alertView close];
+//
+//                [self.navigationController popViewControllerAnimated:YES];
+//                
+//            }];
+//            [alert show];
             
         }else{
             [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];

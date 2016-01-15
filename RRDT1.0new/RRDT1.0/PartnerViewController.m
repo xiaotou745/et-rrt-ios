@@ -30,7 +30,7 @@
     }
     self.bonusTotal.textColor=[UIColor colorWithRed:1 green:0 blue:0 alpha:1];
     self.bonusTotal.text=[NSString stringWithFormat:@"%.2f",[_bonusTotal__ floatValue]];
-    self.recommendPhone.text=_recommendPhone__;
+    self.recommendPhone.text=[_recommendPhone__ replaceNumberWithStar];
     self.partnerNum.text=_partnerNum__;
     
     
