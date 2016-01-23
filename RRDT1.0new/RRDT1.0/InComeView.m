@@ -96,7 +96,7 @@
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
         
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        
         
         User *user = [[User alloc] init];
         
@@ -109,7 +109,8 @@
                                     ,@"recordType":@(1)};
         
         
-        
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getbalancerecordlist] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];

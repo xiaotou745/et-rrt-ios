@@ -18,7 +18,7 @@
 
 #import "KLSwitch.h"
 #import "ETSUUID.h"
-
+#import "AppDelegate.h"
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong)UITextField         *txtUsername;
@@ -38,6 +38,18 @@
 @end
 
 @implementation LoginViewController
+
+- (void)backBarButtonPressed {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter]postNotificationName:notify_loginBackVC object:nil];
+    
+//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//
+//    
+//    app.tabBarController.selectedIndex=0;
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -142,6 +154,7 @@
         img_user.frame = CGRectMake(HEIGHT/40, HEIGHT/40, HEIGHT/20, HEIGHT/20);
         [view addSubview:img_user];
         _txtUsername.clearButtonMode = YES;
+        _txtUsername.keyboardType=UIKeyboardTypeNumberPad;
         _txtUsername.leftViewMode = UITextFieldViewModeAlways;
         _txtUsername.leftView = view;
         _txtUsername.placeholder = @"请输入手机号";
@@ -223,6 +236,8 @@
                                       @"appVersion":appVersion};
         
             AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+            dataDic=[HttpHelper  security:dataDic];
+            
             [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserLogin] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             NSLog(@"JSON: %@", responseObject);
             NSNumber *code = [responseObject objectForKey:@"code"];

@@ -69,79 +69,96 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     Task *task = [_modeArr objectAtIndex:indexPath.section];
-    if (task.taskType==taskType_write) {
-        
-        static NSString *idenifier = @"ReceivedTableViewCell";
-        ReceivedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
-        if (!cell) {
-            cell = [[ReceivedTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
-        
-        cell.infoLabel.text =task.taskGeneralInfo;
-        cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
-        cell.taskType.text=[MyTools getTasktype:task.taskType];
-        
-        
-        cell.waitLab.text = [NSString stringWithFormat:@"审核中(%d)",task.auditWaitNum];
-        cell.passLab.text = [NSString stringWithFormat:@"已通过(%d)",task.auditPassNum];
-        cell.refuseLab.text = [NSString stringWithFormat:@"未通过(%d)",task.auditRefuseNum];
-        
-        //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
-        cell.moneyLab.textColor = [UIColor clearColor];
-        cell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,cell.moneyLab.text.length - 3)];
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
-        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,cell.moneyLab.text.length - 2)];
-        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
-        //    [cell.moneyLab updateLabelStyle];
-        
-        
-        
-        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",task.logo]] placeholderImage:[UIImage imageNamed:@"icon_morentu"] options:1 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            
-        }];
-        __block CheckingTaskView *blockSelf=self;
-        cell.waitBlock=^{
-            [blockSelf  gotoTaskDetail:task Index:0];
-        };
-        cell.passBlock=^{
-            [blockSelf  gotoTaskDetail:task Index:1];
-            
-        };
-        cell.refuseBlock=^{
-            [blockSelf  gotoTaskDetail:task Index:2];
-            
-        };
-        return cell;
-        
-        
-    }else{
+//    if (task.taskType==taskType_write) {
+//        
+//        static NSString *idenifier = @"ReceivedTableViewCell";
+//        ReceivedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
+//        if (!cell) {
+//            cell = [[ReceivedTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        }
+//        
+//        cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
+//        
+//        cell.infoLabel.text =task.taskGeneralInfo;
+//        cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+//        cell.taskType.text=[MyTools getTasktype:task.taskType];
+//        
+//        
+//        cell.waitLab.text = [NSString stringWithFormat:@"审核中(%d)",task.auditWaitNum];
+//        cell.passLab.text = [NSString stringWithFormat:@"已通过(%d)",task.auditPassNum];
+//        cell.refuseLab.text = [NSString stringWithFormat:@"未通过(%d)",task.auditRefuseNum];
+//        
+//        //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
+//        cell.moneyLab.textColor = [UIColor clearColor];
+//        cell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,cell.moneyLab.text.length - 3)];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
+//        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,cell.moneyLab.text.length - 2)];
+//        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
+//        //    [cell.moneyLab updateLabelStyle];
+//        
+//        
+//        
+//        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",task.logo]] placeholderImage:[UIImage imageNamed:@"icon_morentu"] options:1 completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//            
+//        }];
+//        __block CheckingTaskView *blockSelf=self;
+//        cell.waitBlock=^{
+//            [blockSelf  gotoTaskDetail:task Index:0];
+//        };
+//        cell.passBlock=^{
+//            [blockSelf  gotoTaskDetail:task Index:1];
+//            
+//        };
+//        cell.refuseBlock=^{
+//            [blockSelf  gotoTaskDetail:task Index:2];
+//            
+//        };
+//        return cell;
+//        
+//        
+//    }else{
         static NSString *checkIdenifier = @"CheckingTaskTableViewCell";
         CheckingTaskTableViewCell *checkCell = [tableView dequeueReusableCellWithIdentifier:checkIdenifier];
         if (!checkCell) {
             checkCell = [[CheckingTaskTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:checkIdenifier];
             checkCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+    //过期任务 隐藏 按钮
+        [checkCell.receiveBtn setHidden:YES];
+
         checkCell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
         
         checkCell.infoLabel.text =task.taskGeneralInfo;
+    
         checkCell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
         checkCell.taskType.text=[MyTools getTasktype:task.taskType];
         
-        checkCell.waitLab.text = [NSString stringWithFormat:@"成功分享 %d次",task.complateNum];
+        NSString *msg;
+        if (task.taskType==taskType_write) {
+            msg=[NSString stringWithFormat:@"提交资料 %d条",task.completeNum];
+            [checkCell.receiveBtn setTitle:@"继续提交" forState:UIControlStateNormal];
+            
+        }else{
+            [checkCell.receiveBtn setTitle:@"继续分享" forState:UIControlStateNormal];
+
+            msg=[NSString stringWithFormat:@"成功分享 %d次",task.completeNum];
+            if (task.completeNum==0) {
+                msg=@"任务进行中";
+            }
+        }
+        checkCell.waitLab.text =  msg;
         
         //    cell.moneyLab.text = [NSString stringWithFormat:@"￥9999.99/次"];
-        checkCell.moneyLab.textColor = [UIColor clearColor];
-        checkCell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
-        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,checkCell.moneyLab.text.length - 3)];
-        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
-        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,checkCell.moneyLab.text.length - 2)];
-        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
+        checkCell.moneyLab.textColor = UIColorFromRGB(0xf7585d);
+        checkCell.moneyLab.text = [NSString stringWithFormat:@"%.2f",task.amount];
+//        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+//        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,checkCell.moneyLab.text.length - 3)];
+//        [checkCell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
+//        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,checkCell.moneyLab.text.length - 2)];
+//        [checkCell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(checkCell.moneyLab.text.length - 2,2)];
         //    [cell.moneyLab updateLabelStyle];
         
         
@@ -153,10 +170,16 @@
         __block CheckingTaskView *blockSelf=self;
         checkCell.recBTNClick=^{
             
-            [blockSelf doShare:task];
+            if (task.taskType==taskType_write)  [blockSelf gotoPostContract:task Index:indexPath.section];
+            else  [blockSelf doShare:task];
         };
+    
+        checkCell.waitBlock=^{
+                    [blockSelf  gotoTaskDetail:task Index:0];
+        };
+    
         return checkCell;
-    }
+//    }
 }
 -(void)doShare:(Task *)task{
     
@@ -172,6 +195,11 @@
     Task *task = [_modeArr objectAtIndex:indexPath.section];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"select" object:task userInfo:@{@"type":@"3"}];
 }
+-(void)gotoPostContract:(Task *)task Index:(NSInteger)index{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"againPost" object:task];
+    
+}
 #pragma mark 请求数据
 - (void)post{
     //    [MBProgressHUD showHUDAddedTo:self animated:YES];
@@ -182,7 +210,7 @@
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
         
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        
         
         User *user = [[User alloc] init];
         
@@ -195,7 +223,8 @@
                                     ,@"taskStatus":@(3)};
         
         
-        
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetreceiveTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];

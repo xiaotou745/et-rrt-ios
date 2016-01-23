@@ -24,6 +24,7 @@ typedef enum : NSUInteger {
 {
     NSMutableArray *titles;
     NSMutableArray *images;
+    NSMutableArray *colors;
 
 }
 

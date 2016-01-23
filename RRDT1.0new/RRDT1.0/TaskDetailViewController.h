@@ -19,6 +19,7 @@
 @property(nonatomic,assign)BOOL fromPCenterVC;
 @property(nonatomic,assign)BOOL overTime;//是否为过期任务
 @property (nonatomic,strong)Task *task;
+@property(nonatomic,strong)NSString *taskId;
 @property(assign)NSInteger contentOfSet_index;
 
 @end

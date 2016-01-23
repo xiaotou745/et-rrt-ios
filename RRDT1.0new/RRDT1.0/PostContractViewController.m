@@ -25,6 +25,7 @@
 #import "UIButton+WebCache.h"
 
 #import "TPKeyboardAvoidingTableView.h"
+#include "WaitTaskTableViewCell.h"
 
 
 @interface PostContractViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
@@ -68,6 +69,14 @@
  */
 @property (nonatomic,strong) CoreLabel        *statusLabel;
 
+/**
+ 任务类型
+ */
+@property (nonatomic,strong) UILabel      *taskType;
+/**
+ 任务类型视图
+ */
+@property (nonatomic,strong) UIImageView      *taskTypeView;
 
 /**
  时间
@@ -165,6 +174,17 @@
     
 
     
+    [self taskTypeView];
+    [self taskType];
+    UILabel *verticalLine=[ManFactory createLabelWithFrame:CGRectMake(DEF_SCEEN_WIDTH-WaitTaskTableViewCell_rowHeight, 0,1, WaitTaskTableViewCell_rowHeight) Font:16 Text:@""];
+    verticalLine.backgroundColor=UIColorFromRGB(0xe5e5e5);
+    [topView addSubview:verticalLine];
+    
+    UILabel *moneyLLLLLLab=[ManFactory createLabelWithFrame:CGRectMake(verticalLine.right, 50, WaitTaskTableViewCell_rowHeight-10, 20) Font:12 Text:@"元/次"];
+    moneyLLLLLLab.textAlignment=NSTextAlignmentCenter;
+    moneyLLLLLLab.textColor=[UIColor grayColor];
+    [topView addSubview:moneyLLLLLLab];
+    
     [topView addSubview:[self headImageView]];
     [topView addSubview:[self headLabel]];
     [topView addSubview:[self statusLabel]];
@@ -188,23 +208,23 @@
     }];
     
     [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(topView).with.offset(15);
-        make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-        make.right.equalTo(topView).with.offset(-12);
-        make.height.mas_equalTo(20);
+        make.top.equalTo(topView).with.offset(5);
+        make.left.mas_equalTo(_headImageView.mas_right).offset(5);
+        make.right.equalTo(topView).with.offset(-90);
+        make.height.mas_equalTo(40);
     }];
     [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_headLabel.mas_bottom);
-        make.left.mas_equalTo(_headImageView.mas_right).offset(12);
+        make.left.mas_equalTo(_headImageView.mas_right).offset(5);
         make.right.equalTo(_moneyLabel.mas_left).with.offset(0);
-        make.height.mas_equalTo(40);
+        make.height.mas_equalTo(30);
     }];
     
     
     [_moneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_headLabel.mas_bottom);
-        make.right.equalTo(topView).with.offset(-10);
-        make.width.mas_equalTo(100);
+        make.top.mas_equalTo(topView).with.offset(30);
+        make.right.equalTo(topView).with.offset(-5);
+        make.width.mas_equalTo(WaitTaskTableViewCell_rowHeight-5);
         make.height.equalTo(@20);
     }];
     [_line_label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -262,36 +282,39 @@
     }];
     _headLabel.text = _task.taskTitle;
     
-    _moneyLabel.textColor = [UIColor clearColor];
-    _moneyLabel.text = [NSString stringWithFormat:@"￥%.2f/次",_task.amount];
-    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,_moneyLabel.text.length - 3)];
-    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLabel.text.length - 2,2)];
-    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLabel.text.length - 2)];
-    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLabel.text.length - 2,2)];
-
-    _statusLabel.text =[NSString stringWithFormat:@" %@  %@",[MyTools getTasktype:_task.taskType],_task.taskGeneralInfo];
+    _moneyLabel.textColor = UIColorFromRGB(0xf7585d);
+    _moneyLabel.text = [NSString stringWithFormat:@"%.2f",_task.amount];
+//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,_moneyLabel.text.length - 3)];
+//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLabel.text.length - 2,2)];
+//    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLabel.text.length - 2)];
+//    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLabel.text.length - 2,2)];
+    _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
+    _taskType.text=[MyTools getTasktype:_task.taskType];
     
-    
-    [_statusLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-    [_statusLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:_task.taskType] range:NSMakeRange(0,4)];
-    
-    [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
-    _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
+    _statusLabel.text =_task.taskGeneralInfo;
+    _statusLabel.textColor=UIColorFromRGB(0x888888);
+//    
+//    [_statusLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
+//    [_statusLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:_task.taskType] range:NSMakeRange(0,4)];
+//    
+//    [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
+//    _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
 
     _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
     _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
-    _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
-    if(_task.hotLine.length==0||_task.hotLine==nil){
-        
-        [_lab3 setHidden:YES];
-        [_img3 setHidden:YES];
-    }else{
-        [_lab3 setHidden:NO];
-        [_img3 setHidden:NO];
-    }
+    _lab3.text = [NSString stringWithFormat:@"预计用时 %d分钟",_task.estimatedTime];
 
-    [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
+//    if(_task.hotLine.length==0||_task.hotLine==nil){
+//        
+//        [_lab3 setHidden:YES];
+//        [_img3 setHidden:YES];
+//    }else{
+//        [_lab3 setHidden:NO];
+//        [_img3 setHidden:NO];
+//    }
+
+//    [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
     
     
     if (_tag != 222) {
@@ -374,6 +397,7 @@
     
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+            dataDic=[HttpHelper  security:dataDic];
     _postBtn.status = CoreStatusBtnStatusProgress;
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_PostTask] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         
@@ -830,6 +854,8 @@
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"%zi",buttonIndex);
+    
+    [self printSelfViewFrame];
 
         
         UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
@@ -869,12 +895,14 @@
     
     [self postImg:data];
     
+    [self printSelfViewFrame];
+    
     
 }
 //取消点击
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)postGetMyTask{
     [self getTaskContent];
@@ -883,14 +911,17 @@
 - (void)getTaskContent{
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    
+
     
     User *user = [[User alloc] init];
     NSLog(@">>>>#%@",_taskId);
     NSDictionary *parmeters = @{@"userId"       :user.userId,
                                 @"taskId"       :_taskId,
                                 @"taskDatumId":_taskDatumId};
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parmeters=[HttpHelper  security:parmeters];
+   
+    
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gettaskdatumdetail] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"---->>>>>%@",responseObject);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -932,7 +963,11 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:@{@"uploadFrom":@(3)} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    
+    NSDictionary *dataDic=@{@"uploadFrom":@(3)};
+    dataDic=[HttpHelper  security:dataDic];
+    
+    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:dataDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@">>>%@",responseObject);
@@ -940,11 +975,11 @@
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
-        if ([[responseObject objectForKey:@"Status"] intValue] == 1) {
-            [value setValue:[[responseObject objectForKey:@"Result"] objectForKey:@"RelativePath"] forKey:img_str];
+        if ([[responseObject objectForKey:@"code"] intValue] == 200) {
+            [value setValue:[[responseObject objectForKey:@"data"] objectForKey:@"relativePath"] forKey:img_str];
             NSLog(@"》》》》%@",value);
 
-            NSString *FileUrl=[[responseObject objectForKey:@"Result"] objectForKey:@"FileUrl"];
+            NSString *FileUrl=[[responseObject objectForKey:@"data"] objectForKey:@"fileUrl"];
             [self replaceControlInfo:FileUrl];
             
             
@@ -952,7 +987,7 @@
                 [_mytable reloadData];
             });
         }else{
-            [self.view makeToast:[responseObject objectForKey:@"Message"] duration:1.0 position:CSToastPositionTop];
+            [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
         }
         
         NSLog(@">>>>>>%@",value);
@@ -1008,6 +1043,8 @@
 - (UIImageView *)headImageView{
     if (!_headImageView) {
         _headImageView = [[UIImageView alloc]init];
+        _headImageView.layer.cornerRadius=8;
+        _headImageView.layer.masksToBounds=YES;
     }
     return _headImageView;
 }
@@ -1015,7 +1052,7 @@
     if (!_headLabel) {
         _headLabel = [[UILabel alloc] init];
         _headLabel.font = [UIFont systemFontOfSize:15];
-        _headLabel.numberOfLines = 1;
+        _headLabel.numberOfLines = 2;
         _headLabel.textColor = UIColorFromRGB(0x333333);
     }
     return _headLabel;
@@ -1024,7 +1061,7 @@
 - (CoreLabel *)moneyLabel{
     if (!_moneyLabel) {
         _moneyLabel = [[CoreLabel alloc] init];
-        _moneyLabel.textAlignment = NSTextAlignmentRight;
+        _moneyLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _moneyLabel;
 }
@@ -1033,10 +1070,27 @@
     if (!_statusLabel) {
         _statusLabel = [[CoreLabel alloc] init];
         _statusLabel.font = [UIFont systemFontOfSize:12];
+        _statusLabel.numberOfLines=2;
     }
     return _statusLabel;
 }
-
+- (UILabel *)taskType{
+    if (!_taskType) {
+        _taskType = [ManFactory  createLabelWithFrame:CGRectMake(0, 0, _taskTypeView.width-5, _taskTypeView.height) Font:14 Text:@""];
+        _taskType.textAlignment=NSTextAlignmentRight;
+        _taskType.textColor = [UIColor whiteColor];
+        [_taskTypeView addSubview:_taskType];
+    }
+    return _taskType;
+}
+-(UIImageView *)taskTypeView{
+    
+    if (!_taskTypeView) {
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(self.view.width-50, 0, 50, 20) ImageName:@""];
+        [topView addSubview:_taskTypeView];
+    }
+    return _taskTypeView;
+}
 - (CoreLabel *)timeLabel{
     if (!_timeLabel) {
         _timeLabel =[[CoreLabel alloc] init];
@@ -1056,7 +1110,7 @@
     if (!_lab1) {
         _lab1 = [[UILabel alloc] init];
         _lab1.font = [UIFont systemFontOfSize:12];
-        _lab1.textColor = UIColorFromRGB(0x333333);
+        _lab1.textColor = UIColorFromRGB(0x666666);
     }
     return _lab1;
 }
@@ -1064,7 +1118,7 @@
     if (!_lab2) {
         _lab2 = [[UILabel alloc] init];
         _lab2.font = [UIFont systemFontOfSize:12];
-        _lab2.textColor = UIColorFromRGB(0x333333);
+        _lab2.textColor = UIColorFromRGB(0x666666);
     }
     return _lab2;
 }
@@ -1072,7 +1126,7 @@
     if (!_lab3) {
         _lab3 = [[CoreLabel alloc] init];
         _lab3.font = [UIFont systemFontOfSize:12];
-        _lab3.textColor = UIColorFromRGB(0x333333);
+        _lab3.textColor = UIColorFromRGB(0x666666);
         _lab3.userInteractionEnabled=YES;
         UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callHotLine)];
         [_lab3 addGestureRecognizer:tap];
@@ -1136,7 +1190,7 @@
 }
 - (UIImageView *)img3{
     if (!_img3) {
-        _img3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TaskDetail_phone"]];
+        _img3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_time"]];
     }
     return _img3;
 }
@@ -1218,5 +1272,9 @@
             [v resignFirstResponder];
         }
     }
+}
+-(void)printSelfViewFrame{
+
+    NSLog(@"self.view.frame%@ \nself.mytable.frame%@",NSStringFromCGRect(self.view.frame),NSStringFromCGRect(self.mytable.frame));
 }
 @end

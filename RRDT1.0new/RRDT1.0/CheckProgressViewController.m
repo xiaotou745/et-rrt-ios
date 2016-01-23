@@ -39,14 +39,14 @@
 
 -(void)configDatas{
     
-    _lookDetailBTN.layer.cornerRadius=5;
+    _lookDetailBTN.layer.cornerRadius=8;
     _lookDetailBTN.layer.masksToBounds=YES;
     _lookDetailBTN.layer.borderColor=UIColorFromRGB(0x00bcd5).CGColor;
     _lookDetailBTN.layer.borderWidth=1;
     _lookDetailBTN.backgroundColor=[UIColor whiteColor];
     [_lookDetailBTN setTitleColor:UIColorFromRGB(0x00bcd5) forState:UIControlStateNormal];
     
-    _editBTN.layer.cornerRadius=5;
+    _editBTN.layer.cornerRadius=8;
     _editBTN.layer.masksToBounds=YES;
     _editBTN.layer.borderWidth=1;
     if (_model.taskStatus!=1) {

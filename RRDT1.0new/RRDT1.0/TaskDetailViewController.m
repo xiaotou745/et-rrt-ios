@@ -50,7 +50,6 @@
     
     [self viewCreat];
   
-    if(_fromPCenterVC)    self.title = @"资料审核详情";
     [_myScroll setContentOffset:CGPointMake(WIDTH * _contentOfSet_index, 0) animated:NO];//设置scrollView滚动到某个位置，是否有动画效果
     _mySegment.selectedSegmentIndex = _contentOfSet_index;
 
@@ -75,12 +74,12 @@
     
     //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
     
-    
     _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40)];
     _myScroll.delegate = self;
     _myScroll.pagingEnabled = YES;
     _myScroll.contentSize = CGSizeMake(WIDTH*3, 0);
     _myScroll.backgroundColor = UIColorFromRGB(0xf9f9f9);
+
     _myScroll.showsHorizontalScrollIndicator = NO;
     _myScroll.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_myScroll];
@@ -95,20 +94,29 @@
     
     
     waitView = [[WaitingView alloc] init];
-    waitView.taskId=_task.taskId;
-    if (_fromPCenterVC)waitView.taskId=@"0";
+    waitView.taskId=_taskId;
+//    if (_fromPCenterVC)waitView.taskId=@"0";
     [_myScroll addSubview:waitView];
     
     passingView = [[PassingView alloc] init];
-    passingView.taskId=_task.taskId;
-    if (_fromPCenterVC)passingView.taskId=@"0";
+    passingView.taskId=_taskId;
+//    if (_fromPCenterVC)passingView.taskId=@"0";
     [_myScroll addSubview:passingView];
     
     refuseView = [[RefuseView alloc] init];
-    refuseView.taskId=_task.taskId;
-    if (_fromPCenterVC)refuseView.taskId=@"0";
+    refuseView.taskId=_taskId;
+//    if (_fromPCenterVC)refuseView.taskId=@"0";
     [_myScroll addSubview:refuseView];
     
+    [MBProgressHUD showHUDAddedTo:waitView animated:YES];
+    waitView.nextId = 0;
+    [waitView post];
+    [MBProgressHUD showHUDAddedTo:passingView animated:YES];
+    passingView.nextId = 0;
+    [passingView post];
+    [MBProgressHUD showHUDAddedTo:refuseView animated:YES];
+    refuseView.nextId = 0;
+    [refuseView post];
     
     // 个人中心进来 或 过期任务  不显示提交资料按钮
     if (!_fromPCenterVC&&!_overTime) {
@@ -163,15 +171,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [MBProgressHUD showHUDAddedTo:waitView animated:YES];
-    waitView.nextId = 0;
-    [waitView post];
-    [MBProgressHUD showHUDAddedTo:passingView animated:YES];
-    passingView.nextId = 0;
-    [passingView post];
-    [MBProgressHUD showHUDAddedTo:refuseView animated:YES];
-    refuseView.nextId = 0;
-    [refuseView post];
+ 
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"myselect" object:nil];
@@ -189,7 +189,7 @@
 -(void)postBtnClick{
     
     PostContractViewController *post = [[PostContractViewController alloc] init];
-    post.taskId = _task.taskId;
+    post.taskId = _taskId;
     post.taskDatumId=@"";
     post.tag = 111;
     post.onlyType = 999;

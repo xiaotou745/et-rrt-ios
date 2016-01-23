@@ -36,6 +36,7 @@
         [titles addObject:[self orderByDescription:5]];
         
         images =[NSMutableArray arrayWithArray:@[@"TaskDetail_pass",@"",@"",@"",@""]];
+        colors =[NSMutableArray arrayWithArray:@[UIColorFromRGB(0x00bcd5),[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor]]];
 
     }
     return self;
@@ -54,7 +55,12 @@
         UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //    }
+    
+    
+    UIColor *textColor=colors[indexPath.row];
+    cell.textLabel.textColor=textColor;
     cell.textLabel.text=titles[indexPath.row];
+    
     
     UIImageView *rightIcon=[ManFactory createImageViewWithFrame:CGRectMake(self.width-30, 12, 20, 20) ImageName:images[indexPath.row]];
     [cell.contentView addSubview:rightIcon];
@@ -68,6 +74,9 @@
     
     images =[NSMutableArray arrayWithArray:@[@"",@"",@"",@"",@""]];
     [images replaceObjectAtIndex:indexPath.row withObject:@"TaskDetail_pass"];
+    colors =[NSMutableArray arrayWithArray:@[[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor],[UIColor darkGrayColor]]];
+    [colors replaceObjectAtIndex:indexPath.row withObject:UIColorFromRGB(0x00bcd5)];
+
     [self reloadData];
     [[NSNotificationCenter defaultCenter]postNotificationName:OrderByTypeView_select object:@(indexPath.row+1)];
 }
@@ -79,26 +88,26 @@
     switch (orderType) {
             
         case orderByAverageTime:
-            return @"预计用时";
+//            return @"预计用时";
             return @"预计用时最短";
             break;
         case orderByCommission:
-            return @"佣金";
+//            return @"佣金";
             return @"佣金最高";
 
             break;
         case orderByCreateTime:
-            return @"发布时间";
+//            return @"发布时间";
             return @"发布时间最新";
 
             break;
         case orderByCycle:
-            return @"审核周期";
+//            return @"审核周期";
             return @"审核最快";
 
             break;
         case orderByJoinNumbers:
-            return @"参与人数";
+//            return @"参与人数";
             return @"参与人数最多";
 
             break;

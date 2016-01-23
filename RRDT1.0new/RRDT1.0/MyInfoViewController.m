@@ -83,7 +83,7 @@
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [self.view makeToast:@"当前没有网络" duration:1.0 position:CSToastPositionTop];
     }else{
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        
         
         NSDictionary *parameters = @{@"userId"   : _user.userId,
                                      @"userName" : [userArr1 objectAtIndex:1],
@@ -91,6 +91,8 @@
                                      @"age"      : [userArr1 objectAtIndex:4],
                                      @"headImage": [userArr1 objectAtIndex:0]};
         
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parameters=[HttpHelper  security:parameters];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ChangeInfo] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -122,12 +124,14 @@
 - (void)getMyInfo{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+  
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
     
-
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
+    
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>>%@",operation);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -372,7 +376,10 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:@{@"uploadFrom":@(2)} constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    NSDictionary *dataDic=@{@"uploadFrom":@(2)};
+    dataDic=[HttpHelper  security:dataDic];
+    
+    [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:dataDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];
         
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {

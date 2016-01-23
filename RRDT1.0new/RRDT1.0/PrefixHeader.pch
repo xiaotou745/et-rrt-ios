@@ -18,6 +18,7 @@
 #import "NSString+evaluatePhoneNumber.h"
 #import "MBProgressHUD+show.h"
 #import "NSString+addRMBcharacter.h"
+#import "NSString+stringSizes.h"
 
 #define gotoCheckProgressVC @"gotoCheckProgressVC"
 
@@ -29,6 +30,7 @@
 #define notify_bandingAlipaySuccess @"notify_bandingAlipaySuccess"
 #define notify_selectBillDetailCell @"notify_selectBillDetailCell"
 
+#define notify_loginBackVC @"notify_loginBackVC"
 
 #pragma mark -
 #pragma mark - NSUserDefaults

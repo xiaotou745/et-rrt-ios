@@ -10,6 +10,7 @@
 
 #import "CoreLabel.h"
 
+#define WaitTaskTableViewCell_rowHeight 85
 @interface WaitTaskTableViewCell : UITableViewCell
 /**
  主照片

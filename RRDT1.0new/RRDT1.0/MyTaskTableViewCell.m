@@ -88,6 +88,8 @@
 - (UIImageView *)headImageView{
     if (!_headImageView) {
         _headImageView = [[UIImageView alloc]init];
+        _headImageView.layer.cornerRadius=8;
+        _headImageView.layer.masksToBounds=YES;
         [self addSubview:_headImageView];
     }
     return _headImageView;

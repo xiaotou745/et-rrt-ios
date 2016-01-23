@@ -43,65 +43,34 @@
     _payDetail.numberOfLines=0;
     [_payDetail sizeToFit];
     
-    
-//    _RelationNo.text =[_payInfo[@"RelationNo"]description];
-//    _RelationNo.textColor=[UIColor colorWithHexString:SCColorBlueNormal];
-    
-//    NSString *relationNoText=[_payInfo[@"relationNo"]description];
+
     NSString *relationNoText=@"--";
     _RelationNo.text=relationNoText;
 
-    /*
-    NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc] initWithString:relationNoText];
-    
-    NSInteger isOrder=[_payInfo[@"isOrder"]intValue];
-    
-    
-    //存在流水号 且关联了订单
-    if (relationNoText&&isOrder==1){
-        [AttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:SCColorBlueNormal] range:NSMakeRange(0,relationNoText.length)];
-        [AttributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0,relationNoText.length)];
-       //只存在流水号  未关联订单
-    }else if (relationNoText){
-    
-        [AttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0,relationNoText.length)];
-        [_rightArrow setHidden:YES];
-//        [AttributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0,relationNoText.length)];
-       
-        //不存在流水号 且 未关联订单
-    }else
-    {
-        AttributedString=[[NSMutableAttributedString alloc] initWithString:@"--"];
-        [AttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0,2)];
-        [_rightArrow setHidden:YES];
-    }
 
-    
-    
-//    NSDictionary *attributeDict = @{NSForegroundColorAttributeName:[UIColor colorWithHexString:SCColorBlueNormal],NSUnderlineStyleAttributeName:[UIColor colorWithHexString:SCColorBlueNormal]};
-    
-//    [AttributedString addAttributes:attributeDict range:NSMakeRange(0,relationNoText.length)];
-
-    [_RelationNo setAttributedText:AttributedString];
-    */
-    
-//    _relationType.text =_model.recordTypeName;
     if (_isInCome) {
         _payAmout.textColor= UIColorFromRGB(0xf7585d);
-        _payAmout.text  =    [NSString stringWithFormat:@"+%.2f元",_model.amount];
+        _payAmout.text  =    [NSString stringWithFormat:@"+%.2f",_model.amount];
+
 
     }else{
         _payAmout.textColor= UIColorFromRGB(0x00bc87);
-        _payAmout.text  =    [NSString stringWithFormat:@"%.2f元",_model.amount];
+        _payAmout.text  =    [NSString stringWithFormat:@"%.2f",_model.amount];
+
 
     }
-    [_payAmout addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_payAmout.text.length - 1,1)];
+//    [_payAmout addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_payAmout.text.length - 1,1)];
 
     
     _payReason.text =   _model.recordTypeName;
-    _payDetail.text =   _model.remark;
     _payTime.text   =   [MyTools timeString:_model.operateTime];
     _RelationNo.text=_model.relationNo;
+    _payDetail.text =   _model.remark;
+    
+    if (_isInCome&&_model.recordType==1) {
+        _payDetail.text =[NSString stringWithFormat:@"成功完成-%@",_model.remark];
+
+    }
 
 }
 //-(void)configNavBar

@@ -54,6 +54,9 @@
 - (UIImageView *)img_last{
     if (!_img_last) {
         _img_last = [[UIImageView alloc] init];
+        _img_last.layer.cornerRadius=8;
+        _img_last.layer.masksToBounds=YES;
+      
         [self addSubview:_img_last];
     }
     return _img_last;

@@ -29,6 +29,8 @@
 //    NSInteger _webViews;//记录详情页链接的个数
     
     CGFloat _heightSection1;
+    CGFloat _heightSection_1;
+
 }
 //@property (nonatomic,strong) NSString *orderID;
 
@@ -97,14 +99,11 @@
 
 @property (nonatomic,strong) UIImageView    *img4;//2-2
 
-/** 领取任务按钮 */
+/** 首次领取任务按钮 */
 @property (nonatomic,strong) CoreStatusBtn *btn_receive;
-/** 再次领取任务按钮 */
-@property (nonatomic,strong) CoreStatusBtn *btn_againReceive;
-/** 提交合同任务按钮 */
+
+/** 继续任务 继续分享按钮 */
 @property (nonatomic,strong) UIButton *btn_post;
-/** 查看资料 */
-@property (nonatomic,strong) UIButton *btn_lookPost;
 
 @end
 
@@ -154,6 +153,7 @@
     
 //    _webViews=0;
     _heightSection1=0;
+    _heightSection_1=0;
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64-HEIGHT/12) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
@@ -164,75 +164,47 @@
     [self.view addSubview:_mytable];
     
     [self.view addSubview:[self btn_receive]];
+    [self.view addSubview:[self btn_post]];
+
     [self judegMent];
 
 }
 #pragma mark 判断页面类型
 - (void)judegMent{
-    if (_type == 1) {
-        _btn_receive.hidden = NO;
-        
+ 
+    if (_type==1) {
         _btn_post.hidden = YES;
-        _btn_lookPost.hidden = YES;
-        _btn_againReceive.hidden = YES;
-        
-        _timeLabel.hidden = YES;
-    }else if (_type == 2){
+        _btn_receive.hidden = NO;
+    }
+    if(_type==2){
         [_btn_post setTitle:@"继续任务" forState:UIControlStateNormal];
         
         if(_task.taskType==taskType_download||_task.taskType==taskType_share){
             
-            [_btn_post setTitle:@"继续分享" forState:UIControlStateNormal];
+            [_btn_post setTitle:@"分享二维码" forState:UIControlStateNormal];
         }
         _btn_post.tag = 111;
-        _btn_post.hidden = NO;
         
-        _btn_againReceive.hidden = YES;
-        _btn_lookPost.hidden = YES;
-        _btn_receive.hidden = YES;
-        
-        _timeLabel.hidden = NO;
-        
-    }else if (_type == 3){
-        _btn_lookPost.hidden = NO;
-        _btn_againReceive.hidden = NO;
-        
-        _btn_post.hidden = YES;
-        _btn_receive.hidden = YES;
-        _timeLabel.hidden = YES;
-    }else if (_type == 4){
-        [_btn_post setTitle:@"重新提交" forState:UIControlStateNormal];
-        _btn_post.tag = 222;
-        _btn_post.hidden = NO;
-        
-        _btn_lookPost.hidden = YES;
-        _btn_receive.hidden = YES;
-        _btn_againReceive.hidden = YES;
-        _timeLabel.hidden = YES;
-    }else if (_type == 5){
-        _btn_lookPost.hidden = NO;
-        _btn_againReceive.hidden = NO;
-        
-        _btn_post.hidden = YES;
-        _btn_receive.hidden = YES;
-        _timeLabel.hidden = YES;
-    }else{
-        
-        _btn_lookPost.hidden = YES;
-        _btn_againReceive.hidden = YES;
-        _btn_post.hidden = YES;
-        _btn_receive.hidden = YES;
-        _timeLabel.hidden = YES;
+        //可继续任务
+        if(_task.status==1){
+            _btn_post.hidden = NO;
+            _btn_receive.hidden = YES;
+            
+        }
+        //过期 禁止的任务 隐藏 领取按钮
+        else{
+            _mytable.frame=CGRectMake(0, 0, WIDTH, HEIGHT - 64);
+            _btn_post.hidden = YES;
+            _btn_receive.hidden=YES;
+        }
     }
-    
-    
     
 }
 #pragma mark 获取任务详情
 - (void)getTaskContent:(NSString *)orderIDstr{
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+ 
     
     NSLog(@">?>>>>*%@",user.userId);
     NSLog(@">>>>#%@",_task.taskId);
@@ -240,6 +212,9 @@
     NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
                                 @"taskId"       :_task.taskId
                                 };
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parmeters=[HttpHelper  security:parmeters];
+    
     NSLog(@"%@",parmeters);
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_TaskContent] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"---->>>>>%@",responseObject);
@@ -277,8 +252,8 @@
     return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-
-    return 2+_task_links.count+(_partnerTotal?1:0);
+//头部＋任务流程＋_task_links链接数量＋电话＋_partnerTotal任务参与人(_partnerTotal?1:0)
+    return 2+_task_links.count+1+1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *idenifier = @"cell";
@@ -310,29 +285,29 @@
             
             [_headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(cell.contentView).with.offset(15);
-                make.left.equalTo(cell.contentView).with.offset(12);
-                make.width.equalTo(@60);
-                make.height.equalTo(@60);
+                make.left.equalTo(cell.contentView).with.offset(5);
+                make.width.equalTo(@50);
+                make.height.equalTo(@50);
             }];
             
             [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(cell.contentView).with.offset(15);
-                make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-                make.right.equalTo(cell.contentView).with.offset(-50);
-                make.height.mas_equalTo(20);
+                make.top.equalTo(cell.contentView).with.offset(5);
+                make.left.mas_equalTo(_headImageView.mas_right).offset(5);
+                make.right.equalTo(cell.contentView).with.offset(-85);
+                make.height.mas_equalTo(38);
             }];
             [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(_headLabel.mas_bottom);
-                make.left.mas_equalTo(_headImageView.mas_right).offset(12);
+                make.left.mas_equalTo(_headImageView.mas_right).offset(5);
                 make.right.equalTo(_moneyLab.mas_left).with.offset(0);
-                make.height.mas_equalTo(40);
+                make.height.mas_equalTo(33);
             }];
             
             
             [_moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(_headLabel.mas_bottom);
-                make.right.equalTo(cell.contentView).with.offset(-10);
-                make.width.mas_equalTo(100);
+                make.top.mas_equalTo(30);
+                make.right.equalTo(cell.contentView).with.offset(-5);
+                make.width.mas_equalTo(80);
                 make.height.equalTo(@20);
             }];
             [_line_label mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -395,6 +370,8 @@
             
         }else if (indexPath.section == 1){
             
+            _heightSection_1=10;
+
             for(int i=0;i<_task_steps.count;i++){
                 
                 TaskStep *step=[[TaskStep alloc]init];
@@ -409,13 +386,16 @@
                 [cell.contentView addSubview:vvvLab];
                 if(i==_task_steps.count-1) [vvvLab setHidden:YES];
                 
+               CGFloat stepHeight=[step.content  stringSizeHeightWithFontSize:15 width:DEF_SCEEN_WIDTH-50];
+                _heightSection_1+=stepHeight+5;
+                
                 [iconLab mas_makeConstraints:^(MASConstraintMaker *make){
                 
-                    make.top.mas_equalTo(cell.contentView).offset(10+40*i);
+                    make.top.mas_equalTo(cell.contentView).offset(_heightSection_1-stepHeight);
                     make.left.mas_equalTo(cell.contentView).offset(10);
-                    make.width.equalTo(@20);
-                    make.height.equalTo(@20);
-                    iconLab.layer.cornerRadius=10;
+                    make.width.equalTo(@18);
+                    make.height.equalTo(@18);
+                    iconLab.layer.cornerRadius=9;
                     iconLab.layer.masksToBounds=YES;
                 
                 }];
@@ -434,7 +414,7 @@
                     make.top.mas_equalTo(iconLab.mas_bottom);
                     make.centerX.mas_equalTo(iconLab.mas_centerX);
                     make.width.equalTo(@1);
-                    make.height.equalTo(@20);
+                    make.height.equalTo(@(stepHeight+5));
                     
                 }];
                 
@@ -442,13 +422,14 @@
                 contentLab.text=step.content;
             }
         
-            
-            UILabel *baseline=[[UILabel alloc]initWithFrame:CGRectMake(20, _task_steps.count*40+10, WIDTH-20, 1)];
-            baseline.backgroundColor=[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
+            _heightSection_1+=10;
+            UILabel *baseline=[[UILabel alloc]initWithFrame:CGRectMake(20,_heightSection_1, WIDTH-20, 1)];
+            baseline.backgroundColor=[UIColor lightGrayColor];
             [cell.contentView addSubview:baseline];
             // 有补充 才显示分割线
             if (!_task_contents.count) [baseline setHidden:YES];
             
+            _heightSection_1+=15;
             for (int j=0; j<_task_contents.count; j++) {
                 TaskStep *step=[[TaskStep alloc]init];
                 step=_task_contents[j];
@@ -461,7 +442,7 @@
                 
                 [pointLabel mas_makeConstraints:^(MASConstraintMaker *make){
                     
-                    make.top.mas_equalTo(baseline.mas_top).offset(18+35*j);
+                    make.top.mas_equalTo(cell.contentView.mas_top).offset(_heightSection_1);
                     make.left.mas_equalTo(cell.contentView).offset(15);
                     make.width.equalTo(@3);
                     make.height.equalTo(@3);
@@ -472,7 +453,7 @@
                 
                 [contentttLab mas_makeConstraints:^(MASConstraintMaker *make){
                     
-                    make.top.mas_equalTo(baseline.mas_top).offset(10+35*j);
+                    make.top.mas_equalTo(pointLabel.mas_top).offset(-8);
                     make.right.mas_equalTo(cell.contentView).offset(-10);
                     make.left.mas_equalTo(pointLabel.mas_right).offset(10);
                     //                    make.height.equalTo(@39);
@@ -480,6 +461,7 @@
                 }];
                 
                 contentttLab.text=step.content;
+                _heightSection_1+=[step.content  stringSizeHeightWithFontSize:15 width:DEF_SCEEN_WIDTH-50]+5;
             }
 
         }else{
@@ -487,7 +469,7 @@
             //外链
             if (indexPath.section<2+_task_links.count) {
                 UIImageView *iconImg=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"TaskDetail_linkIcon"]];
-//                iconImg.layer.cornerRadius=5;
+//                iconImg.layer.cornerRadius=8;
 //                iconImg.layer.masksToBounds=YES;
                 [cell.contentView addSubview:iconImg];
                 
@@ -526,12 +508,31 @@
                     make.height.equalTo(@20);
                 }];
                 
-             //任务参与人列表
-            }else{
+             //咨询电话
+            }else if(indexPath.section==2+_task_links.count){
+            
+                CoreLabel *callLab = [[CoreLabel alloc] initWithFrame:CGRectMake(15, 0, DEF_SCEEN_WIDTH-30, 44)];
+                callLab.font = [UIFont systemFontOfSize:15];
+                callLab.textColor = UIColorFromRGB(0x333333);
+                callLab.numberOfLines=1;
+                callLab.text = [NSString stringWithFormat:@"咨询电话 %@",_task.hotLine];
+                if(_task.hotLine.length==0||_task.hotLine==nil)callLab.text=@"咨询电话 暂无";
+                
+                [callLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(5,callLab.text.length - 5)];
+                [cell.contentView addSubview:callLab];
+                
+//                UIImageView *phoneIcon=[ManFactory createImageViewWithFrame:CGRectMake(185, 13, 18, 18) ImageName:@"icon_kefu"];
+//                [cell.contentView addSubview:phoneIcon];
+            
+            }//任务参与人列表
+            else{
             
 //                cell.textLabel.text=[_partnerList description];
                 
                 UILabel *titleLab=[ManFactory createLabelWithFrame:CGRectMake(10, 5, DEF_SCEEN_WIDTH-20, 25) Font:15 Text:[NSString stringWithFormat:@"任务参与人数(%@)",[@(_partnerTotal)description]]];
+                titleLab.textColor=UIColorFromRGB(0x333333);
+
+                if(_partnerTotal==0) titleLab.text=@"还没有地推人参加任务哦～";
                 [cell.contentView addSubview:titleLab];
 
                 CGFloat  headWith=50;
@@ -544,15 +545,25 @@
                     model=_partnerList[i];
                     UIImageView *parterIcon=[ManFactory createImageViewWithFrame:CGRectMake((HorizonalSpace+headWith)*i+HorizonalSpace, titleLab.bottom+5, headWith, headWith) ImageName:@"icon_usermorentu"];
 //                    parterIcon.backgroundColor=[UIColor orangeColor];
-                    [parterIcon  sd_setImageWithURL:[NSURL URLWithString:model.headImage] placeholderImage:[UIImage imageNamed:@"icon_usermorentu"]];
+                    parterIcon.layer.cornerRadius=8;
+                    parterIcon.layer.masksToBounds=YES;
+                  
                     [cell.contentView addSubview:parterIcon];
                     
-                    UILabel *parterName=[ManFactory createLabelWithFrame:CGRectMake(0, 0, HorizonalSpace+headWith, 20) Font:14 Text:model.clienterName];
+                    UILabel *parterName=[ManFactory createLabelWithFrame:CGRectMake(0, 0, HorizonalSpace+headWith, 20) Font:13 Text:model.clienterName.length?(model.clienterName.length>3?[NSString stringWithFormat:@"%@…",[model.clienterName substringToIndex:2]]:model.clienterName):@"某推手"];
                     parterName.textColor=UIColorFromRGB(0x666666);
                     parterName.textAlignment=NSTextAlignmentCenter;
-                    parterName.center=CGPointMake(parterIcon.left+parterIcon.width/2, parterIcon.bottom+20);
+                    parterName.center=CGPointMake(parterIcon.left+parterIcon.width/2, parterIcon.bottom+16);
                     [cell.contentView addSubview:parterName];
 
+                    if (_partnerTotal>5&&i==4) {
+                        parterIcon.image=[UIImage imageNamed:@"TaskDetail_moreIcon"];
+                        [parterName setHidden:YES];
+
+                    }else{
+                        [parterIcon  sd_setImageWithURL:[NSURL URLWithString:model.headImage] placeholderImage:[UIImage imageNamed:@"icon_usermorentu"]];
+
+                    }
                 }
                 
             }
@@ -567,13 +578,22 @@
         }];
         _headLabel.text = _task.taskTitle;
         
-        _moneyLab.textColor = [UIColor clearColor];
-        _moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",_task.amount];
-        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,_moneyLab.text.length - 3)];
-        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLab.text.length - 2,2)];
-        [_moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLab.text.length - 2)];
-        [_moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLab.text.length - 2,2)];
+        _moneyLab.textColor = UIColorFromRGB(0xf7585d);
+        _moneyLab.text = [NSString stringWithFormat:@"%.2f",_task.amount];
+        
+        UILabel *verticalLine=[ManFactory createLabelWithFrame:CGRectMake(_headLabel.right, 0,1, 75) Font:16 Text:@""];
+        verticalLine.backgroundColor=UIColorFromRGB(0xe5e5e5);
+        [cell addSubview:verticalLine];
+        
+        UILabel *moneyLLLLLLab=[ManFactory createLabelWithFrame:CGRectMake(_headLabel.right, 50, DEF_SCEEN_WIDTH-_headLabel.right, 20) Font:12 Text:@"元/次"];
+        moneyLLLLLLab.textColor=[UIColor grayColor];
+        moneyLLLLLLab.textAlignment=NSTextAlignmentCenter;
+        [cell addSubview:moneyLLLLLLab];
+//        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+//        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,_moneyLab.text.length - 3)];
+//        [_moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLab.text.length - 2,2)];
+//        [_moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLab.text.length - 2)];
+//        [_moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLab.text.length - 2,2)];
         
         
         NSString *status ;
@@ -601,17 +621,17 @@
 
             _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
             _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
-            _lab3.text = [NSString stringWithFormat:@"咨询 %@",_task.hotLine];
-        if(_task.hotLine.length==0||_task.hotLine==nil){
-        
-            [_lab3 setHidden:YES];
-            [_img3 setHidden:YES];
-        }else{
-            [_lab3 setHidden:NO];
-            [_img3 setHidden:NO];
-        }
+            _lab3.text = [NSString stringWithFormat:@"预计用时 %d分钟",_task.estimatedTime];
+//        if(_task.hotLine.length==0||_task.hotLine==nil){
+//        
+//            [_lab3 setHidden:YES];
+//            [_img3 setHidden:YES];
+//        }else{
+//            [_lab3 setHidden:NO];
+//            [_img3 setHidden:NO];
+//        }
 
-        [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
+//        [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
 
 
     }
@@ -622,11 +642,16 @@
     if (indexPath.section == 0) {
         return 140;
     }else if (indexPath.section == 1){
-        return      _heightSection1+25;
-    }else if (indexPath.section <2+_task_links.count){
+//        return      _heightSection1+25;
+        return      _heightSection_1;
+
+    }else if (indexPath.section <=2+_task_links.count){
         return      44;
-    }else{
-        return 120;
+    }
+    else{
+        
+        if(_partnerTotal==0) return 44;
+        else    return 120;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -661,7 +686,13 @@
         RRDTWebViewController *web=[[RRDTWebViewController  alloc]initWithNibName:@"RRDTWebViewController" bundle:nil];
         web.urlString=step.content;
         [self.navigationController pushViewController:web animated:YES];
-    }else{
+    }
+    
+    if (2+_task_links.count==indexPath.section) {
+        if(_task.hotLine.length==0||_task.hotLine==nil) return;
+        else [self callHotLine];
+    }
+    if(_partnerTotal&&2+_task_links.count<indexPath.section){
     
         JoinsListViewController *joinVC=[[JoinsListViewController alloc]initWithNibName:@"JoinsListViewController" bundle:nil];
         joinVC.taskId=_task.taskId;
@@ -708,13 +739,6 @@
         _timeLabel.text = [NSString stringWithFormat:@"领取时间：%@",_task.receivedTime == nil ? @"未知":[_task.receivedTime substringWithRange:NSMakeRange(0, 16)]];
     }
     
-    if ([_task.isAgainPickUp integerValue] == 0) {
-        _btn_againReceive.enabled = NO;
-        [_btn_againReceive setBackgroundColorForNormal:[UIColor grayColor]];
-    }else{
-        _btn_againReceive.enabled = YES;
-        [_btn_againReceive setBackgroundColorForNormal:UIColorFromRGB(0x9a3b8)];
-    }
     
     [_contentArr removeAllObjects];
     [_contentArr addObject:@"1"];
@@ -729,12 +753,14 @@
     _headLabel.text = _task.taskTitle;
     _moneyLab.text = [NSString stringWithFormat:@"¥%.2f",_task.amount];
     
-    if(_task.taskType==taskType_download||_task.taskType==taskType_share){
-        
-        [_btn_receive setTitle:@"分享二维码" forState:UIControlStateNormal];
-    }
+//    if(_task.taskType==taskType_download||_task.taskType==taskType_share){
+//        
+//        [_btn_receive setTitle:@"分享二维码" forState:UIControlStateNormal];
+//    }
     
     [self judegMent];
+    
+
 }
 
 
@@ -742,6 +768,8 @@
 - (UIImageView *)headImageView{
     if (!_headImageView) {
         _headImageView = [[UIImageView alloc]init];
+        _headImageView.layer.cornerRadius=8;
+        _headImageView.layer.masksToBounds=YES;
     }
     return _headImageView;
 }
@@ -749,7 +777,7 @@
     if (!_headLabel) {
         _headLabel = [[UILabel alloc] init];
         _headLabel.font = [UIFont systemFontOfSize:15];
-        _headLabel.numberOfLines = 1;
+        _headLabel.numberOfLines = 2;
     }
     return _headLabel;
 }
@@ -787,7 +815,8 @@
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {
         _moneyLab = [[CoreLabel alloc] init];
-        _moneyLab.textAlignment = NSTextAlignmentRight;
+        _moneyLab.font=[UIFont systemFontOfSize:15];
+        _moneyLab.textAlignment = NSTextAlignmentCenter;
     }
     return _moneyLab;
 }
@@ -802,7 +831,7 @@
     if (!_lab1) {
         _lab1 = [[UILabel alloc] init];
         _lab1.font = [UIFont systemFontOfSize:12];
-        _lab1.textColor = UIColorFromRGB(0x333333);
+        _lab1.textColor = UIColorFromRGB(0x666666);
     }
     return _lab1;
 }
@@ -810,7 +839,7 @@
     if (!_lab2) {
         _lab2 = [[UILabel alloc] init];
         _lab2.font = [UIFont systemFontOfSize:12];
-        _lab2.textColor = UIColorFromRGB(0x333333);
+        _lab2.textColor = UIColorFromRGB(0x666666);
     }
     return _lab2;
 }
@@ -818,10 +847,10 @@
     if (!_lab3) {
         _lab3 = [[CoreLabel alloc] init];
         _lab3.font = [UIFont systemFontOfSize:12];
-        _lab3.textColor = UIColorFromRGB(0x333333);
+        _lab3.textColor = UIColorFromRGB(0x666666);
         _lab3.userInteractionEnabled=YES;
-        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callHotLine)];
-        [_lab3 addGestureRecognizer:tap];
+//        UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(callHotLine)];
+//        [_lab3 addGestureRecognizer:tap];
     }
     return _lab3;
 }
@@ -836,7 +865,7 @@
 - (UILabel *)iconLabel{
     
         UILabel *iconLab = [[UILabel alloc] init];
-        iconLab.font = [UIFont systemFontOfSize:15];
+        iconLab.font = [UIFont systemFontOfSize:14];
         iconLab.numberOfLines = 1;
         iconLab.textColor=[UIColor whiteColor];
         iconLab.textAlignment=NSTextAlignmentCenter;
@@ -847,7 +876,8 @@
     
     UILabel *contentLab = [[UILabel alloc] init];
     contentLab.font = [UIFont systemFontOfSize:14];
-    contentLab.numberOfLines = 2;
+    contentLab.numberOfLines = 0;
+    contentLab.textColor=UIColorFromRGB(0x333333);
 //    contentLab.backgroundColor=[UIColor blueColor];
     return contentLab;
 }
@@ -856,6 +886,8 @@
     UILabel *vvvLab = [[UILabel alloc] init];
     vvvLab.font = [UIFont systemFontOfSize:15];
     vvvLab.backgroundColor=UIColorFromRGB(0x00bcd5);
+//    vvvLab.backgroundColor=[UIColor orangeColor];
+
     return vvvLab;
 }
 
@@ -871,8 +903,8 @@
     
     UILabel *contentttLab = [[UILabel alloc] init];
     contentttLab.font = [UIFont systemFontOfSize:14];
-    contentttLab.numberOfLines = 2;
-    contentttLab.textColor=[UIColor lightGrayColor];
+    contentttLab.numberOfLines = 0;
+    contentttLab.textColor=[UIColor grayColor];
     return contentttLab;
 }
 - (UIImageView *)img1{
@@ -889,7 +921,7 @@
 }
 - (UIImageView *)img3{
     if (!_img3) {
-        _img3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TaskDetail_phone"]];
+        _img3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_time"]];
     }
     return _img3;
 }
@@ -920,25 +952,6 @@
     return _btn_receive;
 }
 
-- (CoreStatusBtn *)btn_againReceive{
-    if (!_btn_againReceive) {
-        _btn_againReceive = [[CoreStatusBtn alloc] initWithFrame:CGRectMake(WIDTH/2+20, 20, WIDTH/2 - 40, HEIGHT/15)];
-        _btn_againReceive.layer.masksToBounds = YES;
-        _btn_againReceive.layer.cornerRadius = 4;
-//        _btn_againReceive.backgroundColorForNormal = UIColorFromRGB(0x9a3b8);
-//        _btn_againReceive.backgroundColorForNormal = [UIColor grayColor];
-//        [_btn_againReceive setBackgroundColorForNormal:UIColorFromRGB(0x9a3b8)];
-        _btn_againReceive.shutOffColorLoadingAnim = YES;
-        _btn_againReceive.shutOffZoomAnim = YES;
-        _btn_againReceive.status = CoreStatusBtnStatusNormal;
-        _btn_againReceive.msg = @"";
-        [_btn_againReceive setTitle:@"再次领取" forState:UIControlStateNormal];
-        [_btn_againReceive setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _btn_againReceive.hidden = YES;
-        [_btn_againReceive addTarget:self action:@selector(receivedTask:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _btn_againReceive;
-}
 - (UIButton *)btn_post{
     if (!_btn_post) {
         _btn_post = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -952,20 +965,7 @@
     }
     return _btn_post;
 }
-- (UIButton *)btn_lookPost{
-    if (!_btn_lookPost) {
-        _btn_lookPost = [UIButton buttonWithType:UIButtonTypeCustom];
-        _btn_lookPost.frame = CGRectMake(20, 20, WIDTH/2 - 40, HEIGHT/15);
-        _btn_lookPost.layer.masksToBounds = YES;
-        _btn_lookPost.layer.cornerRadius = 4;
-        [_btn_lookPost setTitle:@"查看资料" forState:UIControlStateNormal];
-        _btn_lookPost.backgroundColor = UIColorFromRGB(0x9a3b8);
-        _btn_lookPost.hidden = YES;
-        _btn_lookPost.tag = 333;
-        [_btn_lookPost addTarget:self action:@selector(postcont:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _btn_lookPost;
-}
+
 
 -(void)callHotLine{
 
@@ -982,10 +982,14 @@
             [self.navigationController pushViewController:login animated:YES];
 
         }else{
-            btn.status = CoreStatusBtnStatusProgress;
-            AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+//            btn.status = CoreStatusBtnStatusProgress;
             NSDictionary *parameters = @{@"userId":user.userId,
                                          @"taskId":_task.taskId};
+            
+            AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+            parameters=[HttpHelper  security:parameters];
+
+            
             NSLog(@"aaaaa%@",parameters);
             [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
@@ -994,9 +998,11 @@
                 int code_int = [code intValue];
                 if (code_int == 200) {
                     
-                    [self postcont:btn navBackToHomeVC:YES];
+//                    [self postcont:btn navBackToHomeVC:YES];
+                    _type=2;
+                    [self getTaskContent:_task.orderId];
                     [[NSNotificationCenter defaultCenter] postNotificationName:getTaskSuccess_refreshWaitVC object:nil];
-                    
+                    [self postAlertWithMsg:@"领取成功"];
                 }else{
                     btn.status = CoreStatusBtnStatusFalse;
                     [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionTop];
@@ -1087,6 +1093,7 @@
     }else{
         TaskDetailViewController *postVC = [[TaskDetailViewController alloc] init];
         postVC.task = _task;
+        postVC.taskId=postVC.task.taskId;
         postVC.title=postVC.task.taskTitle;
         postVC.navBackToHomeVC=yesOrNo;
         if (_task.status==3||_task.status==4)  postVC.overTime=YES;

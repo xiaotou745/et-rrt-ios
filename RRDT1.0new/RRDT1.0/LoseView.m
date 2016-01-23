@@ -116,9 +116,6 @@
         
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
-        
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        
         User *user = [[User alloc] init];
         
         [self.header endRefreshing];
@@ -129,6 +126,8 @@
                                     @"orderType"    :@"3",
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId]
                                     };
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];

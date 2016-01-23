@@ -30,10 +30,11 @@
     
     // 初始化一个BarButtonItem，并将其设置为返回的按钮的样式
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backBarButtonPressed)];
-//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
-    // 将BarButtonItem添加到LeftBarButtonItem上
     self.navigationItem.leftBarButtonItem = backButton;
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
+
+
 }
 - (void)postAlertWithMsg:(NSString *)msg{
     

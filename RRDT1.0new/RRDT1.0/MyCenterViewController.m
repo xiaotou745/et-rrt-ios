@@ -23,7 +23,7 @@
 
 #import "MyTaskViewController.h"
 #import "SCMsgListVC.h"
-#import "TaskDetailViewController.h"
+#import "TaskDListViewController.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 
@@ -89,7 +89,7 @@
 
     UIView *footView=[[UIView  alloc ]initWithFrame:CGRectMake(0, 0, DEF_SCEEN_WIDTH, 40)];
 //    footView.backgroundColor=[UIColor orangeColor];
-    UILabel *linkLab=[ManFactory createLabelWithFrame:CGRectMake(50, 20,180, 18) Font:15 Text:@"联系客服  010-57173598"];
+    UILabel *linkLab=[ManFactory createLabelWithFrame:CGRectMake(50, 20,180, 18) Font:14 Text:@"联系客服  010-57173598"];
     linkLab.textAlignment=NSTextAlignmentCenter;
     linkLab.textColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1];
     UIImageView *linkIcon=[ManFactory createImageViewWithFrame:CGRectMake(linkLab.right, linkLab.top, linkLab.height, linkLab.height) ImageName:@"icon_kefu"];
@@ -128,12 +128,15 @@
         _lab_phone.text = @"";
         _lab_allmoney.text =@"¥0.00";
         _headImage.image = [UIImage imageNamed:@"icon_usermorentu"];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
-
         }
 
+}
+-(void)viewDidAppear:(BOOL)animated{
+    
+    if (!_user.isLogin){
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:NO];
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 1;
@@ -504,8 +507,7 @@
             
             
         }else{
-            TaskDetailViewController *TaskDetailV = [[TaskDetailViewController alloc] init];
-            TaskDetailV.fromPCenterVC=YES;
+            TaskDListViewController *TaskDetailV = [[TaskDListViewController alloc] init];
             [self.navigationController pushViewController:TaskDetailV animated:YES];
         }
  
@@ -524,10 +526,13 @@
 }
 
 -(void)getPartnerInfo{
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -567,10 +572,13 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)getMyInfo{
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
@@ -658,35 +666,6 @@
 
     AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
     [app getmsgCount];
-    
-//    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-//    
-//    NSLog(@">>>>>>%@",_user.userId);
-//    NSDictionary *parameters = @{@"userId": _user.userId};
-//    
-//    
-//    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getmymsgcount] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"JSON: %@", responseObject);
-//        NSNumber *code = [responseObject objectForKey:@"code"];
-//        int code_int = [code intValue];
-//        if (code_int == 200) {
-//            [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
-//            NSInteger count=[responseObject[@"data"]integerValue];
-//            
-//            if (count)  [self setMsgRightBTNItem];
-//            else        [self setNoMsgRightBTNItem];
-
-//        }else{
-//            
-////            [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:[responseObject objectForKey:@"msg"] offsetY:-100 failClickBlock:^{
-////            }];
-//        }
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
-//        }];
-//    }];
 
 }
 
@@ -694,6 +673,8 @@
 
     if ([notif.object boolValue]) [self setMsgRightBTNItem];
     else [self setNoMsgRightBTNItem];
+    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
+
 }
 -(void)setNoMsgRightBTNItem{
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"NoMsgRightBTNItem"] style:UIBarButtonItemStylePlain target:self action:@selector(msgCenter)];

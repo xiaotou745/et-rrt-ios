@@ -13,6 +13,9 @@
 - (void)awakeFromNib {
     // Initialization code
     self.backgroundColor=[UIColor whiteColor];
+    _titleText.textColor=UIColorFromRGB(0x333333);
+    _contentTF.textColor=UIColorFromRGB(0x333333);
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

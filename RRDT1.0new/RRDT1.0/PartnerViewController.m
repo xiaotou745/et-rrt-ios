@@ -30,11 +30,18 @@
     }
     self.bonusTotal.textColor=[UIColor colorWithRed:1 green:0 blue:0 alpha:1];
     self.bonusTotal.text=[NSString stringWithFormat:@"%.2f",[_bonusTotal__ floatValue]];
+
     self.recommendPhone.text=[_recommendPhone__ replaceNumberWithStar];
-    self.partnerNum.text=_partnerNum__;
+    self.partnerNum.text=[NSString stringWithFormat:@"%@人",_partnerNum__];
     
+    self.recommendPhone.textColor=UIColorFromRGB(0x00bcd5);
+    self.partnerNum.textColor=UIColorFromRGB(0x00bcd5);
     
-    [self creatBarView];
+
+    _appBar.image = [UIImage imageNamed:@"app_barImage"];
+    _appBar.layer.borderWidth=2.0f;
+    _appBar.layer.borderColor=UIColorFromRGB(0x00bcd5).CGColor;
+//    [self creatBarView];
     
 }
 -(void)creatBarView{
@@ -54,7 +61,7 @@
     if (result) {
         CGImageRef image = [[ZXImage imageWithMatrix:result] cgimage];
         _appBar.image = [UIImage imageWithCGImage:image];
-        
+
         // This CGImageRef image can be placed in a UIImage, NSImage, or written to a file.
     } else {
         NSString *errorMessage = [error localizedDescription];
@@ -70,8 +77,8 @@
     if(longPress.state==UIGestureRecognizerStateBegan){
         [UIAlertView showAlertViewWithTitle:@"您要将二维码保存到相册吗" message:nil cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] onDismiss:^(NSInteger index){
             if(index==0) {
-//                 UIImageWriteToSavedPhotosAlbum(_appBar.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/ren-ren-tui-quan-min-de-tui/id1024858718?l=zh&ls=1&mt=8"]];
+                 UIImageWriteToSavedPhotosAlbum(_appBar.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/ren-ren-tui-quan-min-de-tui/id1024858718?l=zh&ls=1&mt=8"]];
             }
             
         } onCancel:^(){

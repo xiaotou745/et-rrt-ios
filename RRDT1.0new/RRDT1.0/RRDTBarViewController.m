@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *scanTipLab;
 @property (weak, nonatomic) IBOutlet UIImageView *barImgV;
 @property (weak, nonatomic) IBOutlet UILabel *reminderLab;
+@property (weak, nonatomic) IBOutlet UILabel *reminderTitle;
+@property (weak, nonatomic) IBOutlet UILabel *reminderPoint;
 
 @end
 
@@ -23,6 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"邀请扫码";
+    self.view.backgroundColor = [UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:1];
+
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
 //    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
 //    self.view.backgroundColor=[UIColor colorWithRed:0.36 green:0.36 blue:0.36 alpha:1];
@@ -32,15 +36,24 @@
     
 }
 - (void)backTo{
-    if (_navBackToHomeVC)    [self.navigationController popToRootViewControllerAnimated:YES];
+//    if (_navBackToHomeVC)    [self.navigationController popToRootViewControllerAnimated:YES];
+//
+//   else [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 
-   else [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)creatBarView{
 
     _scanTipLab.text=_scanTip;
     _reminderLab.text=_reminder;
+    
+    if(_reminder.length==0){
+        [_reminderLab setHidden:YES];
+        [_reminderTitle setHidden:YES];
+        [_reminderPoint setHidden:YES];
+    }
+    
     
     if (_downUrl==nil||_downUrl.length==0) {
         _downUrl=@"http://renrentui.me";

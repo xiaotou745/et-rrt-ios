@@ -93,10 +93,13 @@
                         [self.view makeToast:@"两次密码不一致" duration:1.0 position:CSToastPositionTop];
                     }else{
                         btn.status = CoreStatusBtnStatusProgress;
-                        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                        
                         NSDictionary *parameters = @{@"phoneNo":_txtphoneno.text,
                                                      @"passWord":[MyMD5 md5:_txtpassword.text],
                                                      @"verifyCode":_txtsmsid.text};
+                        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                        parameters=[HttpHelper  security:parameters];
+                        
                         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ForgetPassword] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                             NSLog(@"JSON: %@", responseObject);
                             NSNumber *code = [responseObject objectForKey:@"code"];
@@ -218,10 +221,11 @@
 #pragma mark 获取验证码
 - (void)getVerifyCode{
     
-    
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         NSDictionary *parameters = @{@"phoneNo":_txtphoneno.text,
                                      @"sType"  :@"3"};
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
+    
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
             NSInteger code = [[responseObject objectForKey:@"code"]  intValue];

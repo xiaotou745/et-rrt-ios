@@ -30,18 +30,22 @@
 
 #define appVersion @"110"
 
+/**aes加密:开发、测试不加密  线上加密*/
+#define isUseAESEncrypt 0
+
 #pragma mark 用户接口
 
 #define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
 //#define URL_All @"http://apinew.renrenditui.cn/20151217/services/"
+//#define URL_All @"http://api.renrentui.me/20160120/services/"
+
 /*
  *上传图片
  */
-//#define URL_PostImg @"http://10.8.8.62:8188/upload/uploadimg?uploadfrom="
 #define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
-
-//#define URL_PostImg @"http://upload.renrenditui.cn/upload/uploadimg?uploadfrom="
 //#define URL_PostImg @"http://upload.renrenditui.cn/upload/fileupload/uploadimg"
+//#define URL_PostImg @"http://upload.renrenditui.me/upload/fileupload/uploadimg"
+
 
 
 

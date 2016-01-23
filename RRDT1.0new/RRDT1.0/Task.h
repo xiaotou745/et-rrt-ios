@@ -58,7 +58,7 @@ typedef enum : NSUInteger {
 /**待审核的资料数量(签约类任务才有效)*/
 @property (nonatomic,assign) int    auditWaitNum;
 /**完成数量(分享类和下载类任务才有效)*/
-@property (nonatomic,assign) int    complateNum;
+@property (nonatomic,assign) int    completeNum;
 
 /**非签约任务 时 下载地址*/
 @property (nonatomic,strong) NSString *downUrl;
@@ -90,7 +90,8 @@ typedef enum : NSUInteger {
 @property (nonatomic,strong) NSString *hotLine;
 /** ishad =1 时才有 否则为0地推任务关系ID */
 @property (nonatomic,strong) NSString *ctId;
-
+/** 预计用时，int类型 */
+@property (nonatomic,assign) int estimatedTime;
 
 //已经提交额外添加
 

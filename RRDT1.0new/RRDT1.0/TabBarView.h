@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+
+#define DEF_TAB_ITEM_TAG 20000
+#define DEF_TAB_LABEL_TAG 30000
+#define DEF_TAB_ICON_TAG 10000
+
 @class TabBarView;
 
 /**

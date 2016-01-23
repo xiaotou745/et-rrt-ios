@@ -22,7 +22,7 @@
 
 -(void)setModel:(BillDetailModel *)model{
 
-    if ([model.recordTypeName isEqualToString:@"任务奖励"])
+    if (model.recordType==1)//任务奖励的recordType 为1
         _titleLab.text=[NSString stringWithFormat:@"%@-%@",model.recordTypeName,model.remark];
     else    _titleLab.text=model.recordTypeName;
 
@@ -31,13 +31,13 @@
     
     if (_isInComeCell) {
         _amoutLab.textColor= UIColorFromRGB(0xf7585d);
-        _amoutLab.text=[NSString stringWithFormat:@"+%.2f元",model.amount];
+        _amoutLab.text=[NSString stringWithFormat:@"+%.2f",model.amount];
 
     }else{
         _amoutLab.textColor=UIColorFromRGB(0x00bc87);
-        _amoutLab.text=[NSString stringWithFormat:@"%.2f元",model.amount];
+        _amoutLab.text=[NSString stringWithFormat:@"%.2f",model.amount];
     }
-    [_amoutLab addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_amoutLab.text.length - 1,1)];
+//    [_amoutLab addAttr:CoreLabelAttrColor value:[UIColor darkGrayColor] range:NSMakeRange(_amoutLab.text.length - 1,1)];
 
 }
 @end

@@ -133,10 +133,13 @@
                                 Task *task = [_modeArr objectAtIndex:btn.tag];
                                 btn.status = CoreStatusBtnStatusProgress;
                                 User *user = [[User alloc] init];
-                                AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                                
                                 NSDictionary *parameters = @{@"userId":user.userId,
                                                              @"orderId":task.orderId,
                                                              @"remark":@""};
+                                AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                                parameters=[HttpHelper  security:parameters];
+                                
                                 NSLog(@">>>>>%@",parameters);
                                 [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GiveUpTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                     NSLog(@"JSON: %@", responseObject);
@@ -183,9 +186,6 @@
         
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
-        
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        
         User *user = [[User alloc] init];
         
         [self.header endRefreshing];
@@ -196,6 +196,9 @@
                                     @"orderType"    :@"5",
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId]
                                     };
+    
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];

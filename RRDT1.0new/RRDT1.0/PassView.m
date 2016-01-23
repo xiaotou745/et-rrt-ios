@@ -131,9 +131,6 @@
         
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
         
-        
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        
         User *user = [[User alloc] init];
         
         [self.header endRefreshing];
@@ -144,6 +141,9 @@
                                     @"orderType"    :@"1",
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId]
                                     };
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
+        
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
@@ -238,10 +238,15 @@
     }else{
         
         btn.status = CoreStatusBtnStatusProgress;
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+
         User *user = [[User alloc] init];
         NSDictionary *parameters = @{@"userId":user.userId,
                                      @"taskId":task.taskId};
+        
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parameters=[HttpHelper  security:parameters];
+        
+        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             NSLog(@">>>>>reservetask ----%@",responseObject);

@@ -15,6 +15,8 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _myTxt = [[UITextField alloc] initWithFrame:CGRectMake(25, 0, self.frame.size.width - 25, self.frame.size.height)];
+        _myTxt.font=[UIFont systemFontOfSize:15];
+        _myTxt.textColor=UIColorFromRGB(0x333333);
         [self addSubview:_myTxt];
 //
 //        NSLog(@">>>text>%@",_myTxt.superview);

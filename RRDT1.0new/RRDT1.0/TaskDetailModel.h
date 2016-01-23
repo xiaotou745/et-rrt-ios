@@ -47,4 +47,8 @@ typedef enum: NSUInteger{
 @property(assign,nonatomic)int groupType;//模板组的类型id（1是文本组，2是图片组，3是多图组）
 @property(strong,nonatomic)NSArray *titlesList;//资料的展示信息集合，集合中元素类型是字符串（groupType是文本组时，集合中是资料描述，否则是图片地址）
 
+@property(strong,nonatomic)NSString *ctId;//推手任务绑定关系id
+@property(strong,nonatomic)NSString *logo;//商家logo图片完整地址
+@property(assign,nonatomic)long taskDatumCount;//当前状态下资料的总数
+
 @end

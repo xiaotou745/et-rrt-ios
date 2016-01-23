@@ -15,7 +15,8 @@
 #import "NewTaskContentViewController.h"
 #import "CitysViewController.h"
 #import "OrderByTypeView.h"
-
+#import "CustomNavBar.h"
+#import "CustomSortBar.h"
 @interface WaitTaskViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
     CLLocationManager *_manager;
@@ -37,6 +38,13 @@
 
 @property (nonatomic,strong) NSMutableArray     *citysArr;
 
+@property(nonatomic,assign)BOOL haveCityCache;
+
+// 导航左按钮
+@property(nonatomic,strong)CustomNavBar *leftNavBar;
+
+// 导航右按钮
+@property(nonatomic,strong)CustomSortBar *rightNavBar;
 //排序的自定义view
 @property(nonatomic,strong)OrderByTypeView *oderByView;
 @property (nonatomic,assign) NSInteger      orderByType;
@@ -49,6 +57,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self showTabBar];
+    //无城市缓存 拉取数据
+    if (!_haveCityCache) {
+        [self getCitysRegion];
+    }
 }
 
 - (void)viewDidLoad {
@@ -58,19 +70,41 @@
     _modeArr = [NSMutableArray array];
     self.citysArr=[NSMutableArray array];
     
-    _currentPage = 0;
-    _orderByType=1;
+    _currentPage = 1;
+    _orderByType=orderByCreateTime;
     //默认为北京
     _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
     
     self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"排序"style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self congfigCityLength]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
-    [self.navigationItem.leftBarButtonItem setTintColor:UIColorFromRGB(0xffffff)];
+//    UIBarButtonItem *leftItem0 = [[UIBarButtonItem alloc] initWithTitle:[self congfigCityLength]  style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
+//    UIBarButtonItem *leftItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WaitVC_cityIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(address_imgHandle)];
+//    self.navigationItem.leftBarButtonItems=@[leftItem0,leftItem1];
     
- 
+    _rightNavBar=[[CustomSortBar alloc]init];
+    
+    _leftNavBar=[[CustomNavBar alloc]init];
+    [_leftNavBar  configView:[self congfigCityLength]];
+    
+    self.navigationItem.rightBarButtonItem.customView=_rightNavBar;
+
+    self.navigationItem.leftBarButtonItem.customView=_leftNavBar;
+//
+    __weak __typeof(self)weakSelf = self;
+    _rightNavBar.click=^{
+        [weakSelf sortType];
+    };
+    _leftNavBar.click=^{
+        [weakSelf address_imgHandle];
+    };
+//    for (UIBarButtonItem *leftItem in self.navigationItem.leftBarButtonItems) {
+//        [leftItem setTintColor:[UIColor whiteColor]];
+//    }
+//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+//    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
 
     [self viewCreat];
     [self createOderByView];
@@ -78,7 +112,7 @@
     //登陆后刷新当前城市的数据
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess) name:loginSuccess_refreshWaitVC object:nil];
     //领取任务 刷新当前城市的数据
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(post) name:getTaskSuccess_refreshWaitVC object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(requestNewCityDatas) name:getTaskSuccess_refreshWaitVC object:nil];
 
     //切换任务排序分
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeOrderType:) name:OrderByTypeView_select object:nil];
@@ -100,8 +134,10 @@
 -(void)requestNewCityDatas{
     
     
-    [self.navigationItem.leftBarButtonItem setTitle:[self congfigCityLength]];
-    _currentPage = 0;
+//    [self.navigationItem.leftBarButtonItem setTitle:[self congfigCityLength]];
+    [_leftNavBar  configView:[self congfigCityLength]];
+    
+    _currentPage = 1;
     [self post];
 
 }
@@ -126,7 +162,7 @@
     _mytable.backgroundColor = UIColorFromRGB(0xe8e8e8);
     _mytable.tableFooterView = [UIView new];
     _mytable.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        _currentPage = 0;
+        _currentPage = 1;
 //        [_mytable.header beginRefreshing];
         [self post];
 //        [_mytable.header endRefreshing];
@@ -278,18 +314,19 @@
         Task *task = [_modeArr objectAtIndex:indexPath.section];
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
         cell.infoLabel.text =task.taskGeneralInfo;
+
         cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
         cell.taskType.text=[MyTools getTasktype:task.taskType];
         
         
-        cell.moneyLab.textColor = [UIColor clearColor];
-        cell.moneyLab.text = [NSString stringWithFormat:@"￥%.2f/次",task.amount];
+        cell.moneyLab.textColor = UIColorFromRGB(0xf7585d);
+        cell.moneyLab.text = [NSString stringWithFormat:@"%.2f",task.amount];
         
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,cell.moneyLab.text.length - 3)];
-        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
-        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,cell.moneyLab.text.length - 2)];
-        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,cell.moneyLab.text.length - 3)];
+//        [cell.moneyLab addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
+//        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,cell.moneyLab.text.length - 2)];
+//        [cell.moneyLab addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(cell.moneyLab.text.length - 2,2)];
         //    [cell.moneyLab updateLabelStyle];
         
         
@@ -319,6 +356,7 @@
     
     [self sortType];
     _orderByType=[notif.object integerValue];
+    _currentPage=1;
     [self post];
 }
 #pragma mark 请求数据
@@ -329,8 +367,6 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }else{
         
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        
         User *user = [[User alloc] init];
         //pageSize	每次获取数据的条数(不需要时传0，则每页15条记录)
         NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
@@ -338,9 +374,12 @@
                                     @"pageSize":@(0),
                                     @"cityCode":_currentCityInfo[cityCode],@"orderBy":@(_orderByType)};
         
-        NSLog(@"_orderByType===%ld",(long)_orderByType);
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
+        
+        NSLog(@"parmeters=%@ \n_orderByType===%ld",parmeters,(long)_orderByType);
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            if (_currentPage == 0) {
+            if (_currentPage == 1) {
                 [_modeArr removeAllObjects];
             }
 //            NSLog(@"wait%@ and %@",responseObject,operation);
@@ -359,6 +398,14 @@
                     
                 }
                 [_mytable reloadData];
+                
+                //切换排序规则后 滚动到顶部
+                if (_currentPage==1) {
+                    [UIView animateWithDuration:0.3 animations:^{
+                        _mytable.contentOffset=CGPointMake(0, 0);
+                    }];
+                }
+            
             }else{
                 NSLog(@">>>>>>%@",[responseObject objectForKey:@"msg"]);
                 [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
@@ -380,7 +427,7 @@
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 85;
+    return WaitTaskTableViewCell_rowHeight;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
@@ -463,9 +510,10 @@
 #pragma mark 请求数据
 - (void)getCitysRegion{
     
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    
     NSDictionary *parmeters = @{@"version":@"20151127"};
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parmeters=[HttpHelper  security:parmeters];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gethotregionandall] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         
@@ -478,6 +526,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                     [self configCitys:citysData];
                     [self checkCityCode];
+                    _haveCityCache=YES;
                     
                 });
             }

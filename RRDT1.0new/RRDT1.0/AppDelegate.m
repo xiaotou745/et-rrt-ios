@@ -50,6 +50,8 @@
     [self getmsgCount];
     [CoreStatus beginNotiNetwork:self];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(backWaitVC) name:notify_loginBackVC object:nil];
+    
     return YES;
 }
 #pragma  mark 设置 childTabBarVC
@@ -71,18 +73,25 @@
     self.tabBarController.selectedIndex=index;
 }
 
+-(void)backWaitVC{
+
+    UIButton *item=(UIButton *)[_customTabBar viewWithTag:DEF_TAB_ICON_TAG];
+    [_customTabBar itemClick:item];
+
+}
+
 -(void)getmsgCount{
     
     _user=[[User alloc]init];
     if (!_user.isLogin) {
         return;
     }
-    
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
-    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getmymsgcount] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);

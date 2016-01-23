@@ -19,7 +19,8 @@
         
 //        _myLab = [[UILabel alloc] initWithFrame:CGRectMake(25, 15, WIDTH/2 - 25, 70)];
 //        [self addSubview:_myLab];
-        
+        self.textLabel.font=[UIFont systemFontOfSize:15];
+
         self.textLabel.textColor = UIColorFromRGB(0x333333);
         
         _myImg_btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 60)];

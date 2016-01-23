@@ -76,15 +76,12 @@
 }
 #pragma mark 请求数据
 - (void)post{
-    //    [MBProgressHUD showHUDAddedTo:self animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }else{
         
         [CoreViewNetWorkStausManager dismiss:self.view animated:YES];
-        
-        
-        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         
         User *user = [[User alloc] init];
         
@@ -96,6 +93,8 @@
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
                                     @"taskId":_taskId
                                     };
+        AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+        parmeters=[HttpHelper  security:parmeters];
         
         //        NSString *jsonsss=[parmeters JSONString];
         

@@ -286,12 +286,16 @@
                 [self.view makeToast:@"密码至少6位" duration:1.0 position:CSToastPositionTop];
             }else{
                     _joinBtn.status = CoreStatusBtnStatusProgress;
-                    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                
+                
                     NSDictionary *parameters = @{@"phoneNo": _txtphone.text,
                                                  @"passWord":[MyMD5 md5:_txtPassword.text],
                                                  @"verifyCode":_txtVerifyCode.text,
                                                  @"recommendPhone":_linkPhone.text=nil?@"":_linkPhone.text
                                                  };
+                AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+                parameters=[HttpHelper  security:parameters];
+                
                     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserRegister] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSLog(@"JSON: %@", responseObject);
                         NSInteger code = [[responseObject objectForKey:@"code"] intValue];
@@ -344,6 +348,7 @@
                               @"sType"  :@"1"};
 
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+            dataDic=[HttpHelper  security:dataDic];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"JSON: %@", responseObject);

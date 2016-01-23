@@ -19,6 +19,16 @@
         [self infoLabel];
         [self taskTypeView];
         [self taskType];
+        
+        UILabel *verticalLine=[ManFactory createLabelWithFrame:CGRectMake(DEF_SCEEN_WIDTH-WaitTaskTableViewCell_rowHeight, 0,1, WaitTaskTableViewCell_rowHeight) Font:16 Text:@""];
+        verticalLine.backgroundColor=UIColorFromRGB(0xe5e5e5);
+        [self addSubview:verticalLine];
+        
+        UILabel *moneyLLLLLLab=[ManFactory createLabelWithFrame:CGRectMake(verticalLine.right, 50, WaitTaskTableViewCell_rowHeight-10, 20) Font:12 Text:@"元/次"];
+        moneyLLLLLLab.textAlignment=NSTextAlignmentCenter;
+        moneyLLLLLLab.textColor=[UIColor grayColor];
+        [self addSubview:moneyLLLLLLab];
+        
 //        [self taskType];
 //        [self leftLab];
 //        [self rightLab];
@@ -45,24 +55,24 @@
         
         
         [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).with.offset(15);
-            make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-            make.right.equalTo(self).with.offset(-50);
-            make.height.mas_equalTo(20);
+            make.top.equalTo(self).with.offset(13);
+            make.left.mas_equalTo(_headImageView.mas_right).offset(5);
+            make.right.equalTo(self).with.offset(-WaitTaskTableViewCell_rowHeight-5);
+//            make.height.mas_equalTo(40);
         }];
         
         [_infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(_headLabel.mas_bottom);
-            make.left.mas_equalTo(_headImageView.mas_right).offset(12);
-            make.right.mas_equalTo(_moneyLab.mas_left).offset(-10);
-            make.height.mas_equalTo(40);
+            make.top.mas_equalTo(_headLabel.mas_bottom).with.offset(3);
+            make.left.mas_equalTo(_headImageView.mas_right).offset(5);
+            make.right.mas_equalTo(_moneyLab.mas_left).offset(-5);
+//            make.height.mas_equalTo(40);
         }];
         
         [_moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(_headLabel.mas_bottom);
-            make.right.equalTo(self).with.offset(-10);
-            make.width.mas_equalTo(100);
-            make.height.equalTo(@40);
+            make.top.mas_equalTo(self).with.offset(30);
+            make.right.equalTo(self).with.offset(-5);
+            make.width.mas_equalTo(WaitTaskTableViewCell_rowHeight-5);
+            make.height.equalTo(@20);
         }];
     
         
@@ -102,6 +112,9 @@
 - (UIImageView *)headImageView{
     if (!_headImageView) {
         _headImageView = [[UIImageView alloc]init];
+        
+        _headImageView.layer.cornerRadius=8;
+        _headImageView.layer.masksToBounds=YES;
         [self addSubview:_headImageView];
     }
     return _headImageView;
@@ -110,7 +123,9 @@
     if (!_headLabel) {
         _headLabel = [[UILabel alloc] init];
         _headLabel.font = [UIFont systemFontOfSize:15];
-        _headLabel.numberOfLines = 1;
+        _headLabel.numberOfLines = 2;
+        _headLabel.textColor=UIColorFromRGB(0x333333);
+//        _headLabel.backgroundColor=[UIColor orangeColor];
         [self addSubview:_headLabel];
     }
     return _headLabel;
@@ -121,6 +136,7 @@
         _infoLabel.font = [UIFont systemFontOfSize:12];
 //        _infoLabel.textColor = UIColorFromRGB(0xbbc0c7);
         _infoLabel.textColor = UIColorFromRGB(0x888888);
+//        _infoLabel.backgroundColor=[UIColor orangeColor];
 
         _infoLabel.numberOfLines = 2;
         [self addSubview:_infoLabel];
@@ -163,8 +179,11 @@
 - (CoreLabel *)moneyLab{
     if (!_moneyLab) {
         _moneyLab = [[CoreLabel alloc] init];
-        _moneyLab.textAlignment = NSTextAlignmentRight;
+        _moneyLab.textAlignment = NSTextAlignmentCenter;
+        _moneyLab.font=[UIFont systemFontOfSize:17];
         [self addSubview:_moneyLab];
+//        _moneyLab.backgroundColor=[UIColor orangeColor];
+
     }
     return _moneyLab;
 }

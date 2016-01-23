@@ -137,12 +137,23 @@
 }
 - (void)againpost:(NSNotification *)note{
     NSLog(@"改变通知");
-    PostContractViewController *post = [[PostContractViewController alloc] init];
-    post.task = note.object;
-    post.tag = 222;
-    post.onlyType = 999;
-    [post postGetMyTask];
-    [self.navigationController pushViewController:post animated:YES];
+//    PostContractViewController *post = [[PostContractViewController alloc] init];
+//    post.task = note.object;
+//    post.taskId=post.task.taskId;
+//    post.taskDatumId=@"";
+//    post.tag = 111;
+//    post.onlyType = 999;
+//    [post postGetMyTask];
+//
+//    [self.navigationController pushViewController:post animated:YES];
+    TaskDetailViewController *vc=[[TaskDetailViewController alloc]init];
+    vc.task=note.object;
+    vc.taskId=vc.task.taskId;
+    vc.title=vc.task.taskName;
+    vc.contentOfSet_index=0;
+    if (vc.task.status==3||vc.task.status==4)  vc.overTime=YES;
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 -(void)todoShare:(NSNotification *)not{
 
@@ -158,6 +169,7 @@
 -(void)toTaskDetail:(NSNotification *)not{
     TaskDetailViewController *vc=[[TaskDetailViewController alloc]init];
     vc.task=not.object[@"task"];
+    vc.taskId=vc.task.taskId;
     vc.title=vc.task.taskName;
     vc.contentOfSet_index=[not.object[@"index"] integerValue];
     if (vc.task.status==3||vc.task.status==4)  vc.overTime=YES;
@@ -179,11 +191,14 @@
     [self showTabBar];
     
     _user = [[User alloc] init];
+    if (_user.isLogin)  [self getTaskList];
+
+}
+-(void)viewDidAppear:(BOOL)animated{
     if (!_user.isLogin){
-        
         LoginViewController *login = [[LoginViewController alloc] init];
-        [self.navigationController pushViewController:login animated:YES];
-    }else     [self getTaskList];
+        [self.navigationController pushViewController:login animated:NO];
+    }
 
 }
 - (void)getTaskList{

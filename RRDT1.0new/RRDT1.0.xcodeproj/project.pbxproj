@@ -371,6 +371,16 @@
 		27222E471C48A5F80077997A /* ParterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E461C48A5F80077997A /* ParterModel.m */; };
 		27222E4B1C48CC9D0077997A /* JoinsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E491C48CC9D0077997A /* JoinsListCell.m */; };
 		27222E4C1C48CC9D0077997A /* JoinsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E4A1C48CC9D0077997A /* JoinsListCell.xib */; };
+		272FB02D1C50BCE900D1919E /* NSString+stringSizes.m in Sources */ = {isa = PBXBuildFile; fileRef = 272FB02C1C50BCE900D1919E /* NSString+stringSizes.m */; };
+		272FB0301C523B0C00D1919E /* Security.m in Sources */ = {isa = PBXBuildFile; fileRef = 272FB02F1C523B0C00D1919E /* Security.m */; };
+		273381F51C4DC9E60047069B /* TaskDListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381F41C4DC9E60047069B /* TaskDListViewController.m */; };
+		273381F81C4DCAAA0047069B /* TDListCheckingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381F71C4DCAAA0047069B /* TDListCheckingView.m */; };
+		273381FB1C4DCAD20047069B /* TDListPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381FA1C4DCAD20047069B /* TDListPassView.m */; };
+		273381FE1C4DCAE70047069B /* TDListUnPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381FD1C4DCAE70047069B /* TDListUnPassView.m */; };
+		273382031C4DD1480047069B /* TaskDListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 273382011C4DD1480047069B /* TaskDListCell.m */; };
+		273382041C4DD1480047069B /* TaskDListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 273382021C4DD1480047069B /* TaskDListCell.xib */; };
+		273382071C4F866D0047069B /* CustomNavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 273382061C4F866D0047069B /* CustomNavBar.m */; };
+		2733820C1C5071660047069B /* CustomSortBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2733820B1C5071660047069B /* CustomSortBar.m */; };
 		2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 2745185D1C219C150052196A /* UIAlertView+Blocks.m */; };
 		27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */; };
 		27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */; };
@@ -1134,6 +1144,25 @@
 		27222E481C48CC9D0077997A /* JoinsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoinsListCell.h; sourceTree = "<group>"; };
 		27222E491C48CC9D0077997A /* JoinsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinsListCell.m; sourceTree = "<group>"; };
 		27222E4A1C48CC9D0077997A /* JoinsListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JoinsListCell.xib; sourceTree = "<group>"; };
+		272FB02B1C50BCE900D1919E /* NSString+stringSizes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+stringSizes.h"; sourceTree = "<group>"; };
+		272FB02C1C50BCE900D1919E /* NSString+stringSizes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+stringSizes.m"; sourceTree = "<group>"; };
+		272FB02E1C523B0C00D1919E /* Security.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Security.h; sourceTree = "<group>"; };
+		272FB02F1C523B0C00D1919E /* Security.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Security.m; sourceTree = "<group>"; };
+		273381F31C4DC9E60047069B /* TaskDListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDListViewController.h; sourceTree = "<group>"; };
+		273381F41C4DC9E60047069B /* TaskDListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDListViewController.m; sourceTree = "<group>"; };
+		273381F61C4DCAAA0047069B /* TDListCheckingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDListCheckingView.h; sourceTree = "<group>"; };
+		273381F71C4DCAAA0047069B /* TDListCheckingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDListCheckingView.m; sourceTree = "<group>"; };
+		273381F91C4DCAD20047069B /* TDListPassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDListPassView.h; sourceTree = "<group>"; };
+		273381FA1C4DCAD20047069B /* TDListPassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDListPassView.m; sourceTree = "<group>"; };
+		273381FC1C4DCAE70047069B /* TDListUnPassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDListUnPassView.h; sourceTree = "<group>"; };
+		273381FD1C4DCAE70047069B /* TDListUnPassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDListUnPassView.m; sourceTree = "<group>"; };
+		273382001C4DD1480047069B /* TaskDListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDListCell.h; sourceTree = "<group>"; };
+		273382011C4DD1480047069B /* TaskDListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDListCell.m; sourceTree = "<group>"; };
+		273382021C4DD1480047069B /* TaskDListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskDListCell.xib; sourceTree = "<group>"; };
+		273382051C4F866D0047069B /* CustomNavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavBar.h; sourceTree = "<group>"; };
+		273382061C4F866D0047069B /* CustomNavBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavBar.m; sourceTree = "<group>"; };
+		2733820A1C5071660047069B /* CustomSortBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSortBar.h; sourceTree = "<group>"; };
+		2733820B1C5071660047069B /* CustomSortBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSortBar.m; sourceTree = "<group>"; };
 		2745185C1C219C150052196A /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		2745185D1C219C150052196A /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoImgCell.h; sourceTree = "<group>"; };
@@ -1323,6 +1352,9 @@
 				27222E481C48CC9D0077997A /* JoinsListCell.h */,
 				27222E491C48CC9D0077997A /* JoinsListCell.m */,
 				27222E4A1C48CC9D0077997A /* JoinsListCell.xib */,
+				273382001C4DD1480047069B /* TaskDListCell.h */,
+				273382011C4DD1480047069B /* TaskDListCell.m */,
+				273382021C4DD1480047069B /* TaskDListCell.xib */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -1350,6 +1382,16 @@
 				2708464F1C1175EE0034B082 /* PassingView.m */,
 				270846511C1176090034B082 /* RefuseView.h */,
 				270846521C1176090034B082 /* RefuseView.m */,
+				273381F61C4DCAAA0047069B /* TDListCheckingView.h */,
+				273381F71C4DCAAA0047069B /* TDListCheckingView.m */,
+				273381F91C4DCAD20047069B /* TDListPassView.h */,
+				273381FA1C4DCAD20047069B /* TDListPassView.m */,
+				273381FC1C4DCAE70047069B /* TDListUnPassView.h */,
+				273381FD1C4DCAE70047069B /* TDListUnPassView.m */,
+				273382051C4F866D0047069B /* CustomNavBar.h */,
+				273382061C4F866D0047069B /* CustomNavBar.m */,
+				2733820A1C5071660047069B /* CustomSortBar.h */,
+				2733820B1C5071660047069B /* CustomSortBar.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1525,6 +1567,10 @@
 		24E4A4381BAF9D1B00EC14AF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				272FB02E1C523B0C00D1919E /* Security.h */,
+				272FB02F1C523B0C00D1919E /* Security.m */,
+				272FB02B1C50BCE900D1919E /* NSString+stringSizes.h */,
+				272FB02C1C50BCE900D1919E /* NSString+stringSizes.m */,
 				27222E1D1C3E33270077997A /* NSString+addRMBcharacter.h */,
 				27222E1E1C3E33270077997A /* NSString+addRMBcharacter.m */,
 				27222E0F1C3B680D0077997A /* NSString+evaluatePhoneNumber.h */,
@@ -1618,6 +1664,8 @@
 				27222E401C4654BE0077997A /* JoinsListViewController.h */,
 				27222E411C4654BE0077997A /* JoinsListViewController.m */,
 				27222E421C4654BE0077997A /* JoinsListViewController.xib */,
+				273381F31C4DC9E60047069B /* TaskDListViewController.h */,
+				273381F41C4DC9E60047069B /* TaskDListViewController.m */,
 				270846481C116E7F0034B082 /* TaskDetailViewController.h */,
 				270846491C116E7F0034B082 /* TaskDetailViewController.m */,
 				270846611C12D3FA0034B082 /* CheckProgressViewController.h */,
@@ -2615,6 +2663,7 @@
 				27222E441C4654BE0077997A /* JoinsListViewController.xib in Resources */,
 				270843811C0FEEAF0034B082 /* RRDTBarViewController.xib in Resources */,
 				242ED6791BAC07D9005D6D75 /* CoreTFKeyBoardToolBarView.xib in Resources */,
+				273382041C4DD1480047069B /* TaskDListCell.xib in Resources */,
 				27222E4C1C48CC9D0077997A /* JoinsListCell.xib in Resources */,
 				27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */,
 				2493683A1BB55381007AB32F /* CMView.xib in Resources */,
@@ -2707,6 +2756,7 @@
 				270845791C1016580034B082 /* ZXAddressBookAUResultParser.m in Sources */,
 				270845D61C1016590034B082 /* ZXMaxiCodeBitMatrixParser.m in Sources */,
 				24EFA29D1BCE51F4005706F3 /* UIImage+WebP.m in Sources */,
+				272FB0301C523B0C00D1919E /* Security.m in Sources */,
 				270845FD1C1016590034B082 /* ZXCode39Reader.m in Sources */,
 				2708461B1C1016590034B082 /* ZXPDF417DecodedBitStreamParser.m in Sources */,
 				270846371C1016590034B082 /* ZXQRCodeAlignmentPatternFinder.m in Sources */,
@@ -2720,6 +2770,7 @@
 				24DD33221BDE16B000F93630 /* DZNSegmentedControl.m in Sources */,
 				270846191C1016590034B082 /* ZXPDF417Codeword.m in Sources */,
 				270846331C1016590034B082 /* ZXQRCodeFormatInformation.m in Sources */,
+				272FB02D1C50BCE900D1919E /* NSString+stringSizes.m in Sources */,
 				27222E391C44D4F70077997A /* SCBillDetailVC.m in Sources */,
 				270845DC1C1016590034B082 /* ZXAbstractExpandedDecoder.m in Sources */,
 				27222E111C3B680D0077997A /* NSString+evaluatePhoneNumber.m in Sources */,
@@ -2768,6 +2819,7 @@
 				27222E011C3A77B40077997A /* BillDetailViewController.m in Sources */,
 				270845711C1016580034B082 /* ZXAztecHighLevelEncoder.m in Sources */,
 				24EEDB901BE9AD880019221E /* AgainLoginViewController.m in Sources */,
+				2733820C1C5071660047069B /* CustomSortBar.m in Sources */,
 				24EFA29F1BCE51F4005706F3 /* UIImageView+WebCache.m in Sources */,
 				2403F5371BCE6A6800917E4A /* MyMD5.m in Sources */,
 				2708437B1C0EC3BD0034B082 /* RRDTWebViewController.m in Sources */,
@@ -2775,6 +2827,8 @@
 				270845C21C1016590034B082 /* ZXDataMatrixBitMatrixParser.m in Sources */,
 				270846141C1016590034B082 /* ZXModulusPoly.m in Sources */,
 				2442E5581BE0D96000263C96 /* MyTaskViewController.m in Sources */,
+				273381FB1C4DCAD20047069B /* TDListPassView.m in Sources */,
+				273381FE1C4DCAE70047069B /* TDListUnPassView.m in Sources */,
 				249368381BB55381007AB32F /* CoreViewNetWorkStausManager.m in Sources */,
 				270845B81C1016590034B082 /* ZXDecodeHints.m in Sources */,
 				270845B21C1016590034B082 /* ZXIntArray.m in Sources */,
@@ -2846,6 +2900,7 @@
 				24E0E6BC1BD08F92004692A7 /* AboutViewController.m in Sources */,
 				2708457F1C1016580034B082 /* ZXEmailAddressParsedResult.m in Sources */,
 				242ED6341BABF10F005D6D75 /* main.m in Sources */,
+				273381F81C4DCAAA0047069B /* TDListCheckingView.m in Sources */,
 				270845BE1C1016590034B082 /* ZXPlanarYUVLuminanceSource.m in Sources */,
 				2442E55E1BE0DB2C00263C96 /* PassView.m in Sources */,
 				272229A71C3A41900077997A /* TabBarController.m in Sources */,
@@ -2876,6 +2931,7 @@
 				270845A41C1016590034B082 /* ZXReedSolomonDecoder.m in Sources */,
 				270845EA1C1016590034B082 /* ZXRSSExpandedDecodedInformation.m in Sources */,
 				2708459C1C1016580034B082 /* ZXCapture.m in Sources */,
+				273382031C4DD1480047069B /* TaskDListCell.m in Sources */,
 				270845CE1C1016590034B082 /* ZXDataMatrixErrorCorrection.m in Sources */,
 				270845961C1016580034B082 /* ZXVCardResultParser.m in Sources */,
 				2708459D1C1016580034B082 /* ZXCGImageLuminanceSource.m in Sources */,
@@ -2898,6 +2954,7 @@
 				270845901C1016580034B082 /* ZXTelParsedResult.m in Sources */,
 				270845BA1C1016590034B082 /* ZXEncodeHints.m in Sources */,
 				270846441C1016590034B082 /* ZXQRCodeReader.m in Sources */,
+				273382071C4F866D0047069B /* CustomNavBar.m in Sources */,
 				24EFA2931BCE51F4005706F3 /* SDImageCache.m in Sources */,
 				24E061BD1BBA5F3700B149A3 /* HttpHelper.m in Sources */,
 				2708460B1C1016590034B082 /* ZXUPCAReader.m in Sources */,
@@ -3036,6 +3093,7 @@
 				2708464A1C116E7F0034B082 /* TaskDetailViewController.m in Sources */,
 				24EA27A41BCB561C00529707 /* UIColor+Hex.m in Sources */,
 				24E38AF01BC8C1FD00C17380 /* ContractImageTableViewCell.m in Sources */,
+				273381F51C4DC9E60047069B /* TaskDListViewController.m in Sources */,
 				270843711C0566FD0034B082 /* ETSUUID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

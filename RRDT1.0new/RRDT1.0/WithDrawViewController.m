@@ -57,7 +57,7 @@
     _mytable.dataSource = self;
     _mytable.showsHorizontalScrollIndicator = NO;
     _mytable.showsVerticalScrollIndicator   = NO;
-    _mytable.keyboardDismissMode=UIScrollViewKeyboardDismissModeInteractive;
+    _mytable.keyboardDismissMode=UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_mytable];
     
     
@@ -78,7 +78,7 @@
     }];
     
     UILabel *myTitleLabel2 = [[UILabel alloc] init];
-    myTitleLabel2.text = @"1.为确保转账成功，请保证您的支付宝账号信息真实、有效;\n2.申请提现后，我们将以最快的速度转账,请您耐心等待!";
+    myTitleLabel2.text = @"1.为确保转账成功，请保证您的支付宝账号信息真实、有效\n2.申请提现后，我们将以最快的速度转账，请您耐心等待\n3.注意：提现金额只能为10的整数倍（例如10、100、150）\n4.单笔提现金额上限1000元，每笔提现将收取3元手续费";
     myTitleLabel2.numberOfLines = 0;
     myTitleLabel2.font = [UIFont systemFontOfSize:11];
     myTitleLabel2.textColor = UIColorFromRGB(0x888888);
@@ -124,11 +124,13 @@
     }
 }
 - (void)getMyInfo{
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
     
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -152,13 +154,15 @@
             _user.totalAmount   = [[[responseObject objectForKey:@"data"] objectForKey:@"totalAmount"] floatValue];//累计金额
             _user.withdraw   = [[[responseObject objectForKey:@"data"] objectForKey:@"withdraw"] floatValue];//可以体现的金额
             
+            _user.hadWithdraw   = [[[responseObject objectForKey:@"data"] objectForKey:@"hadWithdraw"] floatValue];//已提现金额
+
             _user.accountType   =[[[responseObject objectForKey:@"data"] objectForKey:@"accountType"] intValue];
             _user.accountNo =[[responseObject objectForKey:@"data"] objectForKey:@"accountNo"];
             _user.trueName =[[responseObject objectForKey:@"data"] objectForKey:@"trueName"];
 
             _moneyLab.text  = [NSString stringWithFormat:@"%.2f",_user.withdraw];
 //            _nameLab.text   = [NSString stringWithFormat:@"%@的财富",_user.userName];
-            _leijiLab.text  = [NSString stringWithFormat:@"已提现:   ¥%.2f",_user.totalAmount];
+            _leijiLab.text  = [NSString stringWithFormat:@"已提现: ¥%.2f",_user.hadWithdraw];
             [_mytable reloadData];
             
         }else{
@@ -222,12 +226,17 @@
 - (void)wantGeyMonry{
     
     
+    
     btn.status = CoreStatusBtnStatusProgress;
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
+    
     NSDictionary *parameters = @{@"userId": _user.userId,
-                                 @"amount": _txtMoeny.text,
+                                 @"amount":@([self moneyTextIntValue]),
                                  @"accountInfo":_user.accountNo,
                                  @"trueName":_user.trueName};
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
+    
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_WithDraw] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>%@",parameters);
         NSLog(@"JSON: %@", responseObject);
@@ -334,7 +343,7 @@
 
         
         _leijiLab = [[UILabel alloc] init];
-        _leijiLab.font = [UIFont systemFontOfSize:12];
+        _leijiLab.font = [UIFont systemFontOfSize:14];
         _leijiLab.textColor = UIColorFromRGB(0x333333);
         [cell.contentView addSubview:_leijiLab];
         [_leijiLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -367,7 +376,7 @@
             alipayBtn.layer.borderWidth=0.5;
             alipayBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
             [alipayBtn setTitle:@"支付宝" forState:UIControlStateNormal];
-            [alipayBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+            [alipayBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
             [alipayBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
             alipayBtn.userInteractionEnabled=NO;
             
@@ -376,17 +385,17 @@
             UIImageView *arrowRight=[ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-20, 15, 15, 20) ImageName:@"icon_right"];
             [cell.contentView addSubview:arrowRight];
             
-            _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(alipayBtn.right, 5, WIDTH-alipayBtn.right-30, 40)];
+            _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(alipayBtn.right,alipayBtn.top, WIDTH-alipayBtn.right-30, alipayBtn.height)];
             _txtAccount.font=[UIFont systemFontOfSize:14];
-            _txtAccount.textColor=[UIColor darkGrayColor];
+            _txtAccount.textColor=UIColorFromRGB(0x666666);
             _txtAccount.enabled=NO;
 //            _txtAccount.backgroundColor=[UIColor orangeColor];
-            _txtAccount.textAlignment = NSTextAlignmentCenter;
+            _txtAccount.textAlignment = NSTextAlignmentRight;
             _txtAccount.returnKeyType = UIReturnKeyDone;
             _txtAccount.clearButtonMode = YES;
-            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
+//            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
             [_txtAccount setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-            cell.accessoryView = _txtAccount;
+            [cell.contentView addSubview: _txtAccount];
             
             if(_user.accountType==-1){
                 _txtAccount.text=@"未设置";
@@ -398,7 +407,7 @@
         }else if (indexPath.row == 1){
             
             cell.textLabel.text = @"提现金额";
-            _txtMoeny = [[UITextField alloc]initWithFrame:CGRectMake(20, 5, WIDTH-120, 40)];
+            _txtMoeny = [[UITextField alloc]initWithFrame:CGRectMake(90, 5, WIDTH-120, 40)];
             _txtMoeny.tag = 999999;
             _txtMoeny.textAlignment = NSTextAlignmentLeft;
             _txtMoeny.returnKeyType = UIReturnKeyDone;
@@ -407,7 +416,7 @@
             _txtMoeny.placeholder = @"请输入提现金额,最低10元";
             [_txtMoeny setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
             [_txtMoeny setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-                       cell.accessoryView = _txtMoeny;
+            [cell.contentView addSubview: _txtMoeny];
            
         }else{
             cell.textLabel.text = @"支付宝姓名";
@@ -459,7 +468,7 @@
         TFModel *tfm3=[TFModel modelWithTextFiled:_txtUsername inputView:nil name:nil insetBottom:0];
         
         return @[tfm1,tfm2,tfm3];
-        
+    
     }];
 }
 #pragma mark 移除键盘
@@ -612,7 +621,7 @@
     lab_titile1.text = @"提现金额:";
     lab_titile2.text = @"提现账户:";
     lab_titile3.text = @"提现人名:";
-    lab_msg1.text = [NSString stringWithFormat:@"%@元",_txtMoeny.text];
+    lab_msg1.text = [NSString stringWithFormat:@"%d元",[self moneyTextIntValue]];
     lab_msg2.text = _user.accountNo;
     lab_msg3.text = _user.trueName;
     
@@ -688,6 +697,9 @@
     return alertView;
 }
 
+-(int)moneyTextIntValue{
+    return [_txtMoeny.text intValue];
+}
 /*
 #pragma mark - Navigation
 

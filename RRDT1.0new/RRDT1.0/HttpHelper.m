@@ -8,7 +8,8 @@
 
 #import "HttpHelper.h"
 #import "ETSUUID.h"
-//#import "Security.h"
+#import "Security.h"
+#import "MyTools.h"
 
 @implementation HttpHelper
 
@@ -32,9 +33,26 @@
     
     return manager;
 }
-//+(NSDictionary *)security:(NSDictionary *)mydic{
-//    NSString *mydicStr = [mydic JSONString];
-//    NSDictionary *parameter = @{@"data":[Security AesEncrypt:mydicStr]};
-//    return parameter;
-//}
++(NSDictionary *)security:(NSDictionary *)mydic{
+    
+    if (isUseAESEncrypt) {
+        
+        NSString *mydicStr = [self dictionaryToJson:mydic];
+        NSDictionary *parameter = @{@"data":[Security AesEncrypt:mydicStr]};
+        return parameter;
+        
+    }else{
+        return mydic;
+    }
+    
+}
++ (NSString*)dictionaryToJson:(NSDictionary *)info
+
+{
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:info options:NSJSONWritingPrettyPrinted error:&parseError];
+    
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+}
 @end

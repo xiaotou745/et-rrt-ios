@@ -45,10 +45,10 @@
 
 -(void)configData
 {
-//    UILabel *titleLabel=[ManFactory createLabelWithFrame:CGRectMake(20, 80, DEF_SCEEN_WIDTH-40, 30) Font:18 Text:self.infoDic[@"Content"]];
-//    
-    UILabel *timeLabel=[ManFactory createLabelWithFrame:CGRectMake(10,6, 200, 30) Font:16 Text:[MyTools timeString:_model.createDate]];
-
+    UILabel *titleLabel=[ManFactory createLabelWithFrame:CGRectMake(5,10, DEF_SCEEN_WIDTH-10, 20) Font:16 Text:_model.title];
+    titleLabel.textColor=UIColorFromRGB(0x333333);
+    UILabel *timeLabel=[ManFactory createLabelWithFrame:CGRectMake(10,titleLabel.bottom, 200, 20) Font:15 Text:[MyTools timeString:_model.createDate]];
+    titleLabel.textColor=UIColorFromRGB(0x666666);
     NSString * contents = _model.msg;
     UITextView *infoText=[ManFactory createTextViewWithFrame:CGRectMake(5, timeLabel.bottom, DEF_SCEEN_WIDTH-10, DEF_SCEEN_HEIGHT-timeLabel.bottom) textFont:14   textString:[NSString stringWithFormat:@"    %@",contents] isEditable:NO];
     
@@ -56,7 +56,7 @@
     infoText.backgroundColor=self.view.backgroundColor;
     
     //不显示 标题
-//    [self.view addSubview:titleLabel];
+    [self.view addSubview:titleLabel];
     [self.view addSubview:timeLabel];
     [self.view addSubview:infoText];
     
@@ -66,13 +66,14 @@
 -(void)updateMsg{
     
     
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     _user = [[User alloc] init];
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parmeters = @{@"userId":_user.userId,
                                 @"msgId":_model.msgId,
                                 @"opType":@(2)};
     
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parmeters=[HttpHelper  security:parmeters];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_updatemsg] parameters:parmeters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>>%@",operation);

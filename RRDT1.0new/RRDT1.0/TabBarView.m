@@ -13,9 +13,7 @@
  */
 #define DEF_TAB_ITEM_COUNT 3
 
-#define DEF_TAB_LABEL_TAG 30000
-#define DEF_TAB_ITEM_TAG 20000
-#define DEF_TAB_ICON_TAG 10000
+
 #define DEF_TABBAR_SELECT_COLOR [UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]
 #define DEF_TABBAR_UNSELECT_COLOR [UIColor colorWithRed:0.67 green:0.67 blue:0.67 alpha:1]
 

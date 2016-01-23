@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "CoreLabel.h"
+#include "WaitTaskTableViewCell.h"
 
 typedef void(^WaitViewBlock)(void);
 typedef void(^PassViewBlock)(void);

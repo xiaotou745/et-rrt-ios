@@ -14,5 +14,5 @@
 
 +(AFHTTPRequestOperationManager *)initHttpHelper;
 
-//+(NSDictionary *)security:(NSDictionary *)mydic;
++(NSDictionary *)security:(NSDictionary *)mydic;
 @end

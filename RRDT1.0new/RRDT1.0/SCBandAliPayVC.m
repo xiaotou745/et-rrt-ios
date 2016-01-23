@@ -48,15 +48,15 @@
     self.alipayTableV.delegate=self;
     self.alipayTableV.dataSource=self;
     self.alipayTableV.sectionFooterHeight=0;
-    self.alipayTableV.keyboardDismissMode=UIScrollViewKeyboardDismissModeInteractive;
+    self.alipayTableV.keyboardDismissMode=UIScrollViewKeyboardDismissModeOnDrag;
     self.alipayTableV.scrollEnabled=NO;
     self.alipayTableV.backgroundColor=self.view.backgroundColor;
     
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0,0, WIDTH, 100)];
 
-    UIButton *saveBtn=[ManFactory createButtonWithFrame:CGRectMake(0,30,DEF_SCEEN_WIDTH-30, 40) ImageName:@"" Target:self Action:@selector(bandingClick) Title:@"绑定"];
+    UIButton *saveBtn=[ManFactory createButtonWithFrame:CGRectMake(0,20,DEF_SCEEN_WIDTH-30, 40) ImageName:@"" Target:self Action:@selector(bandingClick) Title:@"绑定"];
     saveBtn.backgroundColor=[UIColor colorWithRed:0 green:0.74 blue:0.84 alpha:1];
-    saveBtn.center=CGPointMake(DEF_SCEEN_WIDTH/2, 60);
+    saveBtn.center=CGPointMake(DEF_SCEEN_WIDTH/2, 45);
     
     saveBtn.layer.cornerRadius=3;
     saveBtn.layer.masksToBounds=YES;
@@ -67,7 +67,7 @@
     myTitleLabel2.text = @"*绑定成功后，您的提现资金将转入此支付宝账户中";
     myTitleLabel2.numberOfLines = 0;
     myTitleLabel2.textAlignment=NSTextAlignmentCenter;
-    myTitleLabel2.font = [UIFont systemFontOfSize:12];
+    myTitleLabel2.font = [UIFont systemFontOfSize:13];
     myTitleLabel2.textColor = UIColorFromRGB(0x888888);
     [footView addSubview:myTitleLabel2];
     [myTitleLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -134,7 +134,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    NSLog(@"indexPath  %ld  %ld",indexPath.section,indexPath.row);
-    return 40;
+    return 45;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -160,7 +160,7 @@
         _codeBtn=[[UIButton alloc]initWithFrame:CGRectMake(DEF_SCEEN_WIDTH-110, 5, 100, 30)];
         _codeBtn.layer.cornerRadius=3;
         _codeBtn.layer.borderWidth=0.5;
-        _codeBtn.layer.borderColor=[UIColor lightGrayColor].CGColor;
+        _codeBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
         [_codeBtn setTitle:verifyCodeBtnTitle forState:UIControlStateNormal];
         [_codeBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_codeBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
@@ -183,6 +183,7 @@
                               @"sType"  :@"4"};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+            dataDic=[HttpHelper  security:dataDic];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"JSON: %@", responseObject);
@@ -204,6 +205,8 @@
 - (void)verificationCodeBtnCountDown{
     //开始计时
     self.codeBtn.enabled = NO;
+    _codeBtn.layer.borderColor=[UIColor lightGrayColor].CGColor;
+
     [_codeBtn setTitleColor:[UIColor lightGrayColor]  forState:UIControlStateNormal];
 
     _countingNum = 60;
@@ -235,6 +238,8 @@
     self.codeBtn.userInteractionEnabled = YES;
     [self.codeBtn setTitle:verifyCodeBtnTitle forState:UIControlStateNormal];
     [_codeBtn setTitleColor:[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1]  forState:UIControlStateNormal];
+    _codeBtn.layer.borderColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1].CGColor;
+
 
 }
 
@@ -272,8 +277,9 @@
     }];
 }
 -(void)gotoBandingALipay{
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{
                                  @"userId": _user.userId,
@@ -282,7 +288,8 @@
                                  @"aliAccount":_alipayNumber,
                                  @"aliName":_alipayName};
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[HttpHelper  security:parameters];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_bindalipay] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];

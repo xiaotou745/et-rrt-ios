@@ -35,7 +35,6 @@
 - (void)setupRefresh
 {
     __weak __typeof(self) weakSelf = self;
-    
     self.scmlTableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _nextId = 0;
         [self.scmlTableView.header beginRefreshing];
@@ -68,7 +67,7 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
 
-    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    
     _user = [[User alloc] init];
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parmeters = @{@"userId":_user.userId,
@@ -76,7 +75,8 @@
                                 @"nextId":[NSString stringWithFormat:@"%zi",_nextId]};
     
     
-    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parmeters=[HttpHelper  security:parmeters];
    
     [self.scmlTableView.header endRefreshing];
     [self.scmlTableView.footer endRefreshing];
@@ -158,7 +158,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return 60;
+    return 80;
     MsgModel *task  = [[MsgModel alloc] init];
     task=self.dataArray[indexPath.row];
     CGSize size = [task.msg boundingRectWithSize:CGSizeMake(WIDTH-20, 20000.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
