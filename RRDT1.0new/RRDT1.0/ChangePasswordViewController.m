@@ -105,7 +105,7 @@
                                                  @"oldPwd":[MyMD5 md5:_txtoldpw.text],
                                                  @"newPwd":[MyMD5 md5:_txtnewpw.text]};
                     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-                    parameters=[HttpHelper  security:parameters];
+                    parameters=[parameters security];
                     
                     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ChangePassword] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSLog(@"JSON: %@", responseObject);

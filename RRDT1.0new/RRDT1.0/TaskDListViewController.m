@@ -48,6 +48,9 @@
 }
 - (void)viewCreat{
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProgressHUD) name:TDListCheckingView_showProgressHUD object:nil];//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideProgressHUD) name:TDListCheckingView_hideProgressHUD object:nil];//
+    
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePage_BadgeValue:) name:TaskDListVC_BadgeValue object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toTaskDetail:) name:TaskDListVC_toTaskDetail object:nil];//
@@ -59,7 +62,7 @@
     
     [[DZNSegmentedControl appearance] setFont:[UIFont systemFontOfSize:15]];
     [[DZNSegmentedControl appearance] setSelectionIndicatorHeight:1.0];
-    [[DZNSegmentedControl appearance] setAnimationDuration:0.125];
+    [[DZNSegmentedControl appearance] setAnimationDuration:0.25];
     
     //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
     
@@ -91,13 +94,10 @@
     unPassView = [[TDListUnPassView alloc] init];
     [_myScroll addSubview:unPassView];
     
-    [MBProgressHUD showHUDAddedTo:checkingView animated:YES];
     checkingView.nextId = 0;
     [checkingView post];
-    [MBProgressHUD showHUDAddedTo:passView animated:YES];
     passView.nextId = 0;
     [passView post];
-    [MBProgressHUD showHUDAddedTo:unPassView animated:YES];
     unPassView.nextId = 0;
     [unPassView post];
   
@@ -134,7 +134,7 @@
     vc.fromPCenterVC=YES;
     
     vc.contentOfSet_index=[not.object[@"index"] integerValue];
-    if (detailModel.taskStatus==3||detailModel.taskStatus==4)  vc.overTime=YES;
+    if (detailModel.taskStatus!=1)  vc.overTime=YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)didReceiveMemoryWarning {

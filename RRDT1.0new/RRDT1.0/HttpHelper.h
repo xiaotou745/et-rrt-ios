@@ -13,6 +13,4 @@
 @interface HttpHelper : NSObject
 
 +(AFHTTPRequestOperationManager *)initHttpHelper;
-
-+(NSDictionary *)security:(NSDictionary *)mydic;
 @end

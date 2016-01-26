@@ -142,7 +142,7 @@
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId]
                                     };
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
@@ -244,7 +244,7 @@
                                      @"taskId":task.taskId};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parameters=[HttpHelper  security:parameters];
+        parameters=[parameters security];
         
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

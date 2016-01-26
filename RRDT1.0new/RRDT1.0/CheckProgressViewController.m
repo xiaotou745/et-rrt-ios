@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *checkTime;
 @property (weak, nonatomic) IBOutlet UIImageView *checkIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *lineIcon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewHeight;
+@property (weak, nonatomic) IBOutlet UILabel *refuseReason;
 
 
 @property (weak, nonatomic) IBOutlet UIButton *lookDetailBTN;
@@ -85,7 +87,14 @@
 
     }
     
-   
+    if(_model.auditStatus==auditStatusRefuse){
+        NSString *refuse=[NSString stringWithFormat:@"拒绝原因：%@",_model.refuReason.length==0?@"无":_model.refuReason];
+        _refuseReason.text=refuse;
+
+        CGFloat reasonHeight=[refuse  stringSizeHeightWithFontSize:14 width:DEF_SCEEN_WIDTH-70];
+        _viewHeight.constant=130+reasonHeight;
+    }else    _viewHeight.constant=120;
+
 }
 - (IBAction)lookDetailBTN:(id)sender {
 
@@ -118,6 +127,7 @@
         auditStatus=@"审核中";
     }else if (auditStatusRefuse==status){
         auditStatus=@"审核未通过";
+
     }
     return auditStatus;
 

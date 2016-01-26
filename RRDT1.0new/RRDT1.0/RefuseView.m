@@ -111,7 +111,7 @@
                                     @"taskId":_taskId
                                     };
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Getmytaskdatumlist] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
@@ -210,7 +210,7 @@
                                      @"taskId":task.taskId};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parameters=[HttpHelper  security:parameters];
+        parameters=[parameters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             

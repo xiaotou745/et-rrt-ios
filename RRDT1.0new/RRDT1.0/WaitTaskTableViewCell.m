@@ -155,7 +155,7 @@
 -(UIImageView *)taskTypeView{
 
     if (!_taskTypeView) {
-        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(self.width-50, 0, 50, 20) ImageName:@""];
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-50, 0, 50, 20) ImageName:@""];
         [self addSubview:_taskTypeView];
     }
     return _taskTypeView;

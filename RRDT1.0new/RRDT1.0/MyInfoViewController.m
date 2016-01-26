@@ -92,7 +92,7 @@
                                      @"headImage": [userArr1 objectAtIndex:0]};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parameters=[HttpHelper  security:parameters];
+        parameters=[parameters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ChangeInfo] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -130,7 +130,7 @@
     NSDictionary *parameters = @{@"userId": _user.userId};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>>%@",operation);
@@ -377,7 +377,7 @@
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     NSDictionary *dataDic=@{@"uploadFrom":@(2)};
-    dataDic=[HttpHelper  security:dataDic];
+    dataDic=[dataDic security];
     
     [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:dataDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];

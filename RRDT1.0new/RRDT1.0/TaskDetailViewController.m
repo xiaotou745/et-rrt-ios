@@ -70,7 +70,7 @@
     
     [[DZNSegmentedControl appearance] setFont:[UIFont systemFontOfSize:15]];
     [[DZNSegmentedControl appearance] setSelectionIndicatorHeight:1.0];
-    [[DZNSegmentedControl appearance] setAnimationDuration:0.125];
+    [[DZNSegmentedControl appearance] setAnimationDuration:0.25];
     
     //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
     
@@ -119,7 +119,11 @@
     [refuseView post];
     
     // 个人中心进来 或 过期任务  不显示提交资料按钮
-    if (!_fromPCenterVC&&!_overTime) {
+//    if (!_fromPCenterVC&&!_overTime) {
+    
+    //  过期任务  不显示提交资料按钮
+        if (!_overTime) {
+
         _myScroll.frame= CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40-HEIGHT/15 - 20);
 
         UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, HEIGHT - 64 - (HEIGHT/15 + 20), WIDTH, HEIGHT/15 + 20)];
@@ -197,6 +201,7 @@
     [self.navigationController pushViewController:post animated:YES];
     
 }
+
 -(void)change_BadgeValue:(NSNotification *)note{
     NSLog(@"改变通知");
     NSLog(@">?>>>>%@",note.userInfo);

@@ -189,6 +189,7 @@
 - (CGFloat)height
 {
     return (_height ? : self.showsCount ? 56.0f : 30.0f);
+
 }
 
 - (CGFloat)width

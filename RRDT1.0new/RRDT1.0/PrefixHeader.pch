@@ -19,6 +19,7 @@
 #import "MBProgressHUD+show.h"
 #import "NSString+addRMBcharacter.h"
 #import "NSString+stringSizes.h"
+#import "NSDictionary+JsonStirng.h"
 
 #define gotoCheckProgressVC @"gotoCheckProgressVC"
 

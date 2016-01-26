@@ -31,7 +31,7 @@ typedef enum: NSUInteger{
 @interface TaskDetailModel : NSObject
 
 
-
+@property(strong,nonatomic)NSString *refuReason;//审核拒绝原因，资料被拒绝时，才需要显示出来
 @property(strong,nonatomic)NSString *taskId;//任务Id
 @property(strong,nonatomic)NSString *taskName;//任务名称
 @property(assign,nonatomic)float amount;//任务单价

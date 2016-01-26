@@ -46,7 +46,7 @@
         self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     
         [self.window makeKeyAndVisible];
-    [self setRootViewControllerWithChildVC];
+    [self setRootVC_TabBarVC];
     [self getmsgCount];
     [CoreStatus beginNotiNetwork:self];
     
@@ -54,19 +54,30 @@
     
     return YES;
 }
-#pragma  mark 设置 childTabBarVC
--(void)setRootViewControllerWithChildVC
+-(void)setRootVC_loginVC{
+    
+        _loginVC=[[LoginViewController alloc]init];
+        self.window.rootViewController = self.loginVC;
+
+}
+#pragma  mark 设置 TabBarVC
+-(void)setRootVC_TabBarVC
 {
-    self.tabBarController = [[TabBarController  alloc] init];
+    if (!self.tabBarController) {
+        self.tabBarController = [[TabBarController  alloc] init];
+    }
     self.window.rootViewController = self.tabBarController;
 
     // 底部导航栏
-    _customTabBar = [[TabBarView alloc] initWithFrame:CGRectMake(0, DEF_SCEEN_HEIGHT-IOS_TAB_BAR_HEIGHT, DEF_SCEEN_WIDTH, IOS_TAB_BAR_HEIGHT)];
+    if (!_customTabBar) {
+        _customTabBar = [[TabBarView alloc] initWithFrame:CGRectMake(0, DEF_SCEEN_HEIGHT-IOS_TAB_BAR_HEIGHT, DEF_SCEEN_WIDTH, IOS_TAB_BAR_HEIGHT)];
+     
+    }
     _customTabBar.tag = 888;
     //_customTabBar.backgroundColor=[UIColor orangeColor];
     _customTabBar.delegate=self;
     [self.window addSubview:_customTabBar];
-    
+
 }
 -(void)tabBarView:(TabBarView *)tabBarView didSelectAtIndex:(int)index
 {
@@ -75,6 +86,7 @@
 
 -(void)backWaitVC{
 
+    [self setRootVC_TabBarVC];
     UIButton *item=(UIButton *)[_customTabBar viewWithTag:DEF_TAB_ICON_TAG];
     [_customTabBar itemClick:item];
 
@@ -91,8 +103,7 @@
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
-    
+    parameters=[parameters security];
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getmymsgcount] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         NSNumber *code = [responseObject objectForKey:@"code"];

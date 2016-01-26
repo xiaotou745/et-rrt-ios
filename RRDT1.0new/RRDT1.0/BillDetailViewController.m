@@ -40,6 +40,10 @@
 //    
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receive:) name:@"select" object:nil];//点击列表通知
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changeSelcct" object:nil];//数量改变通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProgressHUD) name:InComeView_showProgressHUD object:nil];//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideProgressHUD) name:InComeView_hideProgressHUD object:nil];//
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotoBillDetailVC:) name:notify_selectBillDetailCell object:nil];//账单详情
     
     
@@ -49,7 +53,7 @@
     
     [[DZNSegmentedControl appearance] setFont:[UIFont systemFontOfSize:15]];
     [[DZNSegmentedControl appearance] setSelectionIndicatorHeight:1.0];
-    [[DZNSegmentedControl appearance] setAnimationDuration:0.125];
+    [[DZNSegmentedControl appearance] setAnimationDuration:0.25];
     
     
     _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40)];
@@ -93,10 +97,8 @@
     
 }
 - (void)getTaskList{
-    [MBProgressHUD showHUDAddedTo:incomeView animated:YES];
     incomeView.nextId = 0;
     [incomeView post];
-    [MBProgressHUD showHUDAddedTo:expendView animated:YES];
     expendView.nextId = 0;
     [expendView post];
 }

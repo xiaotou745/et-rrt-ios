@@ -14,6 +14,7 @@
 
 @implementation BackBaseViewController
 
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -70,5 +71,11 @@
             view.hidden = NO;
         }
     }
+}
+-(void)showProgressHUD{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+}
+-(void)hideProgressHUD{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 @end

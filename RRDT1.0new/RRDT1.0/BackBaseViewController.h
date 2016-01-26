@@ -13,6 +13,7 @@
     User *_user;
 
 }
+- (void)hideTabBar;
 - (void)showTabBar;
 - (void)postAlertWithMsg:(NSString *)msg;
 @end

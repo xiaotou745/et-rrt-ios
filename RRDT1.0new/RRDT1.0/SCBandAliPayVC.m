@@ -49,7 +49,7 @@
     self.alipayTableV.dataSource=self;
     self.alipayTableV.sectionFooterHeight=0;
     self.alipayTableV.keyboardDismissMode=UIScrollViewKeyboardDismissModeOnDrag;
-    self.alipayTableV.scrollEnabled=NO;
+//    self.alipayTableV.scrollEnabled=NO;
     self.alipayTableV.backgroundColor=self.view.backgroundColor;
     
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0,0, WIDTH, 100)];
@@ -183,7 +183,7 @@
                               @"sType"  :@"4"};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-            dataDic=[HttpHelper  security:dataDic];
+            dataDic=[dataDic security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"JSON: %@", responseObject);
@@ -289,7 +289,7 @@
                                  @"aliName":_alipayName};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_bindalipay] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];

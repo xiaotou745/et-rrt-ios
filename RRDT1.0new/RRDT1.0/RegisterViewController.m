@@ -294,7 +294,7 @@
                                                  @"recommendPhone":_linkPhone.text=nil?@"":_linkPhone.text
                                                  };
                 AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-                parameters=[HttpHelper  security:parameters];
+                parameters=[parameters security];
                 
                     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserRegister] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSLog(@"JSON: %@", responseObject);
@@ -348,7 +348,7 @@
                               @"sType"  :@"1"};
 
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-            dataDic=[HttpHelper  security:dataDic];
+            dataDic=[dataDic security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         NSLog(@"JSON: %@", responseObject);

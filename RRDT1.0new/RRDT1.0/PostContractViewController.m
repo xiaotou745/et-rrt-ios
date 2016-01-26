@@ -141,10 +141,10 @@
     }else [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.title = @"资料录入";
@@ -153,7 +153,6 @@
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-//    [_delegate backPostContract];
 }
 - (void)viewCreat{
     
@@ -171,9 +170,6 @@
     
     topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 150)];
     topView.backgroundColor = [UIColor whiteColor];
-    
-
-    
     [self taskTypeView];
     [self taskType];
     UILabel *verticalLine=[ManFactory createLabelWithFrame:CGRectMake(DEF_SCEEN_WIDTH-WaitTaskTableViewCell_rowHeight, 0,1, WaitTaskTableViewCell_rowHeight) Font:16 Text:@""];
@@ -208,16 +204,16 @@
     }];
     
     [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(topView).with.offset(5);
+        make.top.equalTo(topView).with.offset(13);
         make.left.mas_equalTo(_headImageView.mas_right).offset(5);
         make.right.equalTo(topView).with.offset(-90);
-        make.height.mas_equalTo(40);
+//        make.height.mas_equalTo(40);
     }];
     [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_headLabel.mas_bottom);
+        make.top.mas_equalTo(_headLabel.mas_bottom).with.offset(2);
         make.left.mas_equalTo(_headImageView.mas_right).offset(5);
         make.right.equalTo(_moneyLabel.mas_left).with.offset(0);
-        make.height.mas_equalTo(30);
+//        make.height.mas_equalTo(30);
     }];
     
     
@@ -284,55 +280,35 @@
     
     _moneyLabel.textColor = UIColorFromRGB(0xf7585d);
     _moneyLabel.text = [NSString stringWithFormat:@"%.2f",_task.amount];
-//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:11] range:NSMakeRange(0,1)];
-//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:16] range:NSMakeRange(1,_moneyLabel.text.length - 3)];
-//    [_moneyLabel addAttr:CoreLabelAttrFont value:[UIFont boldSystemFontOfSize:10] range:NSMakeRange(_moneyLabel.text.length - 2,2)];
-//    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0xf7585d) range:NSMakeRange(0,_moneyLabel.text.length - 2)];
-//    [_moneyLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(_moneyLabel.text.length - 2,2)];
+
     _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
     _taskType.text=[MyTools getTasktype:_task.taskType];
     
     _statusLabel.text =_task.taskGeneralInfo;
     _statusLabel.textColor=UIColorFromRGB(0x888888);
-//    
-//    [_statusLabel addAttr:CoreLabelAttrColor value:[UIColor whiteColor] range:NSMakeRange(0,4)];
-//    [_statusLabel addAttr:CoreLabelAttBackgroundColor value:[MyTools getTasktypeBGColor:_task.taskType] range:NSMakeRange(0,4)];
-//    
-//    [_statusLabel addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x888888) range:NSMakeRange(4,_statusLabel.text.length - 4)];
-//    _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
 
     _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
     _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
     _lab3.text = [NSString stringWithFormat:@"预计用时 %d分钟",_task.estimatedTime];
 
-//    if(_task.hotLine.length==0||_task.hotLine==nil){
-//        
-//        [_lab3 setHidden:YES];
-//        [_img3 setHidden:YES];
-//    }else{
-//        [_lab3 setHidden:NO];
-//        [_img3 setHidden:NO];
-//    }
-
-//    [_lab3 addAttr:CoreLabelAttrColor value:UIColorFromRGB(0x00bcd5) range:NSMakeRange(3,_lab3.text.length - 3)];
-    
-    
     if (_tag != 222) {
-        _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - HEIGHT/15 - 20) style:UITableViewStylePlain];
+        
+            _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64 - HEIGHT/15 - 20) style:UITableViewStyleGrouped];
     }else{
-        _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStylePlain];
+            _mytable = [[TPKeyboardAvoidingTableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64) style:UITableViewStyleGrouped];
     }
 
+    
     _mytable.delegate = self;
     _mytable.dataSource = self;
-    _mytable.tableFooterView = [UIView new];
+//    UIView *footView=[[UIView alloc]init];
+//    footView.backgroundColor=[UIColor clearColor];
+//    _mytable.tableFooterView = footView;
+//    _mytable.sectionFooterHeight=0;
     [self.view addSubview:_mytable];
     _mytable.backgroundColor = UIColorFromRGB(0xe8e8e8);
     _mytable.tableHeaderView = topView;
 
-
-    
-    
 
     if (_tag!= 222) {
         UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, HEIGHT - 64 - (HEIGHT/15 + 20), WIDTH, HEIGHT/15 + 20)];
@@ -352,8 +328,6 @@
         [_postBtn addTarget:self action:@selector(postBtnClick) forControlEvents:UIControlEventTouchUpInside];
     }
     
-
-    
     if (_tag == 111) {
         [self classify];
     }else{
@@ -361,6 +335,7 @@
     }
 
 }
+
 #pragma mark 上传资料
 - (void)postBtnClick{
     
@@ -397,7 +372,7 @@
     
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-            dataDic=[HttpHelper  security:dataDic];
+            dataDic=[dataDic security];
     _postBtn.status = CoreStatusBtnStatusProgress;
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_PostTask] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         
@@ -874,6 +849,7 @@
                 [self presentViewController:imagePickerController animated:YES completion:^{
                     
                 }];
+                
             }
         }else if (buttonIndex == 1){
             //图片库
@@ -887,7 +863,7 @@
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    [picker dismissViewControllerAnimated:YES completion:^{}];
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
@@ -902,7 +878,10 @@
 //取消点击
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:^{}];
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+//    [picker dismissModalViewControllerAnimated:YES];
+
 }
 - (void)postGetMyTask{
     [self getTaskContent];
@@ -919,7 +898,7 @@
                                 @"taskId"       :_taskId,
                                 @"taskDatumId":_taskDatumId};
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parmeters=[HttpHelper  security:parmeters];
+    parmeters=[parmeters security];
    
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gettaskdatumdetail] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
@@ -927,7 +906,6 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSInteger code = [[responseObject objectForKey:@"code"] intValue];
         if (code == 200) {
-//            [self viewCreat];
             
             [self successView:[responseObject objectForKey:@"data"]];
             
@@ -965,7 +943,7 @@
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     
     NSDictionary *dataDic=@{@"uploadFrom":@(3)};
-    dataDic=[HttpHelper  security:dataDic];
+    dataDic=[dataDic security];
     
     [manager POST:[NSString stringWithFormat:@"%@",URL_PostImg] parameters:dataDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:img_data name:@"imgstream" fileName:@"idCardImg.jpg" mimeType:@"image/jpeg"];
@@ -1051,7 +1029,7 @@
 - (UILabel *)headLabel{
     if (!_headLabel) {
         _headLabel = [[UILabel alloc] init];
-        _headLabel.font = [UIFont systemFontOfSize:15];
+        _headLabel.font = [UIFont systemFontOfSize:14];
         _headLabel.numberOfLines = 2;
         _headLabel.textColor = UIColorFromRGB(0x333333);
     }
@@ -1086,7 +1064,7 @@
 -(UIImageView *)taskTypeView{
     
     if (!_taskTypeView) {
-        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(self.view.width-50, 0, 50, 20) ImageName:@""];
+        _taskTypeView = [ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-50, 0, 50, 20) ImageName:@""];
         [topView addSubview:_taskTypeView];
     }
     return _taskTypeView;
@@ -1103,6 +1081,7 @@
     if (!_line_label) {
         _line_label = [[UILabel alloc] init];
         _line_label.backgroundColor = UIColorFromRGB(0xe5e5e5);
+
     }
     return _line_label;
 }

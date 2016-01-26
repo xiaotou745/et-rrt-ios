@@ -63,7 +63,7 @@
     
     [[DZNSegmentedControl appearance] setFont:[UIFont systemFontOfSize:15]];
     [[DZNSegmentedControl appearance] setSelectionIndicatorHeight:1.0];
-    [[DZNSegmentedControl appearance] setAnimationDuration:0.125];
+    [[DZNSegmentedControl appearance] setAnimationDuration:0.25];
     
 //    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:18.0]}];
     
@@ -82,6 +82,7 @@
     _mySegment.selectedSegmentIndex = 0;
     _mySegment.bouncySelectionIndicator = NO;
     _mySegment.height = 40;
+    
     [self.view addSubview:_mySegment];
     [_mySegment addTarget:self action:@selector(didChangeSegment:) forControlEvents:UIControlEventValueChanged];
     

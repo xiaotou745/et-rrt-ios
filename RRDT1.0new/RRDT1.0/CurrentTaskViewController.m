@@ -24,6 +24,7 @@
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
 #import "LoginViewController.h"
+#import "AppDelegate.h"
 
 #define kBakgroundColor     [UIColor colorWithRed:0/255.0 green:87/255.0 blue:173/255.0 alpha:1.0]
 #define kTintColor          [UIColor colorWithRed:20/255.0 green:200/255.0 blue:255/255.0 alpha:1.0]
@@ -51,8 +52,15 @@
     [self viewCreat];
     self.navigationItem.leftBarButtonItem=nil;
     self.title = @"我的任务";
+    
+    _user = [[User alloc] init];
+    if (_user.isLogin)  [self getTaskList];
 }
 - (void)viewCreat{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProgressHUD) name:ReceivedView_showProgressHUD object:nil];//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideProgressHUD) name:ReceivedView_hideProgressHUD object:nil];//
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(todoShare:) name:ReceivedView_doShare object:nil];//
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toTaskDetail:) name:ReceivedView_toTaskDetail object:nil];//
@@ -68,7 +76,7 @@
     
     [[DZNSegmentedControl appearance] setFont:[UIFont systemFontOfSize:15]];
     [[DZNSegmentedControl appearance] setSelectionIndicatorHeight:1.0];
-    [[DZNSegmentedControl appearance] setAnimationDuration:0.125];
+    [[DZNSegmentedControl appearance] setAnimationDuration:0.25];
     
     
     _myScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, WIDTH, HEIGHT - 64 - 40)];
@@ -189,26 +197,24 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self showTabBar];
-    
-    _user = [[User alloc] init];
-    if (_user.isLogin)  [self getTaskList];
 
 }
 -(void)viewDidAppear:(BOOL)animated{
     if (!_user.isLogin){
         LoginViewController *login = [[LoginViewController alloc] init];
         [self.navigationController pushViewController:login animated:NO];
+//        AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [app setRootVC_loginVC];
+        return;
     }
-
 }
 - (void)getTaskList{
-    [MBProgressHUD showHUDAddedTo:receivedView animated:YES];
     receivedView.nextId = 0;
     [receivedView post];
-    [MBProgressHUD showHUDAddedTo:checkingView animated:YES];
     checkingView.nextId = 0;
     [checkingView post];
 }
+
 /*
 #pragma mark - Navigation
 

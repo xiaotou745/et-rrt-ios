@@ -10,6 +10,9 @@
 #define ReceivedView_doShare @"ReceivedView_doShare"
 #define ReceivedView_toTaskDetail @"ReceivedView_toTaskDetail"
 
+#define ReceivedView_showProgressHUD @"ReceivedView_showProgressHUD"
+#define ReceivedView_hideProgressHUD @"ReceivedView_hideProgressHUD"
+
 @interface ReceivedView : UITableView<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (nonatomic,strong) NSMutableArray     *modeArr;

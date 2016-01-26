@@ -130,7 +130,7 @@
     NSDictionary *parameters = @{@"userId": _user.userId};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -235,7 +235,7 @@
                                  @"accountInfo":_user.accountNo,
                                  @"trueName":_user.trueName};
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_WithDraw] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>%@",parameters);
@@ -385,17 +385,23 @@
             UIImageView *arrowRight=[ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-20, 15, 15, 20) ImageName:@"icon_right"];
             [cell.contentView addSubview:arrowRight];
             
-            _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(alipayBtn.right,alipayBtn.top, WIDTH-alipayBtn.right-30, alipayBtn.height)];
-            _txtAccount.font=[UIFont systemFontOfSize:14];
-            _txtAccount.textColor=UIColorFromRGB(0x666666);
-            _txtAccount.enabled=NO;
-//            _txtAccount.backgroundColor=[UIColor orangeColor];
-            _txtAccount.textAlignment = NSTextAlignmentRight;
-            _txtAccount.returnKeyType = UIReturnKeyDone;
-            _txtAccount.clearButtonMode = YES;
-//            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
-            [_txtAccount setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-            [cell.contentView addSubview: _txtAccount];
+            if(!_txtAccount){
+            
+                _txtAccount = [[UITextField alloc]initWithFrame:CGRectMake(alipayBtn.right,alipayBtn.top, WIDTH-alipayBtn.right-30, alipayBtn.height)];
+                _txtAccount.font=[UIFont systemFontOfSize:14];
+                _txtAccount.textColor=UIColorFromRGB(0x666666);
+                _txtAccount.enabled=NO;
+                //            _txtAccount.backgroundColor=[UIColor orangeColor];
+                _txtAccount.textAlignment = NSTextAlignmentRight;
+                _txtAccount.returnKeyType = UIReturnKeyDone;
+                _txtAccount.clearButtonMode = YES;
+                //            [_txtAccount setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
+                [_txtAccount setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+                [cell.contentView addSubview: _txtAccount];
+            }
+            
+//            cell.accessoryView=_txtAccount;
+
             
             if(_user.accountType==-1){
                 _txtAccount.text=@"未设置";
@@ -416,7 +422,8 @@
             _txtMoeny.placeholder = @"请输入提现金额,最低10元";
             [_txtMoeny setValue:UIColorFromRGB(0x888888) forKeyPath:@"_placeholderLabel.textColor"];
             [_txtMoeny setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
-            [cell.contentView addSubview: _txtMoeny];
+//            [cell.contentView addSubview: _txtMoeny];
+            cell.accessoryView=_txtMoeny;
            
         }else{
             cell.textLabel.text = @"支付宝姓名";

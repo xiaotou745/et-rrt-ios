@@ -98,7 +98,7 @@
                                                      @"passWord":[MyMD5 md5:_txtpassword.text],
                                                      @"verifyCode":_txtsmsid.text};
                         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-                        parameters=[HttpHelper  security:parameters];
+                        parameters=[parameters security];
                         
                         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ForgetPassword] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                             NSLog(@"JSON: %@", responseObject);
@@ -224,7 +224,7 @@
         NSDictionary *parameters = @{@"phoneNo":_txtphoneno.text,
                                      @"sType"  :@"3"};
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_VerifyCode] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);

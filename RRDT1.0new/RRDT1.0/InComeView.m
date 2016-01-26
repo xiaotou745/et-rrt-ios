@@ -88,15 +88,13 @@
 }
 #pragma mark 请求数据
 - (void)post{
-    //    [MBProgressHUD showHUDAddedTo:self animated:YES];
+    
+        [self notify_showProgressHUD];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
-        [MBProgressHUD hideHUDForView:self animated:YES];
+        [self notify_hideProgressHUD];
     }else{
         
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
-        
-        
-        
         
         User *user = [[User alloc] init];
         
@@ -110,10 +108,10 @@
         
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getbalancerecordlist] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            [MBProgressHUD hideHUDForView:self animated:YES];
+            [self notify_hideProgressHUD];
             if (_nextId == 0) {
                 [_modeArr removeAllObjects];
             }
@@ -146,7 +144,7 @@
         } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
             NSLog(@"error:::%@",error);
             [self makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
-            [MBProgressHUD hideHUDForView:self animated:YES];
+            [self notify_hideProgressHUD];
         }];
     }
 }
@@ -176,9 +174,7 @@
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
-    
-    [MBProgressHUD showHUDAddedTo:self animated:YES];
-    _nextId = 0;
+        _nextId = 0;
     [self post];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -207,5 +203,11 @@
         returnStr = [NSString stringWithFormat:@"%.f天",mytimenow/60/60/24];
     }
     return returnStr;
+}
+-(void)notify_showProgressHUD{
+    [[NSNotificationCenter defaultCenter]postNotificationName:InComeView_showProgressHUD object:nil];
+}
+-(void)notify_hideProgressHUD{
+    [[NSNotificationCenter defaultCenter]postNotificationName:InComeView_hideProgressHUD object:nil];
 }
 @end

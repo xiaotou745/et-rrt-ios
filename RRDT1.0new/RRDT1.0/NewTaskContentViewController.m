@@ -112,15 +112,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 
-    [self judegMent];
-    if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
-        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
-            [self getTaskContent:_task.orderId];
-        }];
-    }else{
-
-        [self getTaskContent:_task.orderId];
-    }
+ 
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -136,6 +128,16 @@
     
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
 //    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    
+    [self judegMent];
+    if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
+        [CoreViewNetWorkStausManager show:self.view type:CMTypeError msg:@"加载失败" subMsg:@"请检查网络设置" offsetY:-100 failClickBlock:^{
+            [self getTaskContent:_task.orderId];
+        }];
+    }else{
+        
+        [self getTaskContent:_task.orderId];
+    }
     
 }
 - (void)backTo{
@@ -177,26 +179,38 @@
         _btn_receive.hidden = NO;
     }
     if(_type==2){
-        [_btn_post setTitle:@"继续任务" forState:UIControlStateNormal];
+        
         
         if(_task.taskType==taskType_download||_task.taskType==taskType_share){
             
             [_btn_post setTitle:@"分享二维码" forState:UIControlStateNormal];
-        }
-        _btn_post.tag = 111;
-        
-        //可继续任务
-        if(_task.status==1){
-            _btn_post.hidden = NO;
-            _btn_receive.hidden = YES;
             
         }
-        //过期 禁止的任务 隐藏 领取按钮
-        else{
-            _mytable.frame=CGRectMake(0, 0, WIDTH, HEIGHT - 64);
-            _btn_post.hidden = YES;
-            _btn_receive.hidden=YES;
+        
+        
+        if(_task.taskType==taskType_write){
+
+            if (_task.status==1)    [_btn_post setTitle:@"继续任务" forState:UIControlStateNormal];
+            else    [_btn_post setTitle:@"历史资料" forState:UIControlStateNormal];
         }
+        
+        _btn_post.tag = 111;
+        
+        _btn_post.hidden = NO;
+        _btn_receive.hidden = YES;
+        
+//        //可继续任务
+//        if(_task.status==1){
+//            _btn_post.hidden = NO;
+//            _btn_receive.hidden = YES;
+//            
+//        }
+//        //过期 禁止的任务 隐藏 领取按钮
+//        else{
+//            _mytable.frame=CGRectMake(0, 0, WIDTH, HEIGHT - 64);
+//            _btn_post.hidden = YES;
+//            _btn_receive.hidden=YES;
+//        }
     }
     
 }
@@ -213,7 +227,7 @@
                                 @"taskId"       :_task.taskId
                                 };
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parmeters=[HttpHelper  security:parmeters];
+    parmeters=[parmeters security];
     
     NSLog(@"%@",parmeters);
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_TaskContent] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
@@ -291,16 +305,16 @@
             }];
             
             [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(cell.contentView).with.offset(5);
+                make.top.equalTo(cell.contentView).with.offset(11);
                 make.left.mas_equalTo(_headImageView.mas_right).offset(5);
                 make.right.equalTo(cell.contentView).with.offset(-85);
-                make.height.mas_equalTo(38);
+//                make.height.mas_equalTo(38);
             }];
             [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(_headLabel.mas_bottom);
+                make.top.mas_equalTo(_headLabel.mas_bottom).with.offset(2);
                 make.left.mas_equalTo(_headImageView.mas_right).offset(5);
                 make.right.equalTo(_moneyLab.mas_left).with.offset(0);
-                make.height.mas_equalTo(33);
+//                make.height.mas_equalTo(33);
             }];
             
             
@@ -685,6 +699,7 @@
         
         RRDTWebViewController *web=[[RRDTWebViewController  alloc]initWithNibName:@"RRDTWebViewController" bundle:nil];
         web.urlString=step.content;
+        web.navTitle=step.linkTitle;
         [self.navigationController pushViewController:web animated:YES];
     }
     
@@ -753,14 +768,7 @@
     _headLabel.text = _task.taskTitle;
     _moneyLab.text = [NSString stringWithFormat:@"¥%.2f",_task.amount];
     
-//    if(_task.taskType==taskType_download||_task.taskType==taskType_share){
-//        
-//        [_btn_receive setTitle:@"分享二维码" forState:UIControlStateNormal];
-//    }
-    
     [self judegMent];
-    
-
 }
 
 
@@ -776,7 +784,7 @@
 - (UILabel *)headLabel{
     if (!_headLabel) {
         _headLabel = [[UILabel alloc] init];
-        _headLabel.font = [UIFont systemFontOfSize:15];
+        _headLabel.font = [UIFont systemFontOfSize:14];
         _headLabel.numberOfLines = 2;
     }
     return _headLabel;
@@ -785,6 +793,8 @@
     if (!_statusLabel) {
         _statusLabel = [[CoreLabel alloc] init];
         _statusLabel.font = [UIFont systemFontOfSize:12];
+        _statusLabel.numberOfLines = 2;
+
     }
     return _statusLabel;
 }
@@ -987,7 +997,7 @@
                                          @"taskId":_task.taskId};
             
             AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-            parameters=[HttpHelper  security:parameters];
+            parameters=[parameters security];
 
             
             NSLog(@"aaaaa%@",parameters);

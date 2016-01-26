@@ -41,7 +41,7 @@
 
 - (void)backBarButtonPressed {
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
     [[NSNotificationCenter defaultCenter]postNotificationName:notify_loginBackVC object:nil];
     
 //    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -236,7 +236,8 @@
                                       @"appVersion":appVersion};
         
             AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-            dataDic=[HttpHelper  security:dataDic];
+            dataDic=[dataDic security];
+            NSString *sss=[dataDic dictionaryToJson];
             
             [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_UserLogin] parameters:dataDic success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             NSLog(@"JSON: %@", responseObject);
@@ -277,6 +278,11 @@
 #pragma 跳转方式  子类会重写
 - (void)dissmissLogin{
      [self.navigationController popToRootViewControllerAnimated:YES];
+//    AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [app setRootVC_TabBarVC];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:notify_loginBackVC object:nil];
+
+    
 }
 #pragma mark 手机号的输入限制
 - (void)changePhoneNumValue{

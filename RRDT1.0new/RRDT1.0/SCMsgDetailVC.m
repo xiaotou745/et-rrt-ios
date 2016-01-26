@@ -73,7 +73,7 @@
                                 @"opType":@(2)};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parmeters=[HttpHelper  security:parmeters];
+    parmeters=[parmeters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_updatemsg] parameters:parmeters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@">>>>>%@",operation);

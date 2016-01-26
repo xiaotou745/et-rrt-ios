@@ -373,6 +373,7 @@
 		27222E4C1C48CC9D0077997A /* JoinsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E4A1C48CC9D0077997A /* JoinsListCell.xib */; };
 		272FB02D1C50BCE900D1919E /* NSString+stringSizes.m in Sources */ = {isa = PBXBuildFile; fileRef = 272FB02C1C50BCE900D1919E /* NSString+stringSizes.m */; };
 		272FB0301C523B0C00D1919E /* Security.m in Sources */ = {isa = PBXBuildFile; fileRef = 272FB02F1C523B0C00D1919E /* Security.m */; };
+		272FB0361C55CCA200D1919E /* NSDictionary+JsonStirng.m in Sources */ = {isa = PBXBuildFile; fileRef = 272FB0351C55CCA200D1919E /* NSDictionary+JsonStirng.m */; };
 		273381F51C4DC9E60047069B /* TaskDListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381F41C4DC9E60047069B /* TaskDListViewController.m */; };
 		273381F81C4DCAAA0047069B /* TDListCheckingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381F71C4DCAAA0047069B /* TDListCheckingView.m */; };
 		273381FB1C4DCAD20047069B /* TDListPassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273381FA1C4DCAD20047069B /* TDListPassView.m */; };
@@ -1148,6 +1149,8 @@
 		272FB02C1C50BCE900D1919E /* NSString+stringSizes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+stringSizes.m"; sourceTree = "<group>"; };
 		272FB02E1C523B0C00D1919E /* Security.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Security.h; sourceTree = "<group>"; };
 		272FB02F1C523B0C00D1919E /* Security.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Security.m; sourceTree = "<group>"; };
+		272FB0341C55CCA200D1919E /* NSDictionary+JsonStirng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JsonStirng.h"; sourceTree = "<group>"; };
+		272FB0351C55CCA200D1919E /* NSDictionary+JsonStirng.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JsonStirng.m"; sourceTree = "<group>"; };
 		273381F31C4DC9E60047069B /* TaskDListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDListViewController.h; sourceTree = "<group>"; };
 		273381F41C4DC9E60047069B /* TaskDListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDListViewController.m; sourceTree = "<group>"; };
 		273381F61C4DCAAA0047069B /* TDListCheckingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDListCheckingView.h; sourceTree = "<group>"; };
@@ -1613,6 +1616,8 @@
 				24EA27A31BCB561C00529707 /* UIColor+Hex.m */,
 				2403F5381BCEF14600917E4A /* PrivacyPolicy_CH.txt */,
 				2403F5391BCEF14600917E4A /* UseTerm_CH.txt */,
+				272FB0341C55CCA200D1919E /* NSDictionary+JsonStirng.h */,
+				272FB0351C55CCA200D1919E /* NSDictionary+JsonStirng.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -3071,6 +3076,7 @@
 				270846341C1016590034B082 /* ZXQRCodeMode.m in Sources */,
 				270845E61C1016590034B082 /* ZXAnyAIDecoder.m in Sources */,
 				270846471C1016590034B082 /* ZXMultiFormatWriter.m in Sources */,
+				272FB0361C55CCA200D1919E /* NSDictionary+JsonStirng.m in Sources */,
 				2708459E1C1016590034B082 /* ZXImage.m in Sources */,
 				2708460A1C1016590034B082 /* ZXOneDReader.m in Sources */,
 				270845E81C1016590034B082 /* ZXRSSExpandedCurrentParsingState.m in Sources */,
@@ -3235,7 +3241,7 @@
 				INFOPLIST_FILE = RRDT1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltlight.openpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3256,7 +3262,7 @@
 				INFOPLIST_FILE = RRDT1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.saltlight.openpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

@@ -12,7 +12,7 @@
 
 //#import "ForgetPasswordViewController.h"
 
-//#import "AppDelegate.h"
+#import "AppDelegate.h"
 
 #import "WaitTaskViewController.h"
 //#import "LoginViewController.h"
@@ -96,7 +96,9 @@
         [dd setObject:userData forKey:@"myUser"];
         [dd synchronize];
         
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:NO];
+//        AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [app setRootVC_loginVC];
 
     }
 }

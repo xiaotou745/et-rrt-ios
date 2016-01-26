@@ -375,7 +375,7 @@
                                     @"cityCode":_currentCityInfo[cityCode],@"orderBy":@(_orderByType)};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
         NSLog(@"parmeters=%@ \n_orderByType===%ld",parmeters,(long)_orderByType);
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetNewTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
@@ -513,7 +513,7 @@
     NSDictionary *parmeters = @{@"version":@"20151127"};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parmeters=[HttpHelper  security:parmeters];
+    parmeters=[parmeters security];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Gethotregionandall] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         

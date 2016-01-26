@@ -88,13 +88,12 @@
         [self.myTableView.header endRefreshing];
         [self.myTableView.footer endRefreshing];
         
-        NSDictionary *parmeters = @{@"userId"       :user.userId,
-                                    @"itemsCount"   :@"10",
+        NSDictionary *parmeters = @{@"itemsCount"   :@"10",
                                     @"nextId"       :[NSString stringWithFormat:@"%zi",_nextId],
                                     @"taskId":_taskId
                                     };
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
         //        NSString *jsonsss=[parmeters JSONString];
         

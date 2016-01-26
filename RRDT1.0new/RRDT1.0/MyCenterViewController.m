@@ -89,8 +89,10 @@
 
     UIView *footView=[[UIView  alloc ]initWithFrame:CGRectMake(0, 0, DEF_SCEEN_WIDTH, 40)];
 //    footView.backgroundColor=[UIColor orangeColor];
-    UILabel *linkLab=[ManFactory createLabelWithFrame:CGRectMake(50, 20,180, 18) Font:14 Text:@"联系客服  010-57173598"];
+    UILabel *linkLab=[ManFactory createLabelWithFrame:CGRectMake(50, 20,200, 18) Font:15 Text:@"联系客服  010-57173598"];
+    linkLab.center=CGPointMake(DEF_SCEEN_WIDTH/2,30 );
     linkLab.textAlignment=NSTextAlignmentCenter;
+//    linkLab.backgroundColor=[UIColor orangeColor];
     linkLab.textColor=[UIColor colorWithRed:0.18 green:0.81 blue:0.89 alpha:1];
     UIImageView *linkIcon=[ManFactory createImageViewWithFrame:CGRectMake(linkLab.right, linkLab.top, linkLab.height, linkLab.height) ImageName:@"icon_kefu"];
     
@@ -136,6 +138,7 @@
     if (!_user.isLogin){
         LoginViewController *login = [[LoginViewController alloc] init];
         [self.navigationController pushViewController:login animated:NO];
+        return;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -532,7 +535,7 @@
     NSDictionary *parameters = @{@"userId": _user.userId};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -578,7 +581,7 @@
     NSDictionary *parameters = @{@"userId": _user.userId};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parameters=[HttpHelper  security:parameters];
+    parameters=[parameters security];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 

@@ -11,6 +11,9 @@
 static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 #define LocalStr_None @"" //空字符串
 
+//#define SecurityKey @"Q*2_4@c!4kd^j&g%"
+#define SecurityKey @"k;)*(+nmjdsf$#@d"
+
 @implementation Security
 
 /*
@@ -18,9 +21,9 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
  *
  */
 +(NSString*)AesEncrypt:(NSString*)str{
-    int i = 2;
+    int i = 1;
     if (i == 1) {
-        NSString *key=@"Q*2_4@c!4kd^j&g%"; // 密钥
+        NSString *key=SecurityKey; // 密钥
         NSData *data=[str dataUsingEncoding:NSUTF8StringEncoding]; // 待加密字符转为NSData型
         char keyPtr[kCCKeySizeAES128 + 1];
         memset(keyPtr, 0, sizeof(keyPtr));
@@ -52,7 +55,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     }else{
         return str;
     }
-//    NSString *key=@"Q*2_4@c!4kd^j&g%"; // 密钥
+//    NSString *key=SecurityKey; // 密钥
 //    NSData *data=[str dataUsingEncoding:NSUTF8StringEncoding]; // 待加密字符转为NSData型
 //    char keyPtr[kCCKeySizeAES128 + 1];
 //    memset(keyPtr, 0, sizeof(keyPtr));
@@ -88,7 +91,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
  *
  */
 +(NSString*)AesDecrypt:(NSString*)str{
-    NSString *key=@"Q*1_3@c!4kd^j&g%"; // 密钥
+    NSString *key=SecurityKey; // 密钥
     NSData *data=[self dataWithBase64EncodedString:str]; // base4解码
     char keyPtr[kCCKeySizeAES128 + 1];
     memset(keyPtr, 0, sizeof(keyPtr));

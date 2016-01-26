@@ -138,7 +138,7 @@
                                                              @"orderId":task.orderId,
                                                              @"remark":@""};
                                 AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-                                parameters=[HttpHelper  security:parameters];
+                                parameters=[parameters security];
                                 
                                 NSLog(@">>>>>%@",parameters);
                                 [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GiveUpTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -198,7 +198,7 @@
                                     };
     
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetAlltaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];

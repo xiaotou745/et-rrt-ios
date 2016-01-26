@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#include "InComeView.h"
+
 @interface ExpendView : UITableView<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (nonatomic,strong) NSMutableArray     *modeArr;

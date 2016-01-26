@@ -41,11 +41,7 @@
             [self.footer beginRefreshing];
             [self post];
         }];
-        
-        
-//        [MBProgressHUD showHUDAddedTo:self animated:YES];
-//        
-//        [self post];
+
     }
     return self;
 }
@@ -201,9 +197,10 @@
 }
 #pragma mark 请求数据
 - (void)post{
-//    [MBProgressHUD showHUDAddedTo:self animated:YES];
+    [self notify_showProgressHUD];
+    
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
-        [MBProgressHUD hideHUDForView:self animated:YES];
+        [self notify_hideProgressHUD];
     }else{
         
         [CoreViewNetWorkStausManager dismiss:self animated:YES];
@@ -219,43 +216,49 @@
                                     ,@"taskStatus":@(1)};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_GetreceiveTaskList] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-            [MBProgressHUD hideHUDForView:self animated:YES];
-            if (_nextId == 0) {
-                [_modeArr removeAllObjects];
-            }
-            NSLog(@"json2%@",responseObject);
-            NSInteger code = [[responseObject objectForKey:@"code"] intValue];
-            if (code == 200) {
+            [self notify_hideProgressHUD];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(){
                 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"changeSelcct" object:self userInfo:@{
-                                                                                                                 @"passTotal":[[responseObject objectForKey:@"data"] objectForKey:@"passTotal"],
-                                                                                                                 @"refuseTotal":[[responseObject objectForKey:@"data"] objectForKey:@"refuseTotal"]
-                                                                                                                 }];
-                
-                if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
-
-                }else{
-                    _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
-                for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
-                    Task *task  = [[Task alloc] init];
-
-                    [task setValuesForKeysWithDictionary:dic];
+                if (_nextId == 0) {
+                    [_modeArr removeAllObjects];
+                }
+                NSLog(@"json2%@",responseObject);
+                NSInteger code = [[responseObject objectForKey:@"code"] intValue];
+                if (code == 200) {
                     
-                    [_modeArr addObject:task];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"changeSelcct" object:self userInfo:@{
+                                                                                                                     @"passTotal":[[responseObject objectForKey:@"data"] objectForKey:@"passTotal"],
+                                                                                                                     @"refuseTotal":[[responseObject objectForKey:@"data"] objectForKey:@"refuseTotal"]
+                                                                                                                     }];
+                    
+                    if ([[[responseObject objectForKey:@"data"] objectForKey:@"count"] intValue] == 0 ) {
+                        
+                    }else{
+                        _nextId = [[[responseObject objectForKey:@"data"] objectForKey:@"nextId"] integerValue];
+                        for ( NSDictionary *dic in [[responseObject objectForKey:@"data"] objectForKey:@"content"]) {
+                            Task *task  = [[Task alloc] init];
+                            
+                            [task setValuesForKeysWithDictionary:dic];
+                            
+                            [_modeArr addObject:task];
+                        }
+                        
+                    }
+                    [self reloadData];
+                }else{
+                    [self makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
                 }
                 
-                }
-               [self reloadData];
-            }else{
-                [self makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
-            }
+            });
+            
         } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
             NSLog(@"error:::%@",error);
             [self makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
-            [MBProgressHUD hideHUDForView:self animated:YES];
+            [self notify_hideProgressHUD];
         }];
     }
 }
@@ -285,8 +288,6 @@
 }
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
-    
-    [MBProgressHUD showHUDAddedTo:self animated:YES];
     _nextId = 0;
     [self post];
 }
@@ -316,5 +317,13 @@
         returnStr = [NSString stringWithFormat:@"%.f天",mytimenow/60/60/24];
     }
     return returnStr;
+}
+
+-(void)notify_showProgressHUD{
+    [[NSNotificationCenter defaultCenter]postNotificationName:ReceivedView_showProgressHUD object:nil];
+}
+-(void)notify_hideProgressHUD{
+    [[NSNotificationCenter defaultCenter]postNotificationName:ReceivedView_hideProgressHUD object:nil];
+
 }
 @end

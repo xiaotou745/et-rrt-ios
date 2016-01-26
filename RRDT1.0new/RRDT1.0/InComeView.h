@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define InComeView_showProgressHUD @"InComeView_showProgressHUD"
+#define InComeView_hideProgressHUD @"InComeView_hideProgressHUD"
+
 @interface InComeView : UITableView<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
 @property (nonatomic,strong) NSMutableArray     *modeArr;

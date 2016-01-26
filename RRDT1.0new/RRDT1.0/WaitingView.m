@@ -110,7 +110,7 @@
                                     @"taskId":_taskId
                                     };
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parmeters=[HttpHelper  security:parmeters];
+        parmeters=[parmeters security];
 
 //        NSString *jsonsss=[parmeters JSONString];
         
@@ -211,7 +211,7 @@
         NSDictionary *parameters = @{@"userId":user.userId,
                                      @"taskId":task.taskId};
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-        parameters=[HttpHelper  security:parameters];
+        parameters=[parameters security];
         
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_ReceiverTask] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             

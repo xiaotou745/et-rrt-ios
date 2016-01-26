@@ -63,10 +63,7 @@
 -(void)requestMsgList
 {
     
-    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-
     
     _user = [[User alloc] init];
     NSLog(@">>>>>>%@",_user.userId);
@@ -76,7 +73,7 @@
     
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
-    parmeters=[HttpHelper  security:parmeters];
+    parmeters=[parmeters security];
    
     [self.scmlTableView.header endRefreshing];
     [self.scmlTableView.footer endRefreshing];
