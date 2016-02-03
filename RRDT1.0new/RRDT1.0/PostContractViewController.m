@@ -889,6 +889,7 @@
 #pragma mark 请求数据
 - (void)getTaskContent{
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     
@@ -938,6 +939,7 @@
 
 - (void)postImg:(NSData *)img_data{
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];

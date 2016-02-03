@@ -217,6 +217,7 @@
 #pragma mark 获取任务详情
 - (void)getTaskContent:(NSString *)orderIDstr{
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
  
     

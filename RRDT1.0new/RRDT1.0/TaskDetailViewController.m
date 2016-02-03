@@ -108,13 +108,10 @@
 //    if (_fromPCenterVC)refuseView.taskId=@"0";
     [_myScroll addSubview:refuseView];
     
-    [MBProgressHUD showHUDAddedTo:waitView animated:YES];
     waitView.nextId = 0;
     [waitView post];
-    [MBProgressHUD showHUDAddedTo:passingView animated:YES];
     passingView.nextId = 0;
     [passingView post];
-    [MBProgressHUD showHUDAddedTo:refuseView animated:YES];
     refuseView.nextId = 0;
     [refuseView post];
     

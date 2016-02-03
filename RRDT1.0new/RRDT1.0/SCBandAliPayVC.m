@@ -278,6 +278,7 @@
 }
 -(void)gotoBandingALipay{
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     NSLog(@">>>>>>%@",_user.userId);

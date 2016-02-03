@@ -36,6 +36,7 @@
     [myWeb loadRequest:request];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView{

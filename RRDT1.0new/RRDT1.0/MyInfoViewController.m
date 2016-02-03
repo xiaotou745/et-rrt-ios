@@ -122,6 +122,7 @@
 }
 #pragma mark 获得用户信息
 - (void)getMyInfo{
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
   
@@ -373,6 +374,7 @@
 }
 - (void)postImg:(NSData *)img_data{
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];

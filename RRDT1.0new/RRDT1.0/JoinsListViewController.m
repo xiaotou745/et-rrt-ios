@@ -76,7 +76,8 @@
 }
 #pragma mark 请求数据
 - (void)post{
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }else{

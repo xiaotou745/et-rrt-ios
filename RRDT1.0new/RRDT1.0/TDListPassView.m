@@ -40,11 +40,6 @@
             [self.footer beginRefreshing];
             [self post];
         }];
-        
-        
-        //        [MBProgressHUD showHUDAddedTo:self animated:YES];
-        //
-        //        [self post];
     }
     return self;
 }

@@ -127,13 +127,10 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [MBProgressHUD showHUDAddedTo:passView animated:YES];
     passView.nextId = 0;
     [passView post];
-    [MBProgressHUD showHUDAddedTo:cancelView animated:YES];
     cancelView.nextId = 0;
     [cancelView post];
-    [MBProgressHUD showHUDAddedTo:loseView animated:YES];
     loseView.nextId = 0;
     [loseView post];
 }

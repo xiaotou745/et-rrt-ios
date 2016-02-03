@@ -14,9 +14,10 @@
 #import "WaitTaskTableViewCell.h"
 #import "NewTaskContentViewController.h"
 #import "CitysViewController.h"
-#import "OrderByTypeView.h"
+#import "OrderByBGView.h"
 #import "CustomNavBar.h"
 #import "CustomSortBar.h"
+#import "AppDelegate.h"
 @interface WaitTaskViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 {
     CLLocationManager *_manager;
@@ -46,7 +47,9 @@
 // 导航右按钮
 @property(nonatomic,strong)CustomSortBar *rightNavBar;
 //排序的自定义view
-@property(nonatomic,strong)OrderByTypeView *oderByView;
+@property(nonatomic,strong)OrderByBGView *oderByView;
+
+
 @property (nonatomic,assign) NSInteger      orderByType;
 
 @end
@@ -342,8 +345,10 @@
 
 -(void)createOderByView{
     
-    _oderByView=[[OrderByTypeView alloc]init];
-    [self.view addSubview:_oderByView];
+    _oderByView=[[OrderByBGView alloc]init];
+//    [self.view addSubview:_oderByView];
+    [[DEF_APP window] addSubview:_oderByView];
+
     [self sortType];
     
 }
@@ -351,6 +356,9 @@
 -(void)sortType{
     
       [_oderByView setHidden:!_oderByView.hidden];
+    if (!_oderByView.isHidden) {
+        [[DEF_APP window] bringSubviewToFront:_oderByView];
+    }
 }
 -(void)changeOrderType:(NSNotification *)notif{
     
@@ -361,7 +369,7 @@
 }
 #pragma mark 请求数据
 - (void)post{
-    
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -510,6 +518,8 @@
 #pragma mark 请求数据
 - (void)getCitysRegion{
     
+    _haveCityCache=YES;
+    
     NSDictionary *parmeters = @{@"version":@"20151127"};
     
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
@@ -526,17 +536,17 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void){
                     [self configCitys:citysData];
                     [self checkCityCode];
-                    _haveCityCache=YES;
-                    
                 });
             }
         }else{
+            _haveCityCache=NO;
+
             NSLog(@">>>>>>%@",[responseObject objectForKey:@"msg"]);
             [self.view makeToast:[responseObject objectForKey:@"msg"] duration:1.0 position:CSToastPositionCenter];
         }
         
     } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-        
+        _haveCityCache=NO;
         [self.view makeToast:@"加载失败" duration:1.0 position:CSToastPositionCenter];
         
     }];

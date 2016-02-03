@@ -41,11 +41,7 @@
             [self.footer beginRefreshing];
             [self post];
         }];
-        
-        
-//        [MBProgressHUD showHUDAddedTo:self animated:YES];
-//        
-//        [self post];
+ 
     }
     return self;
 }
@@ -109,7 +105,8 @@
 }
 #pragma mark 请求数据
 - (void)post{
-//    [MBProgressHUD showHUDAddedTo:self animated:YES];
+    [MBProgressHUD hideAllHUDsForView:self animated:YES];
+    [MBProgressHUD showHUDAddedTo:self animated:YES];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
         [MBProgressHUD hideHUDForView:self animated:YES];
     }else{
@@ -204,7 +201,6 @@
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView
 {
     
-    [MBProgressHUD showHUDAddedTo:self animated:YES];
     _nextId = 0;
     [self post];
 }

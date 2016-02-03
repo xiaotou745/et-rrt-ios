@@ -63,6 +63,7 @@
 -(void)requestMsgList
 {
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     _user = [[User alloc] init];

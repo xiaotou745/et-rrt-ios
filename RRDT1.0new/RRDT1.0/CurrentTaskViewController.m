@@ -62,6 +62,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideProgressHUD) name:ReceivedView_hideProgressHUD object:nil];//
 
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess) name:loginSuccess_refreshWaitVC object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(todoShare:) name:ReceivedView_doShare object:nil];//
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toTaskDetail:) name:ReceivedView_toTaskDetail object:nil];//
 
@@ -214,7 +216,9 @@
     checkingView.nextId = 0;
     [checkingView post];
 }
-
+-(void)loginSuccess{
+    [self getTaskList];
+}
 /*
 #pragma mark - Navigation
 

@@ -537,6 +537,7 @@
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     parameters=[parameters security];
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_getpartnerinfo] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -583,6 +584,7 @@
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     parameters=[parameters security];
     
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

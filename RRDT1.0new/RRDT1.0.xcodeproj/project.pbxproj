@@ -365,7 +365,6 @@
 		27222E351C438A430077997A /* BillDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E341C438A430077997A /* BillDetailModel.m */; };
 		27222E391C44D4F70077997A /* SCBillDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E371C44D4F70077997A /* SCBillDetailVC.m */; };
 		27222E3A1C44D4F70077997A /* SCBillDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E381C44D4F70077997A /* SCBillDetailVC.xib */; };
-		27222E3D1C4631B60077997A /* OrderByTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E3C1C4631B60077997A /* OrderByTypeView.m */; };
 		27222E431C4654BE0077997A /* JoinsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E411C4654BE0077997A /* JoinsListViewController.m */; };
 		27222E441C4654BE0077997A /* JoinsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27222E421C4654BE0077997A /* JoinsListViewController.xib */; };
 		27222E471C48A5F80077997A /* ParterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27222E461C48A5F80077997A /* ParterModel.m */; };
@@ -383,6 +382,7 @@
 		273382071C4F866D0047069B /* CustomNavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 273382061C4F866D0047069B /* CustomNavBar.m */; };
 		2733820C1C5071660047069B /* CustomSortBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2733820B1C5071660047069B /* CustomSortBar.m */; };
 		2745185E1C219C150052196A /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 2745185D1C219C150052196A /* UIAlertView+Blocks.m */; };
+		27C875911C58907300B1A424 /* OrderByBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C875901C58907300B1A424 /* OrderByBGView.m */; };
 		27FE67E41C1579AE00A1CAB1 /* EditInfoImgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */; };
 		27FE67E51C1579AE00A1CAB1 /* EditInfoImgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */; };
 		27FE67E81C16B1E600A1CAB1 /* ControlTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FE67E71C16B1E600A1CAB1 /* ControlTemplate.m */; };
@@ -1135,8 +1135,6 @@
 		27222E361C44D4F70077997A /* SCBillDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBillDetailVC.h; sourceTree = "<group>"; };
 		27222E371C44D4F70077997A /* SCBillDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBillDetailVC.m; sourceTree = "<group>"; };
 		27222E381C44D4F70077997A /* SCBillDetailVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCBillDetailVC.xib; sourceTree = "<group>"; };
-		27222E3B1C4631B60077997A /* OrderByTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderByTypeView.h; sourceTree = "<group>"; };
-		27222E3C1C4631B60077997A /* OrderByTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderByTypeView.m; sourceTree = "<group>"; };
 		27222E401C4654BE0077997A /* JoinsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoinsListViewController.h; sourceTree = "<group>"; };
 		27222E411C4654BE0077997A /* JoinsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinsListViewController.m; sourceTree = "<group>"; };
 		27222E421C4654BE0077997A /* JoinsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JoinsListViewController.xib; sourceTree = "<group>"; };
@@ -1168,6 +1166,8 @@
 		2733820B1C5071660047069B /* CustomSortBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSortBar.m; sourceTree = "<group>"; };
 		2745185C1C219C150052196A /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		2745185D1C219C150052196A /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		27C8758F1C58907300B1A424 /* OrderByBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderByBGView.h; sourceTree = "<group>"; };
+		27C875901C58907300B1A424 /* OrderByBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderByBGView.m; sourceTree = "<group>"; };
 		27FE67E11C1579AE00A1CAB1 /* EditInfoImgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditInfoImgCell.h; sourceTree = "<group>"; };
 		27FE67E21C1579AE00A1CAB1 /* EditInfoImgCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditInfoImgCell.m; sourceTree = "<group>"; };
 		27FE67E31C1579AE00A1CAB1 /* EditInfoImgCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditInfoImgCell.xib; sourceTree = "<group>"; };
@@ -1365,8 +1365,8 @@
 		248E59BF1BEA0C8800735498 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				27222E3B1C4631B60077997A /* OrderByTypeView.h */,
-				27222E3C1C4631B60077997A /* OrderByTypeView.m */,
+				27C8758F1C58907300B1A424 /* OrderByBGView.h */,
+				27C875901C58907300B1A424 /* OrderByBGView.m */,
 				24F9F6DF1BDF10C9007DC68C /* CheckingTaskView.h */,
 				24F9F6E01BDF10C9007DC68C /* CheckingTaskView.m */,
 				24609D971BDE2CAE0078CD94 /* ReceivedView.h */,
@@ -3084,13 +3084,13 @@
 				270846061C1016590034B082 /* ZXITFWriter.m in Sources */,
 				24DE71951BB2A007007EC6F3 /* SysemViewController.m in Sources */,
 				249367DC1BB52B99007AB32F /* CoreStatus.m in Sources */,
-				27222E3D1C4631B60077997A /* OrderByTypeView.m in Sources */,
 				270846601C118A090034B082 /* TaskDetailModel.m in Sources */,
 				24E8D5E81BD9C8CA005F6FE9 /* WaitTaskTableViewCell.m in Sources */,
 				270845AB1C1016590034B082 /* ZXCharacterSetECI.m in Sources */,
 				270845FF1C1016590034B082 /* ZXCode93Reader.m in Sources */,
 				270845E01C1016590034B082 /* ZXAI01393xDecoder.m in Sources */,
 				270845AD1C1016590034B082 /* ZXDefaultGridSampler.m in Sources */,
+				27C875911C58907300B1A424 /* OrderByBGView.m in Sources */,
 				270845D01C1016590034B082 /* ZXDataMatrixSymbolInfo.m in Sources */,
 				24E4A44A1BAFBC4100EC14AF /* CoreLabel.m in Sources */,
 				270846151C1016590034B082 /* ZXPDF417ECErrorCorrection.m in Sources */,

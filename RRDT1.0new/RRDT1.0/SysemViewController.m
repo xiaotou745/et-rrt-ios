@@ -97,6 +97,7 @@
         [dd synchronize];
         
         [self.navigationController popToRootViewControllerAnimated:NO];
+        //    [[NSNotificationCenter defaultCenter]postNotificationName:notify_loginBackVC object:nil];
 //        AppDelegate *app=(AppDelegate *)[UIApplication sharedApplication].delegate;
 //        [app setRootVC_loginVC];
 
