@@ -50,9 +50,11 @@
     [_taskAmount updateLabelStyle];
     
     
-    _taskTypeImgView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:model.taskType]];
-    _taskTypeName.text=[MyTools getTasktype:model.taskType];
+//    _taskTypeImgView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:model.taskType]];
+//    _taskTypeName.text=[MyTools getTasktype:model.taskType];
     
+    _taskTypeImgView.backgroundColor=[MyTools colorWithHexString:model.tagColorCode];
+    _taskTypeName.text=model.tagName;
     _taskDatumCount.text=[NSString stringWithFormat:@"%ld条",model.taskDatumCount];
     
     

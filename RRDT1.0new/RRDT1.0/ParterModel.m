@@ -10,4 +10,10 @@
 
 @implementation ParterModel
 
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+
+    if ([key isEqualToString:@"id"]) {
+        self.ctId=value;
+    }
+}
 @end

@@ -18,7 +18,8 @@
 
 #import "MyVersion.h"
 #import "ETSUUID.h"
-@interface AppDelegate ()<CoreStatusProtocol>
+#import "WXApi.h"
+@interface AppDelegate ()<CoreStatusProtocol,WXApiDelegate,WeiboSDKDelegate>
 {
     MyVersion *myVersion;
     User *_user;
@@ -33,6 +34,28 @@
     
     [ETSUUID storeUniqueDeviceIDToKeychain];
 
+    [UMSocialData setAppKey:kUMSocialAppKey];
+    [UMSocialConfig setFinishToastIsHidden:YES position:UMSocialiToastPositionCenter];
+    [UMSocialWechatHandler setWXAppId:@"wx372230899f9b558e" appSecret:@"06b4552fd896c6616d41d2c2d1cd168f" url:nil];
+    
+    [UMSocialQQHandler setQQWithAppId:@"1105050369" appKey:@"9TPZNZpzwOKkf6aY" url:@"http://www.umeng.com/social"];
+    //[UMSocialQQHandler setSupportWebView:YES];
+
+    //微博原生第三方登陆
+//    
+//    [WeiboSDK enableDebugMode:YES];
+//    
+//    [WeiboSDK registerApp:@"2925603791"];
+    
+    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"2925603791" secret:@"dbbda94f1cc82d52ec10c597209af946" RedirectURL:@"http://www.umeng.com/social"];
+    
+    //本地 缓存地理位置为 北京
+    if (DEF_PERSISTENT_GET_OBJECT(kAppFirstDriving)==nil) {
+        DEF_PERSISTENT_SET_OBJECT(@"kAppFirstDriving", kAppFirstDriving);
+        DEF_PERSISTENT_SET_OBJECT((@{@"name":@"北京市",@"code":@(110100)}), kLocationCityInfo);
+    }
+    
+    
     NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
     
     NSData *data = [dd objectForKey:@"myUser"];
@@ -51,14 +74,30 @@
     [CoreStatus beginNotiNetwork:self];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(backWaitVC) name:notify_loginBackVC object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(gotoGetMyInfo) name:loginSuccess_getUserInfo object:nil];
     
     return YES;
 }
+
+-(void)setRootVC_supplementVC{
+    
+    SupplementViewController *supp=[[SupplementViewController alloc]initWithNibName:@"SupplementViewController" bundle:nil];
+    self.window.rootViewController = supp;
+    
+}
+
 -(void)setRootVC_loginVC{
     
         _loginVC=[[LoginViewController alloc]init];
         self.window.rootViewController = self.loginVC;
 
+}
+-(void)goto_MyCenterVC{
+
+    [self setRootVC_TabBarVC];
+    UIButton *item=(UIButton *)[_customTabBar viewWithTag:DEF_TAB_ICON_TAG+2];
+    [_customTabBar itemClick:item];
+    [[NSNotificationCenter defaultCenter]postNotificationName:setInfoSuccess_gotoPersonInfoVC object:nil];
 }
 #pragma  mark 设置 TabBarVC
 -(void)setRootVC_TabBarVC
@@ -125,7 +164,48 @@
     }];
     
 }
+#pragma mark 获得用户信息
+- (void)gotoGetMyInfo{
+    
+    NSLog(@">>>>>>%@",_user.userId);
+    NSDictionary *parameters = @{@"userId": _user.userId};
+    
+    AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
+    parameters=[parameters security];
+    
+    [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_MyInmoney] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@">>>>>%@",operation);
+        NSLog(@"JSON: %@", responseObject);
+        NSNumber *code = [responseObject objectForKey:@"code"];
+        int code_int = [code intValue];
+        if (code_int == 200) {
+            
+            _user.userName = [[responseObject objectForKey:@"data"] objectForKey:@"clienterName"];
+            _user.userPhoneNo = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"] ;
+            
+            _user.sex = [[[responseObject objectForKey:@"data"] objectForKey:@"sex"] integerValue];
+            _user.age = [[[responseObject objectForKey:@"data"] objectForKey:@"age"] integerValue];
+            _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
+            _user.headImage = [[responseObject objectForKey:@"data"] objectForKey:@"headImage"];
+            _user.birthDay = [[responseObject objectForKey:@"data"] objectForKey:@"birthDay"];
 
+            NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:_user];
+            NSUserDefaults *dd = [NSUserDefaults standardUserDefaults];
+            [dd setObject:userData forKey:@"myUser"];
+            [dd synchronize];
+            
+            if (_user.userName.length==0||_user.userName==nil||_user.birthDay.length==0||_user.birthDay==nil) {
+                [self setRootVC_supplementVC];
+            }
+        }else{
+
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+ 
+    }];
+}
 - (void)coreNetworkChangeNoti:(NSNotification *)noti{
     
     NSString * statusString = [CoreStatus currentNetWorkStatusString];
@@ -140,6 +220,35 @@
     
     [CoreStatus endNotiNetwork:self];
     
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+
+{
+    
+    //    return  [UMSocialSnsService handleOpenURL:url];
+    
+    NSLog(@"url host:%@", url.host);
+    
+    if ([[url scheme]caseInsensitiveCompare:@"wx372230899f9b558e"]==NSOrderedSame ) {
+        return [WXApi handleOpenURL:url delegate:self];
+    }else if ([[url scheme]caseInsensitiveCompare:@"tencent1105050369"]==NSOrderedSame){
+    
+        return [TencentOAuth HandleOpenURL:url];
+    }else if ([[url scheme]caseInsensitiveCompare:@"QQ41DDBB01"]==NSOrderedSame){
+        
+        return [TencentOAuth HandleOpenURL:url];
+    }
+    return [WeiboSDK handleOpenURL:url delegate:self];
+    
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url];
+    if (result == FALSE) {
+        //调用其他SDK，例如支付宝SDK等
+    }
+    return result;
 }
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

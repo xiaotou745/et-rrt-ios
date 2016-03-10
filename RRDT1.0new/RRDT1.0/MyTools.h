@@ -35,14 +35,14 @@
 
 #pragma mark 用户接口
 
-//#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
-#define URL_All @"http://api.renrentui.me/20160120/services"
+#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
+//#define URL_All @"http://api.renrentui.me/20160120/services"
 
 /*
  *上传图片
  */
-//#define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
-#define URL_PostImg @"http://upload.renrentui.me/upload/fileupload/uploadimg"
+#define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
+//#define URL_PostImg @"http://upload.renrentui.me/upload/fileupload/uploadimg"
 
 
 
@@ -120,52 +120,48 @@
  */
 #define URL_Gettaskdatumdetail @"/taskdatum/gettaskdatumdetail"
 
-/*
- *1.3.1 获取消息列表V1.0.2
+/**1.3.1 获取消息列表V1.0.2
  */
 #define URL_Getmymsglist @"/msg/getmymsglist"
 
 
-/*
- *1.3.2 删除或将消息置为已读V1.0.2
+/**1.3.2 删除或将消息置为已读V1.0.2
  */
 #define URL_updatemsg @"/msg/updatemsg"
 
-/*
- *1.3.3 获取城市列表信息V1.0.2
+/**1.3.3 获取城市列表信息V1.0.2
  */
 #define URL_Gethotregionandall @"/region/gethotregionandall"
 
-/*
- *1.3.4 绑定支付宝账号
+/**1.3.4 绑定支付宝账号
  */
 #define URL_bindalipay @"/userc/bindalipay"
 
 
-/*
- *1.3.5 获取未读消息数量
+/**1.3.5 获取未读消息数量
  */
 #define URL_getmymsgcount @"/msg/getmymsgcount"
 
-/*
- *1.3.6 获取资金明细列表（收支记录）
+/**1.3.6 获取资金明细列表（收支记录）
  */
 #define URL_getbalancerecordlist @"/userc/getbalancerecordlist"
 
-/*
- *1.3.7 资料审核详情分组后列表（新增）
+/**1.3.7 资料审核详情分组后列表（新增）
  */
 #define URL_getmytaskdatumgrouplist @"/taskdatum/getmytaskdatumgrouplist"
 
-/*
- *1.3.8 任务参与人列表（新增）
+/**1.3.8 任务参与人列表（新增）
  */
 #define URL_getclienterlistbytaskid @"/userc/getclienterlistbytaskid"
 
-/*
- *1.3.9 获取合伙人分红信息（新增）
+/**1.3.9 获取合伙人分红信息（新增）
  */
 #define URL_getpartnerinfo @"/userc/getpartnerinfo"
+/**
+ 1.4.0 分页获取合伙人列表（新增）
+ */
+#define URL_getpartnerlist @"/userc/getpartnerlist"
+
 
 /*
  *版本更新
@@ -196,7 +192,8 @@
 +(NSString *)getTasktype:(int)type;
 +(UIColor *)getTasktypeBGColor:(int)type;
 
-
+/// 当前系统时间
++ (NSString *)currentTime;
 @end
 
 @interface MyTools (times)
@@ -207,6 +204,7 @@
  */
 +(NSString *)timeString:(NSString *)string;
 
++ (UIColor *)colorWithHexString:(NSString *)stringToConvert;
 @end
 
 @interface MyTools (CityAddressManager)

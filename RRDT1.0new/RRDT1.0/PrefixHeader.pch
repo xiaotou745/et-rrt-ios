@@ -10,7 +10,7 @@
 #define PrefixHeader_pch
 
 
-
+#import "AppDelegate.h"
 #import "MyTools.h"
 #import "UIAlertView+Blocks.h"
 #import "UIView+Common.h"
@@ -20,18 +20,31 @@
 #import "NSString+addRMBcharacter.h"
 #import "NSString+stringSizes.h"
 #import "NSDictionary+JsonStirng.h"
+#import "UMSocialAppKey.h"
+
+#import "UMSocial.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialQQHandler.h"
+#import "UMSocialSinaSSOHandler.h"
+#import "WeiboSDK.h"
 
 #define gotoCheckProgressVC @"gotoCheckProgressVC"
 
 #define addressCityVersion @"addressCityVersion"
 #define getTaskSuccess_refreshWaitVC @"getTaskSuccess_refreshWaitVC"
 #define loginSuccess_refreshWaitVC @"loginSuccess_refreshWaitVC"
+#define loginSuccess_getUserInfo @"loginSuccess_getUserInfo"
+#define setInfoSuccess_gotoPersonInfoVC @"setInfoSuccess_gotoPersonInfoVC"
+
 
 #define notify_newMessage @"notify_newMessage"
 #define notify_bandingAlipaySuccess @"notify_bandingAlipaySuccess"
 #define notify_selectBillDetailCell @"notify_selectBillDetailCell"
 
 #define notify_loginBackVC @"notify_loginBackVC"
+
+#define kAppFirstDriving  @"kAppFirstDriving"
+#define kLocationCityInfo @"kLocationCityInfo"
 
 #pragma mark -
 #pragma mark - NSUserDefaults

@@ -21,8 +21,7 @@
 #import "RRDTBarViewController.h"
 #import "TaskDetailViewController.h"
 #import "JoinsListViewController.h"
-
-@interface NewTaskContentViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface NewTaskContentViewController ()<UITableViewDataSource,UITableViewDelegate,UMSocialUIDelegate,UMSocialDataDelegate>
 {
     User *user;
     
@@ -30,6 +29,7 @@
     
     CGFloat _heightSection1;
     CGFloat _heightSection_1;
+    
 
 }
 //@property (nonatomic,strong) NSString *orderID;
@@ -105,6 +105,9 @@
 /** 继续任务 继续分享按钮 */
 @property (nonatomic,strong) UIButton *btn_post;
 
+
+@property (nonatomic,strong) NSString *shareText;
+
 @end
 
 @implementation NewTaskContentViewController
@@ -115,8 +118,8 @@
  
 }
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -126,8 +129,8 @@
     self.title = @"任务详情";
 
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(backTo)];
-//    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(showUMSocialShare)];
+    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
     
     [self judegMent];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
@@ -223,10 +226,10 @@
     
     NSLog(@">?>>>>*%@",user.userId);
     NSLog(@">>>>#%@",_task.taskId);
-
+    
     NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
-                                @"taskId"       :_task.taskId
-                                };
+                                @"taskId"       :_task.taskId};
+    
     AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
     parmeters=[parmeters security];
     
@@ -544,11 +547,15 @@
             
 //                cell.textLabel.text=[_partnerList description];
                 
-                UILabel *titleLab=[ManFactory createLabelWithFrame:CGRectMake(10, 5, DEF_SCEEN_WIDTH-20, 25) Font:15 Text:[NSString stringWithFormat:@"任务参与人数(%@)",[@(_partnerTotal)description]]];
+                UILabel *titleLab=[ManFactory createLabelWithFrame:CGRectMake(10, 7, DEF_SCEEN_WIDTH-20, 30) Font:15 Text:[NSString stringWithFormat:@"任务参与人数(%@)",[@(_partnerTotal)description]]];
                 titleLab.textColor=UIColorFromRGB(0x333333);
+                [cell.contentView addSubview:titleLab];
 
                 if(_partnerTotal==0) titleLab.text=@"还没有地推人参加任务哦～";
-                [cell.contentView addSubview:titleLab];
+                else{
+                    UIImageView *phoneIcon=[ManFactory createImageViewWithFrame:CGRectMake(DEF_SCEEN_WIDTH-25, 12, 15, 20) ImageName:@"TaskDetail_arrowIcon"];
+                    [cell.contentView addSubview:phoneIcon];
+                }
 
                 CGFloat  headWith=50;
                 int      headCount=5;
@@ -559,17 +566,16 @@
                     ParterModel *model=[[ParterModel alloc]init];
                     model=_partnerList[i];
                     UIImageView *parterIcon=[ManFactory createImageViewWithFrame:CGRectMake((HorizonalSpace+headWith)*i+HorizonalSpace, titleLab.bottom+5, headWith, headWith) ImageName:@"icon_usermorentu"];
-//                    parterIcon.backgroundColor=[UIColor orangeColor];
                     parterIcon.layer.cornerRadius=8;
                     parterIcon.layer.masksToBounds=YES;
                   
-                    [cell.contentView addSubview:parterIcon];
+//                    [cell.contentView addSubview:parterIcon];
                     
                     UILabel *parterName=[ManFactory createLabelWithFrame:CGRectMake(0, 0, HorizonalSpace+headWith, 20) Font:13 Text:model.clienterName.length?(model.clienterName.length>3?[NSString stringWithFormat:@"%@…",[model.clienterName substringToIndex:2]]:model.clienterName):@"某推手"];
                     parterName.textColor=UIColorFromRGB(0x666666);
                     parterName.textAlignment=NSTextAlignmentCenter;
                     parterName.center=CGPointMake(parterIcon.left+parterIcon.width/2, parterIcon.bottom+16);
-                    [cell.contentView addSubview:parterName];
+//                    [cell.contentView addSubview:parterName];
 
                     if (_partnerTotal>5&&i==4) {
                         parterIcon.image=[UIImage imageNamed:@"TaskDetail_moreIcon"];
@@ -630,9 +636,11 @@
         _statusLabel.text =_task.taskGeneralInfo;
         _statusLabel.textColor=UIColorFromRGB(0xbbc0c7);
         
-        _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
-        _taskType.text=[MyTools getTasktype:_task.taskType];
+//        _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
+//        _taskType.text=[MyTools getTasktype:_task.taskType];
 
+        _taskTypeView.backgroundColor=[MyTools colorWithHexString:_task.tagColorCode];
+        _taskType.text=_task.tagName;
 
             _lab1.text = [NSString stringWithFormat:@"审核 %@天",_task.auditCycle];
             _lab2.text = [NSString stringWithFormat:@"截止时间 %@",[_task.endTime substringWithRange:NSMakeRange(0, 10)]];
@@ -665,8 +673,9 @@
     }
     else{
         
-        if(_partnerTotal==0) return 44;
-        else    return 120;
+        return 44;
+//        if(_partnerTotal==0) return 44;
+//        else    return 120;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -994,8 +1003,11 @@
 
         }else{
 //            btn.status = CoreStatusBtnStatusProgress;
+            AppDelegate *appDele=(AppDelegate *)[UIApplication sharedApplication].delegate;
+            
             NSDictionary *parameters = @{@"userId":user.userId,
-                                         @"taskId":_task.taskId};
+                                         @"taskId":_task.taskId,
+                                         @"cityCode":appDele.currentCityCode};
             
             AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
             parameters=[parameters security];
@@ -1173,6 +1185,72 @@
     return returnStr;
 }
 
+-(void)showUMSocialShare{
+
+    [UMSocialConfig hiddenNotInstallPlatforms:nil];
+    NSString *shareLinkUrl=[NSString stringWithFormat:@"http://eds_m.yitaoyun.net/renrenwap/clienter/sharetask?taskId=%@",_task.taskId];
+
+    NSString *shareTitle=[NSString stringWithFormat:@"%@—%.2f元/次",_task.taskTitle,_task.amount];
+
+    _shareText=@"最靠谱的资源共享平台，用最少的时间，赚取最多的财富";
+
+    
+    [UMSocialConfig setFinishToastIsHidden:YES position:UMSocialiToastPositionCenter];
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.wechatSessionData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatSessionData.wxMessageType=UMSocialWXMessageTypeWeb;
+
+    [UMSocialData defaultData].extConfig.wechatTimelineData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.wxMessageType=UMSocialWXMessageTypeWeb;
+
+    [UMSocialData defaultData].extConfig.qqData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qqData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.qqData.qqMessageType = UMSocialQQMessageTypeDefault;
+
+    [UMSocialData defaultData].extConfig.qzoneData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qzoneData.url = shareLinkUrl;
+
+    NSString *sinaText=[NSString stringWithFormat:@"%@，人人推—%@",shareTitle,_shareText];
+    [UMSocialData defaultData].extConfig.sinaData.shareText=sinaText;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.resourceType = UMSocialUrlResourceTypeWeb;
+    
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:kUMSocialAppKey shareText:_shareText shareImage:[UIImage imageNamed:@"shareImageLogo"] shareToSnsNames:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil] delegate:self];
+}
+/**
+ 点击分享列表页面，之后的回调方法，你可以通过判断不同的分享平台，来设置分享内容。
+ 例如：*/
+//-(void)didSelectSocialPlatform:(NSString *)platformName withSocialData:(UMSocialData *)socialData
+//{
+//    
+//    socialData.shareText = _shareText;
+//
+////    if (platformName == UMShareToQQ) {
+////        
+////
+////        dispatch_async(dispatch_get_main_queue(), ^(){
+////            [[UMSocialControllerService defaultControllerService] setShareText:@"设置分享" shareImage:[UIImage imageNamed:@"shareImageLogo"] socialUIDelegate:self];        //设置分享内容和回调对象
+////            [UMSocialSnsPlatformManager getSocialPlatformWithName:UMShareToQQ].snsClickHandler(self,[UMSocialControllerService defaultControllerService],YES);
+////        });
+////        
+////        
+////    }
+////    else if(platformName == UMShareToQzone){
+////        
+////
+////    }
+//}
+//实现回调方法（可选）：
+-(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response
+{
+    //根据`responseCode`得到发送结果,如果分享成功
+    if(response.responseCode == UMSResponseCodeSuccess)
+    {
+        //得到分享到的微博平台名
+        NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
+    }
+}
 /*
 #pragma mark - Navigation
 

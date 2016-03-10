@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "User.h"
 @interface BackBaseViewController : UIViewController
 {
     User *_user;

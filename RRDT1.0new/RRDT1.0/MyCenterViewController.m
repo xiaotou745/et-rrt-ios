@@ -26,8 +26,9 @@
 #import "TaskDListViewController.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "RRDTWebViewController.h"
 
-@interface MyCenterViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface MyCenterViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UMSocialDataDelegate,UMSocialUIDelegate>
 {
     
     UIView *lineView0;
@@ -67,6 +68,9 @@
     self.navigationItem.leftBarButtonItem=nil;
     [self viewCreat];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(NewMessageNotify:) name:notify_newMessage object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(toPersonInfoVC) name:setInfoSuccess_gotoPersonInfoVC object:nil];
+
+    
 }
 - (void)viewCreat{
     
@@ -75,9 +79,9 @@
     
     self.title = @"个人中心";
     
-    _imageArr = @[@[@"0"],@[@"icon_mingxi",@"icon_hehuoren",@"icon_shenhe"],@[@"icon_help"],@[@"icon_more"]];
+    _imageArr = @[@[@"0"],@[@"icon_mingxi",@"icon_hehuoren",@"icon_shenhe"],@[@"icon_addPartner"],@[@"icon_onlineKefu"],@[@"icon_help"],@[@"icon_more"]];
     //,@[@"icon_kefu"] ,@[@"客服支持"]
-    _titleArr = @[@[@"0"],@[@"资金明细",@"我的合伙人",@"资料审核详情"],@[@"帮助中心"],@[@"更多"]];
+    _titleArr = @[@[@"0"],@[@"资金明细",@"我的合伙人",@"资料审核详情"],@[@"招募合伙人"],@[@"在线客服"],@[@"帮助中心"],@[@"更多"]];
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, HEIGHT - 64- IOS_TAB_BAR_HEIGHT) style:UITableViewStyleGrouped];
     _mytable.delegate = self;
@@ -492,8 +496,7 @@
     
     if (indexPath.section == 0) {
         if(_user.isLogin){
-            MyInfoViewController *myinfo = [[MyInfoViewController alloc] init];
-            [self.navigationController pushViewController:myinfo animated:YES];
+            [self toPersonInfoVC];
         }else{
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.navigationController pushViewController:login animated:YES];
@@ -515,21 +518,88 @@
         }
  
     }else if (indexPath.section == 2){
+        [self addPartner];
+        
+    }else if (indexPath.section == 3){
+        [self onlineService];
+        
+    }else if (indexPath.section == 4){
         HelpCenterViewController *help = [[HelpCenterViewController alloc] init];
         [self.navigationController pushViewController:help animated:YES];
 
-    }else if (indexPath.section == 3){
+    }else if (indexPath.section == 5){
         SysemViewController *sys = [[SysemViewController alloc] init];
         [self.navigationController pushViewController:sys animated:YES];
 
-    }else if (indexPath.section == 4){
+    }else if (indexPath.section == 6){
 
         [self callKe];
     }
 }
 
--(void)getPartnerInfo{
+-(void)toPersonInfoVC{
+    MyInfoViewController *myinfo = [[MyInfoViewController alloc] init];
+    [self.navigationController pushViewController:myinfo animated:YES];
+}
+#pragma  mark  招募合伙人
+-(void)addPartner{
+
+    [self hideTabBar];
     
+    [UMSocialConfig hiddenNotInstallPlatforms:nil];
+    NSString *shareLinkUrl=@"http://m.renrentui.me";
+    NSString *shareTitle=@"人人推|北京地推|O2O地推|推广任务，让推广更简单";
+
+    NSString *shareText=[NSString stringWithFormat:@"注册填写推荐人:%@，成为我的合伙人，一起赚钱一起飞！%@",_user.userPhoneNo,shareLinkUrl];
+    
+    [UMSocialConfig setFinishToastIsHidden:YES position:UMSocialiToastPositionCenter];
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.wechatSessionData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatSessionData.wxMessageType=UMSocialWXMessageTypeWeb;
+
+    [UMSocialData defaultData].extConfig.wechatTimelineData.title = shareText;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.wxMessageType=UMSocialWXMessageTypeWeb;
+
+    [UMSocialData defaultData].extConfig.qqData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qqData.url = shareLinkUrl;
+    
+    [UMSocialData defaultData].extConfig.qzoneData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qzoneData.url = shareLinkUrl;
+    
+    NSString *sinaText=[NSString stringWithFormat:@"%@，人人推—%@",shareTitle,shareText];
+    [UMSocialData defaultData].extConfig.sinaData.shareText=sinaText;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.resourceType = UMSocialUrlResourceTypeWeb;
+
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:kUMSocialAppKey shareText:shareText shareImage:[UIImage imageNamed:@"shareImageLogo"] shareToSnsNames:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil] delegate:self];
+}
+//实现回调方法（可选）：
+-(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response
+{
+    
+    [self showTabBar];
+    //根据`responseCode`得到发送结果,如果分享成功
+    if(response.responseCode == UMSResponseCodeSuccess)
+    {
+        //得到分享到的微博平台名
+        NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
+    }
+}
+-(void)didCloseUIViewController:(UMSViewControllerType)fromViewControllerType{
+    [self showTabBar];
+
+}
+#pragma  mark  智齿在线客服
+
+-(void)onlineService{
+    RRDTWebViewController *web=[[RRDTWebViewController alloc]initWithNibName:@"RRDTWebViewController" bundle:nil];
+    web.navTitle=@"在线客服";
+    web.urlString=@"http://www.sobot.com/chat/h5/index.html?sysNum=5bc5d60ca874445992e8d7619606921a&source=2";
+    [self.navigationController pushViewController:web animated:YES];
+
+}
+-(void)getPartnerInfo{
     
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};

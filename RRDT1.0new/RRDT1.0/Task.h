@@ -92,7 +92,10 @@ typedef enum : NSUInteger {
 @property (nonatomic,strong) NSString *ctId;
 /** 预计用时，int类型 */
 @property (nonatomic,assign) int estimatedTime;
-
+/** 标签名称 */
+@property (nonatomic,strong) NSString *tagName;
+/** 标签颜色编码 */
+@property (nonatomic,strong) NSString *tagColorCode;
 //已经提交额外添加
 
 /** 任务提交时间 */

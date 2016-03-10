@@ -19,6 +19,8 @@
 #import "KLSwitch.h"
 #import "ETSUUID.h"
 #import "AppDelegate.h"
+#import "SupplementViewController.h"
+
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong)UITextField         *txtUsername;
@@ -76,7 +78,6 @@
 }
 #pragma mark 视图创建
 - (void)viewCreat{
-    self.view.backgroundColor = UIColorFromRGB(0xe8e8e8);
     
     self.title = @"登录";
     
@@ -260,6 +261,7 @@
                 [dd synchronize];
                 [self dissmissLogin];
                 [[NSNotificationCenter defaultCenter] postNotificationName:loginSuccess_refreshWaitVC object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:loginSuccess_getUserInfo object:nil];
 
             }else{
                 _loginBtn.status = CoreStatusBtnStatusFalse;

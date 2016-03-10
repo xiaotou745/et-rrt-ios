@@ -8,13 +8,14 @@
 
 #import "PartnerViewController.h"
 #import "ZXingObjC.h"
-
-@interface PartnerViewController ()
+#import "PartnerListViewController.h"
+@interface PartnerViewController ()<UMSocialUIDelegate,UMSocialDataDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *bonusTotal;
 @property (weak, nonatomic) IBOutlet UILabel *partnerNum;
 @property (weak, nonatomic) IBOutlet UILabel *recommendPhone;
 @property (weak, nonatomic) IBOutlet UIImageView *appBar;
+@property (weak, nonatomic) IBOutlet UILabel *showCheck;//查看的文本
 @end
 
 @implementation PartnerViewController
@@ -22,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _user = [[User alloc] init];
+
     self.view.backgroundColor=[UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1];
     self.title=@"我的合伙人";
     
@@ -33,6 +36,9 @@
 
     self.recommendPhone.text=[_recommendPhone__ replaceNumberWithStar];
     self.partnerNum.text=[NSString stringWithFormat:@"%@人",_partnerNum__];
+    
+    //无推荐人  不显示合伙人列表
+    if([_partnerNum__ intValue]==0) [_showCheck setHidden:YES];
     
     self.recommendPhone.textColor=UIColorFromRGB(0x00bcd5);
     self.partnerNum.textColor=UIColorFromRGB(0x00bcd5);
@@ -98,6 +104,54 @@
     }
     [self.view makeToast:msg duration:1.0 position:CSToastPositionCenter];
     
+}
+- (IBAction)showPartnerList:(id)sender {
+    
+    PartnerListViewController *part=[[PartnerListViewController alloc]initWithNibName:@"PartnerListViewController" bundle:nil];
+    part.partnerNUm=_partnerNum__;
+    [self.navigationController pushViewController:part animated:YES];
+    
+}
+- (IBAction)invitePartner:(id)sender {
+    
+    [UMSocialConfig hiddenNotInstallPlatforms:nil];
+    NSString *shareLinkUrl=@"http://m.renrentui.me";
+    NSString *shareTitle=@"人人推|北京地推|O2O地推|推广任务，让推广更简单";
+    
+    NSString *shareText=[NSString stringWithFormat:@"注册填写推荐人:%@，成为我的合伙人，一起赚钱一起飞！%@",_user.userPhoneNo,shareLinkUrl];
+    
+    [UMSocialConfig setFinishToastIsHidden:YES position:UMSocialiToastPositionCenter];
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.wechatSessionData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatSessionData.wxMessageType=UMSocialWXMessageTypeWeb;
+    
+    [UMSocialData defaultData].extConfig.wechatTimelineData.title = shareText;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.wxMessageType=UMSocialWXMessageTypeWeb;
+    
+    [UMSocialData defaultData].extConfig.qqData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qqData.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.qqData.qqMessageType = UMSocialQQMessageTypeDefault;
+
+    [UMSocialData defaultData].extConfig.qzoneData.title = shareTitle;
+    [UMSocialData defaultData].extConfig.qzoneData.url = shareLinkUrl;
+    
+    NSString *sinaText=[NSString stringWithFormat:@"%@，人人推—%@",shareTitle,shareText];
+    [UMSocialData defaultData].extConfig.sinaData.shareText=sinaText;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.url = shareLinkUrl;
+    [UMSocialData defaultData].extConfig.sinaData.urlResource.resourceType = UMSocialUrlResourceTypeWeb;
+    
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:kUMSocialAppKey shareText:shareText shareImage:[UIImage imageNamed:@"shareImageLogo"] shareToSnsNames:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil] delegate:self];
+}
+//实现回调方法（可选）：
+-(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response
+{
+    //根据`responseCode`得到发送结果,如果分享成功
+    if(response.responseCode == UMSResponseCodeSuccess)
+    {
+        //得到分享到的微博平台名
+        NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

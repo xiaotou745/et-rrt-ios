@@ -22,6 +22,7 @@
 @property (nonatomic,assign)NSInteger   age;
 
 @property (nonatomic,assign)NSInteger   sex;
+@property (nonatomic,strong)NSString   *birthDay;
 
 @property (nonatomic,strong)NSString    *userName;
 

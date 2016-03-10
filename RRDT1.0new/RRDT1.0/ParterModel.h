@@ -24,5 +24,6 @@
 
 /**地推员头像完全地址*/
 @property(strong,nonatomic)NSString *headImage;
+@property(strong,nonatomic)NSString *createTime;
 
 @end

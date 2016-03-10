@@ -77,8 +77,9 @@
     cell.model=task;
     //个人中心的_taskId＝0 默认为所有
     if (![[_taskId description] isEqualToString:@"0"]) {
-        [cell hideBottomViews];
+//        [cell hideBottomViews];
     }
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -112,6 +113,8 @@
        
         [manager POST:[NSString stringWithFormat:@"%@%@",URL_All,URL_Getmytaskdatumlist] parameters:parmeters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
             [MBProgressHUD hideHUDForView:self animated:YES];
+            
+            
             if (_nextId == 0) {
                 [_modeArr removeAllObjects];
             }
@@ -182,7 +185,7 @@
     CGFloat bottomHeight=0.0f;
     //个人中心的_taskId＝0 默认为所有
     if (![[_taskId description] isEqualToString:@"0"]) {
-        bottomHeight=30.0f;
+//        bottomHeight=30.0f;
     }
     
     if (GroupTypeText==task.groupType) {

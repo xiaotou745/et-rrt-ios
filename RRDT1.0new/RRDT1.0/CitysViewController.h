@@ -7,6 +7,9 @@
 //
 
 #import "BackBaseViewController.h"
+#import "ChineseToPinyin.h"
+#import "NSArray+Util.h"
+
 #define kChooseCityNotif @"kChooseCityNotif"
 
 #define KCitys_sectionTitle @"KCitys_sectionTitle"//段头
@@ -14,6 +17,11 @@
 
 #define cityName @"name"
 #define cityCode @"code"
+
+#define ALPHA1	@"ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
+#define cityALPHA @"热ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
+#define remenCity @"/Hotel/GetHotCityHotel"
+
 
 @interface CitysViewController : BackBaseViewController
 

@@ -291,7 +291,8 @@
                     NSDictionary *parameters = @{@"phoneNo": _txtphone.text,
                                                  @"passWord":[MyMD5 md5:_txtPassword.text],
                                                  @"verifyCode":_txtVerifyCode.text,
-                                                 @"recommendPhone":_linkPhone.text=nil?@"":_linkPhone.text
+                                                 @"recommendPhone":_linkPhone.text=nil?@"":_linkPhone.text,
+                                                 @"operSystem":@"ios"
                                                  };
                 AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
                 parameters=[parameters security];

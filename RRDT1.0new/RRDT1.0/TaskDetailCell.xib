@@ -36,8 +36,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxu-7g-GR2" userLabel="statusLabel">
-                                <rect key="frame" x="277" y="127.5" width="40" height="20"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxu-7g-GR2" userLabel="statusLabel">
+                                <rect key="frame" x="277" y="107.5" width="40" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="CLs-23-Xq7"/>
                                     <constraint firstAttribute="height" constant="20" id="P04-sw-ib9"/>
@@ -46,8 +46,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UB0-C3-4yt" userLabel="price" customClass="CoreLabel">
-                                <rect key="frame" x="175" y="127.5" width="100" height="20"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UB0-C3-4yt" userLabel="price" customClass="CoreLabel">
+                                <rect key="frame" x="175" y="107.5" width="100" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="K4i-qX-4mq"/>
                                     <constraint firstAttribute="height" constant="20" id="tbp-sl-czv"/>
@@ -56,14 +56,15 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8X-KE-diA" userLabel="typeLabel" customClass="CoreLabel">
-                                <rect key="frame" x="0.0" y="127.5" width="175" height="20"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8X-KE-diA" userLabel="typeLabel" customClass="CoreLabel">
+                                <rect key="frame" x="0.0" y="107.5" width="175" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8eS-uc-m7U">
-                                <rect key="frame" x="5" y="116.5" width="307" height="1"/>
+                                <rect key="frame" x="5" y="126.5" width="307" height="1"/>
                                 <color key="backgroundColor" red="0.7737699468" green="0.7737699468" blue="0.7737699468" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="egu-mc-Lh3"/>
@@ -72,27 +73,55 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="Hr5-es-CUQ">
-                                <rect key="frame" x="134" y="58.5" width="48" height="48"/>
+                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="Hr5-es-CUQ">
+                                <rect key="frame" x="134" y="68.5" width="48" height="48"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Y23-Zp-ZJc"/>
                                     <constraint firstAttribute="width" constant="48" id="ee4-g3-vYn"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="pf0-iK-wNg" appends="YES" id="Led-2d-eqB"/>
+                                </connections>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="ZMq-AJ-5WQ">
-                                <rect key="frame" x="78" y="58.5" width="48" height="48"/>
+                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="ZMq-AJ-5WQ">
+                                <rect key="frame" x="78" y="68.5" width="48" height="48"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="2Ac-re-skA" appends="YES" id="OsU-3c-rge"/>
+                                </connections>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="JQh-JC-jNn">
-                                <rect key="frame" x="22" y="58.5" width="48" height="48"/>
+                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="JQh-JC-jNn">
+                                <rect key="frame" x="22" y="68.5" width="48" height="48"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="YTD-1e-gYK" appends="YES" id="r7O-WE-6Bs"/>
+                                </connections>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="aXt-dd-vWS">
-                                <rect key="frame" x="190" y="58.5" width="48" height="48"/>
+                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="aXt-dd-vWS">
+                                <rect key="frame" x="190" y="68.5" width="48" height="48"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Tvg-EK-8Sa" appends="YES" id="0Cu-1G-IOE"/>
+                                </connections>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="fFs-G6-kPM">
-                                <rect key="frame" x="246" y="58.5" width="48" height="48"/>
+                            <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_morentu" translatesAutoresizingMaskIntoConstraints="NO" id="fFs-G6-kPM">
+                                <rect key="frame" x="246" y="68.5" width="48" height="48"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="hAd-bH-3uW" appends="YES" id="x1w-7r-PWF"/>
+                                </connections>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93g-Gk-gzC">
+                                <rect key="frame" x="0.0" y="129.5" width="317" height="17.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="JQh-JC-jNn" firstAttribute="leading" secondItem="H5U-nM-Fci" secondAttribute="leading" constant="22.5" id="0th-Nh-aKD"/>
                             <constraint firstAttribute="trailing" secondItem="oxu-7g-GR2" secondAttribute="trailing" id="5UD-pW-PHi"/>
@@ -101,10 +130,11 @@
                             <constraint firstItem="UB0-C3-4yt" firstAttribute="bottom" secondItem="oxu-7g-GR2" secondAttribute="bottom" id="AIS-LJ-Ba4"/>
                             <constraint firstItem="fms-km-mpp" firstAttribute="width" secondItem="scc-yc-2iE" secondAttribute="width" id="AKb-4s-oBi"/>
                             <constraint firstItem="ZMq-AJ-5WQ" firstAttribute="leading" secondItem="JQh-JC-jNn" secondAttribute="trailing" constant="8" id="AQv-y5-5hf"/>
-                            <constraint firstAttribute="bottom" secondItem="oxu-7g-GR2" secondAttribute="bottom" id="AuC-pG-nVW"/>
+                            <constraint firstAttribute="bottom" secondItem="oxu-7g-GR2" secondAttribute="bottom" constant="20" id="AuC-pG-nVW"/>
+                            <constraint firstItem="93g-Gk-gzC" firstAttribute="leading" secondItem="H5U-nM-Fci" secondAttribute="leading" id="CO2-47-lh0"/>
                             <constraint firstItem="aXt-dd-vWS" firstAttribute="width" secondItem="Hr5-es-CUQ" secondAttribute="width" id="Eje-Dg-bH1"/>
                             <constraint firstItem="p8X-KE-diA" firstAttribute="height" secondItem="UB0-C3-4yt" secondAttribute="height" id="GEY-AE-mLX"/>
-                            <constraint firstAttribute="bottom" secondItem="8eS-uc-m7U" secondAttribute="bottom" constant="30" id="GtG-Kg-xAS"/>
+                            <constraint firstAttribute="bottom" secondItem="8eS-uc-m7U" secondAttribute="bottom" constant="20" id="GtG-Kg-xAS"/>
                             <constraint firstItem="ZMq-AJ-5WQ" firstAttribute="centerY" secondItem="Hr5-es-CUQ" secondAttribute="centerY" id="HBE-AC-6sw"/>
                             <constraint firstItem="aXt-dd-vWS" firstAttribute="height" secondItem="Hr5-es-CUQ" secondAttribute="height" id="HGG-7I-Sac"/>
                             <constraint firstItem="fFs-G6-kPM" firstAttribute="width" secondItem="aXt-dd-vWS" secondAttribute="width" id="HgV-4q-Kml"/>
@@ -114,7 +144,9 @@
                             <constraint firstItem="8eS-uc-m7U" firstAttribute="top" secondItem="Hr5-es-CUQ" secondAttribute="bottom" constant="10" id="KDY-km-xai"/>
                             <constraint firstItem="p8X-KE-diA" firstAttribute="leading" secondItem="H5U-nM-Fci" secondAttribute="leading" id="KV5-hD-mfX"/>
                             <constraint firstItem="oxu-7g-GR2" firstAttribute="leading" secondItem="UB0-C3-4yt" secondAttribute="trailing" constant="2" id="L2Q-MK-28a"/>
+                            <constraint firstAttribute="bottom" secondItem="93g-Gk-gzC" secondAttribute="bottom" id="NIq-9d-AIu"/>
                             <constraint firstItem="8eS-uc-m7U" firstAttribute="leading" secondItem="H5U-nM-Fci" secondAttribute="leading" constant="5" id="RtH-lJ-PGn"/>
+                            <constraint firstAttribute="trailing" secondItem="93g-Gk-gzC" secondAttribute="trailing" id="Sfy-TY-mLK"/>
                             <constraint firstItem="Hr5-es-CUQ" firstAttribute="centerX" secondItem="H5U-nM-Fci" secondAttribute="centerX" id="Srb-fz-Ppr"/>
                             <constraint firstItem="fms-km-mpp" firstAttribute="top" secondItem="scc-yc-2iE" secondAttribute="bottom" constant="5" id="Tbc-kj-mTv"/>
                             <constraint firstItem="Hr5-es-CUQ" firstAttribute="leading" secondItem="ZMq-AJ-5WQ" secondAttribute="trailing" constant="8" id="Tmw-eL-oaQ"/>
@@ -136,6 +168,7 @@
                             <constraint firstItem="fFs-G6-kPM" firstAttribute="centerY" secondItem="aXt-dd-vWS" secondAttribute="centerY" id="vG8-Nb-5iI"/>
                             <constraint firstItem="p8X-KE-diA" firstAttribute="centerY" secondItem="UB0-C3-4yt" secondAttribute="centerY" id="wQZ-vx-qk5"/>
                             <constraint firstItem="JQh-JC-jNn" firstAttribute="height" secondItem="ZMq-AJ-5WQ" secondAttribute="height" id="zEa-0c-eg2"/>
+                            <constraint firstItem="93g-Gk-gzC" firstAttribute="top" secondItem="p8X-KE-diA" secondAttribute="bottom" constant="2" id="zdL-rn-c3c"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -175,11 +208,37 @@
                 <outlet property="img4" destination="fFs-G6-kPM" id="eOs-hs-b5p"/>
                 <outlet property="lineLab" destination="8eS-uc-m7U" id="lt4-Mm-pTL"/>
                 <outlet property="lineLab_constraintHeight" destination="GtG-Kg-xAS" id="H4V-x4-7L8"/>
+                <outlet property="refuseLabel" destination="93g-Gk-gzC" id="hIO-GX-VB0"/>
                 <outlet property="taskName" destination="p8X-KE-diA" id="Xty-Q2-SIQ"/>
                 <outlet property="taskStatus" destination="oxu-7g-GR2" id="t3y-dg-vHx"/>
             </connections>
             <point key="canvasLocation" x="249.5" y="300"/>
         </tableViewCell>
+        <tapGestureRecognizer id="YTD-1e-gYK" userLabel="Tap0">
+            <connections>
+                <action selector="imageView0_Tap:" destination="KGk-i7-Jjw" id="7kO-us-M9f"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="2Ac-re-skA" userLabel="Tap1">
+            <connections>
+                <action selector="imageView1_Tap:" destination="KGk-i7-Jjw" id="y84-g2-hcy"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="pf0-iK-wNg" userLabel="Tap2">
+            <connections>
+                <action selector="imageView2_Tap:" destination="KGk-i7-Jjw" id="QM9-y5-kef"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Tvg-EK-8Sa" userLabel="Tap3">
+            <connections>
+                <action selector="imageView3_Tap:" destination="KGk-i7-Jjw" id="KyB-KA-oa5"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="hAd-bH-3uW" userLabel="Tap4">
+            <connections>
+                <action selector="imageView4_Tap:" destination="KGk-i7-Jjw" id="TvI-qx-cG3"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_morentu" width="55" height="55"/>

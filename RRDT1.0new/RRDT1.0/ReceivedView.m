@@ -127,10 +127,12 @@
             checkCell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
             
             checkCell.infoLabel.text =task.taskGeneralInfo;
-            checkCell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
-            checkCell.taskType.text=[MyTools getTasktype:task.taskType];
-            
-
+//            checkCell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+//            checkCell.taskType.text=[MyTools getTasktype:task.taskType];
+    
+            checkCell.taskTypeView.backgroundColor=[MyTools colorWithHexString:task.tagColorCode];
+            checkCell.taskType.text=task.tagName;
+    
             NSString *msg;
             if (task.taskType==taskType_write) {
                 msg=[NSString stringWithFormat:@"提交资料 %d条",task.completeNum];

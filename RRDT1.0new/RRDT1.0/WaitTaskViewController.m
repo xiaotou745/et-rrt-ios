@@ -68,6 +68,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
+    
     self.title = @"可接任务";
 
     _modeArr = [NSMutableArray array];
@@ -76,10 +78,10 @@
     _currentPage = 1;
     _orderByType=orderByCreateTime;
     //默认为北京
-    _currentCityInfo=@{cityName:@"北京市",cityCode:@(110100)};
+    _currentCityInfo=DEF_PERSISTENT_GET_OBJECT(kLocationCityInfo);
     
-    self.view.backgroundColor = UIColorFromRGB(0xf9f9f9);
-    
+    [self saveCurrentCityCode];
+    [self requestNewCityDatas];
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_mytask"] style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"排序"style:UIBarButtonItemStylePlain target:self action:@selector(sortType)];
     
@@ -136,7 +138,8 @@
 }
 -(void)requestNewCityDatas{
     
-    
+    [self saveCurrentCityCode];
+
 //    [self.navigationItem.leftBarButtonItem setTitle:[self congfigCityLength]];
     [_leftNavBar  configView:[self congfigCityLength]];
     
@@ -144,7 +147,11 @@
     [self post];
 
 }
+-(void)saveCurrentCityCode{
 
+    AppDelegate *appDele=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    appDele.currentCityCode=_currentCityInfo[cityCode];
+}
 -(NSString *)congfigCityLength{
     //城市超过4个字，后面显示省略号
     NSString *title=_currentCityInfo[cityName];
@@ -285,8 +292,25 @@
                     
                     NSInteger code=[cityInfo[cityCode]intValue];
                     _currentCityInfo=@{cityName:_StateName,cityCode:@(code)};
-                    [self requestNewCityDatas];
-                    return;
+                    
+                    NSDictionary *locationCityInfo=DEF_PERSISTENT_GET_OBJECT(kLocationCityInfo);
+                    //与本地存储的 城市不同时
+                    if(code!=[locationCityInfo[cityCode]integerValue]){
+                    
+                        //将定位到的城市 存到本地
+                        DEF_PERSISTENT_SET_OBJECT(_currentCityInfo, kLocationCityInfo);
+                        
+                        NSString *message=[NSString stringWithFormat:@"系统定位您现在在%@，是否切换到%@?",_StateName,_StateName];
+                        [UIAlertView  showAlertViewWithTitle:nil message:message cancelButtonTitle:@"取消" otherButtonTitles:@[@"切换"] onDismiss:^(NSInteger buttonIndex){
+                            
+                            [self requestNewCityDatas];
+                            
+                        } onCancel:^(){
+                            
+                        }];
+                        return;
+                    }
+                    
                 }
             }
         }
@@ -318,9 +342,12 @@
         cell.headLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
         cell.infoLabel.text =task.taskGeneralInfo;
 
-        cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
-        cell.taskType.text=[MyTools getTasktype:task.taskType];
-        
+//        cell.taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:task.taskType]];
+//        cell.taskType.text=[MyTools getTasktype:task.taskType];
+
+        cell.taskTypeView.backgroundColor=[MyTools colorWithHexString:task.tagColorCode];
+        cell.taskType.text=task.tagName;
+
         
         cell.moneyLab.textColor = UIColorFromRGB(0xf7585d);
         cell.moneyLab.text = [NSString stringWithFormat:@"%.2f",task.amount];
@@ -380,7 +407,7 @@
         NSDictionary *parmeters = @{@"userId"       :user.isLogin?user.userId:@"0",
                                     @"currentPage"       :[NSString stringWithFormat:@"%zi",_currentPage],
                                     @"pageSize":@(0),
-                                    @"cityCode":_currentCityInfo[cityCode],@"orderBy":@(_orderByType)};
+                                    @"cityCode":_currentCityInfo[cityCode],@"orderBy":@(_orderByType),@"platform":@"ios"};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         parmeters=[parmeters security];
@@ -390,7 +417,7 @@
             if (_currentPage == 1) {
                 [_modeArr removeAllObjects];
             }
-//            NSLog(@"wait%@ and %@",responseObject,operation);
+            NSLog(@"wait%@ and %@",responseObject,operation);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSInteger code = [[responseObject objectForKey:@"code"] intValue];
             if (code == 200) {

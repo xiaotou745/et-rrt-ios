@@ -7,8 +7,12 @@
 //
 
 #import "MyInfoViewController.h"
+#import "MNDatePicker.h"
+#define DateFormateKeyDay @"newEventDateFormateKeyDay"
+#define DateFormateKeyTime @"newEventDateFormateKeyTime"
+#define DateFormateKeyFull @"NewEventDateFormateKeyFull"
 
-@interface MyInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
+@interface MyInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate,MNDatePicerDelegate>
 {
     NSArray *arr1;
     
@@ -19,6 +23,13 @@
 @property (nonatomic,strong)UIImageView *headImage;
 
 @property (nonatomic,strong)NSData *user_imgdata;
+
+@property (strong, nonatomic) MNDatePicker * datePicker;
+@property (assign) BOOL startDatePicker;
+
+// api value
+@property (copy, nonatomic) NSString * birthDate;
+
 @end
 
 @implementation MyInfoViewController
@@ -48,7 +59,7 @@
     
     _user = [[User alloc] init];
     userArr1 = [NSMutableArray array];
-    arr1 = @[@"头像",@"姓名",@"手机",@"性别",@"年龄"];
+    arr1 = @[@"头像",@"姓名",@"手机",@"性别",@"出生日期"];
 
     
     _mytable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -88,8 +99,9 @@
         NSDictionary *parameters = @{@"userId"   : _user.userId,
                                      @"userName" : [userArr1 objectAtIndex:1],
                                      @"sex"      : [userArr1 objectAtIndex:3],
-                                     @"age"      : [userArr1 objectAtIndex:4],
-                                     @"headImage": [userArr1 objectAtIndex:0]};
+                                     @"age"      : @"",
+                                     @"headImage": [userArr1 objectAtIndex:0],
+                                     @"birthDay":_birthDate};
         
         AFHTTPRequestOperationManager *manager = [HttpHelper initHttpHelper];
         parameters=[parameters security];
@@ -146,6 +158,7 @@
             _user.userPhoneNo = [[responseObject objectForKey:@"data"] objectForKey:@"phoneNo"] ;
             
             _user.sex = [[[responseObject objectForKey:@"data"] objectForKey:@"sex"] integerValue];
+            _user.birthDay = [[responseObject objectForKey:@"data"] objectForKey:@"birthDay"];
             _user.age = [[[responseObject objectForKey:@"data"] objectForKey:@"age"] integerValue];
             _user.fullHeadImage = [[responseObject objectForKey:@"data"] objectForKey:@"fullHeadImage"];
             _user.headImage = [[responseObject objectForKey:@"data"] objectForKey:@"headImage"];
@@ -153,7 +166,12 @@
             [userArr1 addObject:_user.userName];
             [userArr1 addObject:_user.userPhoneNo];
             [userArr1 addObject:[NSString stringWithFormat:@"%zi",_user.sex]];
-            [userArr1 addObject:[NSString stringWithFormat:@"%zi",_user.age]];
+            
+            
+            if (_user.birthDay.length>11) {
+                self.birthDate=[_user.birthDay substringToIndex:10];
+            }
+            [userArr1 addObject:[NSString stringWithFormat:@"%@",self.birthDate]];
 
             [_mytable reloadData];
             
@@ -283,14 +301,26 @@
             actionSheet.tag = 111;
             [actionSheet showInView:self.view];
         }else if (indexPath.row == 4){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"修改年龄" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"修改",nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [[alert textFieldAtIndex:0] setText:[userArr1 objectAtIndex:1]];
-            [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNumberPad];
-            [[alert textFieldAtIndex:0] setClearsOnBeginEditing:YES];
-            alert.tag = 9999;
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"修改年龄" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"修改",nil];
+//            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+//            [[alert textFieldAtIndex:0] setText:[userArr1 objectAtIndex:1]];
+//            [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeNumberPad];
+//            [[alert textFieldAtIndex:0] setClearsOnBeginEditing:YES];
+//            alert.tag = 9999;
+//            [alert show];
+            
+//            UIDatePicker *datePicker=[[UIDatePicker alloc]init];
+//            [datePicker setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"zh_Hans_CN"]];
+//            [datePicker setCalendar:[NSCalendar currentCalendar]];
+//            
+//            [datePicker setTimeZone:[NSTimeZone defaultTimeZone]];
+//            [datePicker setDate:[NSDate date]];
+//
+//            [datePicker addTarget:self action:@selector(dateChange:)forControlEvents:UIControlEventValueChanged];
+//            [alert addSubview:datePicker];
 
+            [self showDatePicker];
+            
         }
 
 }
@@ -402,6 +432,60 @@
     }];
  
 }
+
+- (IBAction)startDateBtnAction:(id)sender {
+    [self showDatePicker];
+    self.startDatePicker = YES;
+}
+
+- (IBAction)endDateBtnAction:(id)sender {
+    [self showDatePicker];
+    self.startDatePicker = NO;
+}
+
+
+#pragma mark - datePicker
+- (void)showDatePicker{
+    [self dismissDatePicker];
+    self.datePicker = [[MNDatePicker alloc] initWithDelegate:self];
+    self.datePicker.datePicker.datePickerMode = UIDatePickerModeDate;
+    self.datePicker.datePicker.date = [NSDate date];
+    [self.datePicker showInView:self.view];
+}
+
+- (void)dismissDatePicker{
+    [self.datePicker cancelPicker];
+    self.datePicker.delegate = nil;
+    self.datePicker = nil;
+}
+
+- (void)MNDatePickerDidSelected:(MNDatePicker *)datePicker{
+    
+    self.birthDate = [self dateDictionWithDate:datePicker.datePicker.date];
+    [userArr1 replaceObjectAtIndex:4 withObject:[self.birthDate copy]];
+    [_mytable reloadData];
+}
+
+- (NSString *)dateDictionWithDate:(NSDate *)adate{
+    NSDate * date = adate;
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+    NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];
+    [dateFormatter setLocale:[NSLocale currentLocale]];
+    //    if ([adate isCurrentDay:[NSDate date]]) {
+    //        [dateFormatter setDateFormat:@"MM月dd号(今天)"];
+    //    }else{
+    //        [dateFormatter setDateFormat:@"MM月dd号"];
+    //    }
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString * dateString = [dateFormatter stringFromDate:localeDate];
+    return dateString;
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

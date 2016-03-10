@@ -27,7 +27,7 @@
 #import "TPKeyboardAvoidingTableView.h"
 #include "WaitTaskTableViewCell.h"
 
-
+#import "GRScrollView.h"
 @interface PostContractViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 {
     NSMutableArray *arr_text;
@@ -281,8 +281,10 @@
     _moneyLabel.textColor = UIColorFromRGB(0xf7585d);
     _moneyLabel.text = [NSString stringWithFormat:@"%.2f",_task.amount];
 
-    _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
-    _taskType.text=[MyTools getTasktype:_task.taskType];
+//    _taskTypeView.image=[UIImage imageNamed:[MyTools getTasktypeImageName:_task.taskType]];
+//    _taskType.text=[MyTools getTasktype:_task.taskType];
+    _taskTypeView.backgroundColor=[MyTools colorWithHexString:_task.tagColorCode];
+    _taskType.text=_task.tagName;
     
     _statusLabel.text =_task.taskGeneralInfo;
     _statusLabel.textColor=UIColorFromRGB(0x888888);
@@ -637,10 +639,11 @@
 
                 }else{
                     [Cell_image.myImg_btn sd_setBackgroundImageWithURL:[NSURL URLWithString:controInfo.controlValue] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"icon_imgadd"]];
-                    Cell_image.myImg_btn.userInteractionEnabled = NO;
+//                    Cell_image.myImg_btn.userInteractionEnabled = NO;
 
-                    if (_tag == 333) {
-                        Cell_image.myImg_btn.userInteractionEnabled = NO;
+                    if (_tag == 222) {
+                        [Cell_image.myImg_btn addTarget:self action:@selector(showImage:) forControlEvents:UIControlEventTouchUpInside];
+
                     }else{
                         [Cell_image.myImg_btn addTarget:self action:@selector(changeImage:) forControlEvents:UIControlEventTouchUpInside];
                     }
@@ -698,11 +701,11 @@
             
             if(_tag==222||_tag==333){
                 
-                cell.img0.userInteractionEnabled = NO;
-                cell.img1.userInteractionEnabled = NO;
-                cell.img2.userInteractionEnabled = NO;
-                cell.img3.userInteractionEnabled = NO;
-                cell.img4.userInteractionEnabled = NO;
+//                cell.img0.userInteractionEnabled = NO;
+//                cell.img1.userInteractionEnabled = NO;
+//                cell.img2.userInteractionEnabled = NO;
+//                cell.img3.userInteractionEnabled = NO;
+//                cell.img4.userInteractionEnabled = NO;
             }
             
 
@@ -711,7 +714,16 @@
                 /*
                  *index 这一行的第几个
                  */
-                [self pushCamera:index Section:indexPath.section Row:indexPath.row];
+                if(_tag==111){
+                    [self pushCamera:index Section:indexPath.section Row:indexPath.row];
+
+                }else{
+                    
+                    ControlInfo *controInfo = [[ControlInfo alloc] init];
+                    controInfo=[controlLists objectAtIndex:indexPath.row*5+index];
+                    [self showImages:controInfo];
+                    
+                }
             };
             
             return cell;
@@ -823,6 +835,27 @@
     img_str = cell.myName;
     [actionSheet showInView:self.view];
 }
+#pragma mark 多图查看大图
+-(void)showImages:(ControlInfo *)controInfo{
+    
+    
+    GRScrollView *grsrollV=[[GRScrollView alloc]initWithImages:@[controInfo.controlValue] AddToView:self.view SelectIndex:0];
+    [grsrollV hideIndexText];
+}
+#pragma  mark  单图 查看大图
+-(void)showImage:(UIButton *)btn{
+    
+    NSInteger section=btn.tag/10000;
+    NSInteger row=btn.tag%10000;
+    
+    ControlInfo *controInfo = [[ControlInfo alloc] init];
+    controInfo=[arr_all objectAtIndex:section][@"data"][row];
+    
+    GRScrollView *grsrollV=[[GRScrollView alloc]initWithImages:@[controInfo.controlValue] AddToView:self.view SelectIndex:0];
+    [grsrollV hideIndexText];
+    
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -867,7 +900,7 @@
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
 
-    NSData *data = UIImageJPEGRepresentation(image, 0.3);
+    NSData *data = UIImageJPEGRepresentation(image, 1);
     
     [self postImg:data];
     
