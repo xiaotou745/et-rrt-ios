@@ -11,6 +11,7 @@
                 <outlet property="bonusTotal" destination="jEC-0E-Fo4" id="Wjn-3n-Xbn"/>
                 <outlet property="partnerNum" destination="plY-YQ-YiR" id="yBT-ie-uSO"/>
                 <outlet property="recommendPhone" destination="7dE-2v-Vr1" id="xnb-ub-WE5"/>
+                <outlet property="shareBTN" destination="njQ-gr-PMd" id="JBU-tg-uTq"/>
                 <outlet property="showCheck" destination="VUW-MP-HpF" id="szR-cO-9Vh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

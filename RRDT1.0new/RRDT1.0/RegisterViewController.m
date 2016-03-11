@@ -319,6 +319,8 @@
                             [dd setObject:userData forKey:@"myUser"];
                             [dd synchronize];
                             
+                            //注册成功 发出通知 请求个人信息
+                            [[NSNotificationCenter defaultCenter] postNotificationName:loginSuccess_getUserInfo object:nil];
                             if (_againType == 999) {
                                 [self dismissViewControllerAnimated:YES completion:^{
                                     

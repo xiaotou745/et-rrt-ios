@@ -123,6 +123,25 @@
     [dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
     return [dateFormatter stringFromDate:localeDate];
 }
++(BOOL)sharePlatform{
+
+    if ([WXApi isWXAppInstalled]) {
+        return YES;
+    }
+    
+    if ([WeiboSDK isWeiboAppInstalled]) {
+        return YES;
+    }
+
+    if ([TencentOAuth iphoneQQInstalled]) {
+        return YES;
+    }
+    
+//    if ([TencentOAuth iphoneQZoneInstalled]) {
+//        return YES;
+//    }
+    return NO;
+}
 @end
 
 @implementation MyTools (CityAddressManager)

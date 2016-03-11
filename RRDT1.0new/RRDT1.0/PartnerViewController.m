@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *recommendPhone;
 @property (weak, nonatomic) IBOutlet UIImageView *appBar;
 @property (weak, nonatomic) IBOutlet UILabel *showCheck;//查看的文本
+@property (weak, nonatomic) IBOutlet UIButton *shareBTN;
 @end
 
 @implementation PartnerViewController
@@ -48,6 +49,8 @@
     _appBar.layer.borderWidth=2.0f;
     _appBar.layer.borderColor=UIColorFromRGB(0x00bcd5).CGColor;
 //    [self creatBarView];
+    
+    if (![MyTools sharePlatform]) [_shareBTN setHidden:YES];
     
 }
 -(void)creatBarView{
@@ -114,7 +117,7 @@
 }
 - (IBAction)invitePartner:(id)sender {
     
-    [UMSocialConfig hiddenNotInstallPlatforms:nil];
+    [UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil]];
     NSString *shareLinkUrl=@"http://m.renrentui.me";
     NSString *shareTitle=@"人人推|北京地推|O2O地推|推广任务，让推广更简单";
     

@@ -129,8 +129,11 @@
     self.title = @"任务详情";
 
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(showUMSocialShare)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
+    if ([MyTools sharePlatform]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(showUMSocialShare)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor whiteColor]];
+    }
+    
     
     [self judegMent];
     if ([[CoreStatus currentNetWorkStatusString]isEqualToString:@"无网络"]) {
@@ -1187,8 +1190,9 @@
 
 -(void)showUMSocialShare{
 
-    [UMSocialConfig hiddenNotInstallPlatforms:nil];
-    NSString *shareLinkUrl=[NSString stringWithFormat:@"http://eds_m.yitaoyun.net/renrenwap/clienter/sharetask?taskId=%@",_task.taskId];
+    [UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil]];
+//    NSString *shareLinkUrl=[NSString stringWithFormat:@"http://eds_m.yitaoyun.net/renrenwap/clienter/sharetask?taskId=%@",_task.taskId];
+    NSString *shareLinkUrl=[NSString stringWithFormat:@"http://m.renrentui.me/clienter/sharetask?taskId=%@",_task.taskId];
 
     NSString *shareTitle=[NSString stringWithFormat:@"%@—%.2f元/次",_task.taskTitle,_task.amount];
 

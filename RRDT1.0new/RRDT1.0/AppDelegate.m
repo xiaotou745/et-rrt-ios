@@ -53,6 +53,10 @@
     if (DEF_PERSISTENT_GET_OBJECT(kAppFirstDriving)==nil) {
         DEF_PERSISTENT_SET_OBJECT(@"kAppFirstDriving", kAppFirstDriving);
         DEF_PERSISTENT_SET_OBJECT((@{@"name":@"北京市",@"code":@(110100)}), kLocationCityInfo);
+//        DEF_PERSISTENT_SET_OBJECT((@{@"name":@"上海市",@"code":@(310100)}), kLocationCityInfo);
+//        DEF_PERSISTENT_SET_OBJECT((@{@"name":@"天津市",@"code":@(120100)}), kLocationCityInfo);
+
+
     }
     
     
@@ -167,6 +171,7 @@
 #pragma mark 获得用户信息
 - (void)gotoGetMyInfo{
     
+    _user=[[User alloc]init];
     NSLog(@">>>>>>%@",_user.userId);
     NSDictionary *parameters = @{@"userId": _user.userId};
     

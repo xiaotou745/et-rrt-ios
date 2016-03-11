@@ -251,7 +251,7 @@
     [_manager stopUpdatingLocation];
     _manager.delegate=nil;
 
-    [self requestNewCityDatas];
+//    [self requestNewCityDatas];
 
 }
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
@@ -315,7 +315,7 @@
             }
         }
         //未匹配到 cityCode  默认为北京
-        if (self.citysArr.count)  [self requestNewCityDatas];
+//        if (self.citysArr.count)  [self requestNewCityDatas];
     }
 }
 

@@ -27,6 +27,8 @@
 #import "UMSocialQQHandler.h"
 #import "UMSocialSinaSSOHandler.h"
 #import "WeiboSDK.h"
+#import "WXApi.h"
+#import <TencentOpenAPI/TencentOAuth.h>
 
 #define gotoCheckProgressVC @"gotoCheckProgressVC"
 

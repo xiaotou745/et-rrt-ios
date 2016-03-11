@@ -28,21 +28,21 @@
 #define HEIGHT     [[UIScreen mainScreen] bounds].size.height //获取屏幕的高度
 #define WIDTH      [[UIScreen mainScreen] bounds].size.width  //获取屏幕的宽度
 
-#define appVersion @"110"
+#define appVersion @"113"
 
 /**aes加密:开发、测试不加密  线上加密*/
 #define isUseAESEncrypt 0
 
 #pragma mark 用户接口
 
-#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
-//#define URL_All @"http://api.renrentui.me/20160120/services"
+//#define URL_All @"http://10.8.8.64:8080/renrenapihttp/services"
+#define URL_All @"http://api.renrentui.me/20160301/services"
 
 /*
  *上传图片
  */
-#define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
-//#define URL_PostImg @"http://upload.renrentui.me/upload/fileupload/uploadimg"
+//#define URL_PostImg @"http://10.8.8.64:8094/upload/fileupload/uploadimg"
+#define URL_PostImg @"http://upload.renrentui.me/upload/fileupload/uploadimg"
 
 
 
@@ -194,6 +194,9 @@
 
 /// 当前系统时间
 + (NSString *)currentTime;
+
+// 判断手机是否安装 分享对应的客户端
++(BOOL)sharePlatform;
 @end
 
 @interface MyTools (times)

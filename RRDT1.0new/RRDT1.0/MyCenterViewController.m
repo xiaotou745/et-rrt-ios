@@ -518,8 +518,11 @@
         }
  
     }else if (indexPath.section == 2){
-        [self addPartner];
         
+        //存在客户端则弹出分享界面  否则 前往合伙人界面
+        if ([MyTools sharePlatform])        [self addPartner];
+        else                [self getPartnerInfo];
+
     }else if (indexPath.section == 3){
         [self onlineService];
         
@@ -546,7 +549,7 @@
 
     [self hideTabBar];
     
-    [UMSocialConfig hiddenNotInstallPlatforms:nil];
+    [UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone,nil]];
     NSString *shareLinkUrl=@"http://m.renrentui.me";
     NSString *shareTitle=@"人人推|北京地推|O2O地推|推广任务，让推广更简单";
 
